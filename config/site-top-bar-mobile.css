@@ -1,0 +1,193 @@
+/* Mobile hamburger menu — supplements inline top-bar styles on index + mortgage */
+
+/* Match the shared header shell to the Experience card radius, including pages with inline legacy radius values. */
+.top-bar__pill {
+  border-radius: var(--radius, 8px) !important;
+}
+
+/* Mortgage carousel cards use the same 8px corner language as Experience cards. */
+.split-card,
+.split-card::before {
+  border-radius: 8px !important;
+}
+
+/* Experience preload/fallback base matches the loop's cool blue-gray field so
+ * the video handoff does not flash from a warm page color first. */
+.experience-page.ivan-surface,
+.experience-bg,
+.experience-bg__video {
+  background-color: #e6edf7 !important;
+}
+
+/* Home desktop uses the approved hierarchy ambient background.
+ * Mortgage keeps its own base color and gets only a soft lavender glow layer.
+ */
+@media (min-width: 900px) {
+  body:has(.frame-section) {
+    background-color: #f7f8f5;
+    background-image:
+      radial-gradient(ellipse 62% 86% at 10% 10%, rgba(72, 120, 95, 0.18) 0%, rgba(72, 120, 95, 0.07) 42%, transparent 70%),
+      radial-gradient(ellipse 50% 62% at 33% 18%, rgba(196, 178, 152, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 56% 70% at 88% 14%, rgba(120, 140, 220, 0.09) 0%, transparent 62%),
+      radial-gradient(ellipse 68% 82% at 20% 82%, rgba(88, 145, 118, 0.10) 0%, transparent 66%),
+      radial-gradient(ellipse 55% 66% at 78% 82%, rgba(160, 180, 255, 0.07) 0%, transparent 64%),
+      linear-gradient(165deg, #fafbf8 0%, #eef2ed 42%, #f7f8f5 72%, #e4e9e3 100%);
+    background-attachment: fixed;
+  }
+
+  body:has(.frame-section)::before {
+    background:
+      radial-gradient(circle at 18% 28%, rgba(72, 120, 95, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 36% 62%, rgba(196, 178, 152, 0.07) 0%, transparent 35%),
+      radial-gradient(circle at 80% 20%, rgba(130, 150, 230, 0.09) 0%, transparent 40%),
+      radial-gradient(circle at 58% 82%, rgba(88, 145, 118, 0.08) 0%, transparent 40%);
+  }
+
+  body:has(.page)::before {
+    background:
+      radial-gradient(circle at 18% 28%, rgba(154, 136, 218, 0.20) 0%, transparent 41%),
+      radial-gradient(circle at 82% 20%, rgba(128, 145, 225, 0.17) 0%, transparent 40%),
+      radial-gradient(circle at 42% 58%, rgba(245, 241, 232, 0.18) 0%, transparent 36%),
+      radial-gradient(circle at 58% 82%, rgba(177, 161, 221, 0.14) 0%, transparent 40%);
+  }
+}
+
+.top-bar__menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink, #343A40);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.top-bar__menu-toggle:hover {
+  color: var(--ink, #343A40);
+}
+
+.top-bar__menu-icon,
+.top-bar__menu-icon::before,
+.top-bar__menu-icon::after {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform 0.2s ease, opacity 0.2s ease, top 0.2s ease;
+}
+
+.top-bar__menu-icon {
+  position: relative;
+}
+
+.top-bar__menu-icon::before,
+.top-bar__menu-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.top-bar__menu-icon::before { top: -7px; }
+.top-bar__menu-icon::after { top: 7px; }
+
+.top-bar.is-menu-open .top-bar__menu-icon {
+  background: transparent;
+}
+
+.top-bar.is-menu-open .top-bar__menu-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.top-bar.is-menu-open .top-bar__menu-icon::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 720px) {
+  .top-bar__pill {
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: var(--radius, 8px) !important;
+  }
+
+  .top-bar__brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 18px !important;
+    gap: 0.5rem !important;
+  }
+
+  .top-bar__brand span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .top-bar.is-compact .top-bar__brand {
+    font-size: 17px !important;
+  }
+
+  .top-bar__mark {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .top-bar.is-compact .top-bar__mark {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .top-bar__menu-toggle {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    margin-right: 2px;
+  }
+
+  .top-bar__links {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(52, 58, 64, 0.1);
+  }
+
+  .top-bar.is-menu-open .top-bar__links {
+    display: flex;
+  }
+
+  .top-bar__links li {
+    width: 100%;
+  }
+
+  .top-bar__links a {
+    width: 100%;
+    padding: 12px 14px !important;
+    font-size: 1rem !important;
+    text-align: left;
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-bar__menu-icon,
+  .top-bar__menu-icon::before,
+  .top-bar__menu-icon::after {
+    transition: none;
+  }
+}

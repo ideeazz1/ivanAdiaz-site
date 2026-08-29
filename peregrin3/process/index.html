@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer src="/config/plausible.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/preview-card.png">
+<meta name="theme-color" content="#343A40">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>How we work — The Peregrine Process</title>
+<meta name="description" content="The Peregrine method: Discover, Diagnose, Design, Deliver, Compound. Five stages calibrated to the depth of your operation. A working database deployed, not a binder.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1f1d18;
+    --ink-light: #4a463e;
+    --ink-soft: #756f63;
+    --paper: #faf6ec;
+    --paper-deep: #f3ecd9;
+    --paper-warm: #f7f0dd;
+    --accent: #6b3326;
+    --accent-light: #a06554;
+    --accent-soft: #f1e5e0;
+    --line: #d4cab2;
+    --line-soft: #e8dfc7;
+    --gold: #b88c2a;
+    --green: #4a7547;
+    --green-soft: #e8f0e6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Top nav */
+  .topnav {
+    border-bottom: 1px solid var(--line);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  @media (max-width: 640px) { .topnav { padding: 14px 22px; } }
+  .nav-brand {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+  @media (max-width: 540px) { .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } }
+
+  .container { max-width: 920px; margin: 0 auto; padding: 64px 32px 100px; }
+  @media (max-width: 640px) { .container { padding: 48px 22px 60px; } }
+
+  /* Hero */
+  .hero { margin-bottom: 64px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 22px;
+  }
+  h1.hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(44px, 6vw, 68px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero-deck {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(20px, 2.4vw, 24px);
+    line-height: 1.4;
+    color: var(--ink-light);
+    max-width: 760px;
+  }
+
+  /* Section */
+  section { margin-top: 72px; }
+  .section-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 3.4vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-light);
+    line-height: 1.5;
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+  p {
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    color: var(--ink-light);
+    max-width: 760px;
+  }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  /* The 5-stage flow diagram */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 36px 0;
+    position: relative;
+  }
+  @media (max-width: 900px) { .flow { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .flow { grid-template-columns: 1fr; } }
+  .flow-stage {
+    position: relative;
+    padding: 22px 18px 24px 18px;
+    background: var(--paper-deep);
+    border-top: 4px solid var(--accent);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .flow-stage::after {
+    content: "→";
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-light);
+    font-size: 18px;
+    z-index: 2;
+    background: var(--paper);
+    padding: 2px 4px;
+  }
+  .flow-stage:last-child::after { display: none; }
+  @media (max-width: 900px) { .flow-stage::after { display: none; } }
+  .flow-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .flow-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .flow-desc {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* Detailed stage breakdowns */
+  .stages { margin-top: 28px; }
+  .stage {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+    align-items: start;
+  }
+  .stage:last-child { border-bottom: 1px solid var(--line); }
+  @media (max-width: 700px) { .stage { grid-template-columns: 1fr; gap: 12px; } }
+  .stage-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 0.9;
+    color: var(--accent);
+    text-align: right;
+  }
+  @media (max-width: 700px) { .stage-num { text-align: left; font-size: 44px; } }
+  .stage-content h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.15;
+  }
+  .stage-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .stage-content p { font-size: 15.5px; line-height: 1.65; margin-bottom: 12px; }
+  .stage-deliverables {
+    background: var(--paper-deep);
+    border-left: 3px solid var(--accent);
+    padding: 14px 20px;
+    margin-top: 14px;
+    border-radius: 0 3px 3px 0;
+  }
+  .stage-deliv-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .stage-deliv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink-light);
+  }
+  .stage-deliv-list li {
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+  .stage-deliv-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* Big quote */
+  .big-quote {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.3;
+    color: var(--ink);
+    border-left: 4px solid var(--accent);
+    padding: 12px 0 12px 28px;
+    margin: 36px 0;
+    max-width: 880px;
+  }
+
+  /* 3-way comparison */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+  @media (max-width: 900px) { .compare { grid-template-columns: 1fr; } }
+  .compare-col {
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .compare-col.peregrine {
+    background: var(--accent-soft);
+    border: 2px solid var(--accent);
+  }
+  .compare-head {
+    padding: 18px 22px 16px 22px;
+    border-bottom: 1px solid var(--line);
+    background: white;
+  }
+  .compare-col.peregrine .compare-head {
+    background: var(--accent);
+    color: white;
+    border-bottom: none;
+  }
+  .compare-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .compare-col.peregrine .compare-name { color: white; }
+  .compare-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+  .compare-col.peregrine .compare-tag { color: rgba(255,255,255,0.8); }
+  .compare-time {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    margin-top: 8px;
+  }
+  .compare-col.peregrine .compare-time { color: white; }
+  .compare-body { padding: 16px 22px 20px 22px; }
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 13px;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row-label { color: var(--ink-soft); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+  .compare-row-value { color: var(--ink); font-weight: 500; text-align: right; max-width: 60%; }
+
+  /* Timeline visualization */
+  .timeline-viz {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-top: 28px;
+  }
+  .timeline-track {
+    position: relative;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    margin: 28px 8px 60px 8px;
+  }
+  .timeline-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 100%;
+  }
+  .timeline-marker {
+    position: absolute;
+    top: -10px;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    border: 4px solid var(--paper);
+    border-radius: 50%;
+  }
+  .timeline-label {
+    position: absolute;
+    top: 28px;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 110px;
+  }
+  .timeline-label-week {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .timeline-label-text {
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  /* CTA */
+  .cta {
+    background: var(--accent);
+    color: white;
+    padding: 44px 40px;
+    border-radius: 6px;
+    margin-top: 56px;
+    text-align: center;
+  }
+  .cta h2 {
+    color: white;
+    margin-bottom: 14px;
+    font-size: clamp(26px, 3.2vw, 34px);
+  }
+  .cta p { color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 22px; font-size: 16px; }
+  .cta a {
+    display: inline-block;
+    background: white;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px 26px;
+    border-radius: 3px;
+    margin: 6px;
+    font-size: 15px;
+    transition: transform 0.15s;
+  }
+  .cta a:hover { transform: translateY(-1px); }
+  .cta a.secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.7;
+  }
+  .doc-footer .peregrine {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="/" class="nav-brand">Peregrine Consultants</a>
+  <div class="nav-links">
+    <a href="/pulse">Platform</a>
+    <a href="/process" class="active">Process</a>
+    <a href="mailto:ivan@ivanadiaz.com">Contact</a>
+  </div>
+</nav>
+
+<div style="padding:12px 24px;background:#f1e5e0;border-bottom:1px solid #d4cab2;text-align:center;font:600 13px/1.5 Inter,sans-serif;color:#6b3326;">Concept archive · This fixed database-delivery method is under evidence-led redesign and is not the current Peregrine offer.</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-eyebrow">The Peregrine Method · From discovery to compounding</div>
+    <h1 class="hero-title">How we work.</h1>
+    <p class="hero-deck">Five stages, calibrated to the depth of your operation. A working database deployed by the end. The same method, tuned to every business — because the questions are universal even when the answers aren't.</p>
+  </header>
+
+  <!-- Five-stage flow -->
+  <section style="margin-top: 32px;">
+    <div class="section-eyebrow">The five stages, at a glance</div>
+    <h2>The arc, condensed.</h2>
+
+    <div class="flow">
+      <div class="flow-stage">
+        <div class="flow-num">01</div>
+        <div class="flow-name">Discover</div>
+        <div class="flow-desc">Map the operation, name the pain, meet the people.</div>
+      </div>
+      <div class="flow-stage">
+        <div class="flow-num">02</div>
+        <div class="flow-name">Diagnose</div>
+        <div class="flow-desc">Score every workstream. Surface what's at risk and what's underpriced.</div>
+      </div>
+      <div class="flow-stage">
+        <div class="flow-num">03</div>
+        <div class="flow-name">Design</div>
+        <div class="flow-desc">Build the frameworks. Tools, playbooks, talking points, training.</div>
+      </div>
+      <div class="flow-stage">
+        <div class="flow-num">04</div>
+        <div class="flow-name">Deliver</div>
+        <div class="flow-desc">Implement the top fixes. Train the team. Ship the systems.</div>
+      </div>
+      <div class="flow-stage">
+        <div class="flow-num">05</div>
+        <div class="flow-name">Compound</div>
+        <div class="flow-desc">Optional ongoing partnership. Quarterly reviews. Pulse if it's earned.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Big quote -->
+  <div class="big-quote">"Your team starting this from scratch would spend most of a year building the framework before getting to the work. We arrive with the framework already designed — that's where the speed comes from."</div>
+
+  <!-- Detailed stage breakdowns -->
+  <section>
+    <div class="section-eyebrow">Each stage, in detail</div>
+    <h2>What actually happens, stage by stage.</h2>
+
+    <div class="stages">
+
+      <div class="stage">
+        <div class="stage-num">01</div>
+        <div class="stage-content">
+          <h3>Discover</h3>
+          <div class="stage-meta">Stage 01 · Operational learning</div>
+          <p>We meet the people. We walk the operation. We read the systems and the contracts. We don't show up with a template — we show up with questions, and the questions are good ones because we've done this before in adjacent industries. By the close of this stage, we know your business well enough to be useful.</p>
+          <div class="stage-deliverables">
+            <div class="stage-deliv-label">What you get</div>
+            <ul class="stage-deliv-list">
+              <li>Stakeholder interviews completed across leadership and key roles</li>
+              <li>Inventory of systems, data sources, and current tooling</li>
+              <li>Initial map of the four pain areas (compliance, pricing, portfolio, operations)</li>
+              <li>Confidentiality and engagement protections in place</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">02</div>
+        <div class="stage-content">
+          <h3>Diagnose</h3>
+          <div class="stage-meta">Stage 02 · Score and rank</div>
+          <p>We score every client in your book. We score every category of compliance exposure. We dollarize the renegotiation candidates. We surface the onboarding failure modes. The diagnostic produces actual numbers — not adjectives. By the close of this stage, you know exactly where the leverage is.</p>
+          <div class="stage-deliverables">
+            <div class="stage-deliv-label">What you get</div>
+            <ul class="stage-deliv-list">
+              <li>Compliance Risk Inventory across 20 categories, scored Green/Yellow/Red</li>
+              <li>Client Portfolio Audit with every active client scored on profitability and risk</li>
+              <li>Five-plus renegotiation candidates identified and dollar-quantified</li>
+              <li>Top 3 onboarding failure modes identified with root-cause analysis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">03</div>
+        <div class="stage-content">
+          <h3>Design</h3>
+          <div class="stage-meta">Stage 03 · Build the frameworks + the database schema</div>
+          <p>Now we design the fixes — and the database that holds them. Pricing tier structure. Renegotiation talking points. Onboarding playbook with owner matrix. Compliance remediation plan. Database schema architected against your existing stack and the data your team actually needs to act on. Each is a working document or working system your team can use — not a deck nobody opens twice.</p>
+          <div class="stage-deliverables">
+            <div class="stage-deliv-label">What you get</div>
+            <ul class="stage-deliv-list">
+              <li>Pricing & Service-Tier Framework with à la carte schedule for premium add-ons</li>
+              <li>Renegotiation Roadmap with talking points per client cohort</li>
+              <li>Onboarding Playbook with SOPs, checklists, and 30/60/90-day verification cadence</li>
+              <li>Tier 1 / Tier 2 compliance remediation plan</li>
+              <li>Database schema designed against your existing stack, ready to deploy in Stage 04</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">04</div>
+        <div class="stage-content">
+          <h3>Deliver</h3>
+          <div class="stage-meta">Stage 04 · Deploy the database, implement, and train</div>
+          <p>We don't hand you a binder. We deploy the database, populated with your client roster and tuned to your team's daily workflow. We implement the top two failure modes from the onboarding diagnostic. We train operations staff on the new playbook and the new system. We support the first two renegotiation conversations directly, with the database surfacing the candidates and the math live in the room. The engagement closes with the system running, not pending.</p>
+          <div class="stage-deliverables">
+            <div class="stage-deliv-label">What you get</div>
+            <ul class="stage-deliv-list">
+              <li><strong>Database deployed to production</strong>, populated with your roster, tuned to your stack</li>
+              <li>Top 2 of 3 onboarding failure modes implemented and live</li>
+              <li>Operations staff trained and signed off on new workflow and new system</li>
+              <li>Direct support for the first 1–2 renegotiation conversations</li>
+              <li>Final handoff binder with all artifacts, training materials, and next-step recommendations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">05</div>
+        <div class="stage-content">
+          <h3>Compound</h3>
+          <div class="stage-meta">Stage 05 · Optional ongoing partnership</div>
+          <p>The diagnostic ends. The work continues. A 30-day adoption check-in is included in every engagement. From there, two paths: ongoing fractional partnership (quarterly intelligence and execution support), or the Pulse platform build (turning the diagnostic into a live operating system). Both are decided after the engagement has delivered, not before.</p>
+          <div class="stage-deliverables">
+            <div class="stage-deliv-label">What's possible from here</div>
+            <ul class="stage-deliv-list">
+              <li>30-day adoption check-in (included in original fee)</li>
+              <li>Tactical remediation sprints for additional fixes ($10K–$25K each)</li>
+              <li>Pulse intelligence platform build for ongoing visibility</li>
+              <li>Fractional retainer for embedded ongoing partnership</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3-way comparison: in-house / traditional consultant / Peregrine -->
+  <section>
+    <div class="section-eyebrow">Why the speed matters</div>
+    <h2>You're choosing between three timelines.</h2>
+    <p class="lede">Owners have already considered hiring someone. The real question is: how long before you start seeing value?</p>
+
+    <div class="compare">
+
+      <div class="compare-col">
+        <div class="compare-head">
+          <div class="compare-name">Build it in-house</div>
+          <div class="compare-tag">The slow path</div>
+          <div class="compare-time">12 – 18 months</div>
+        </div>
+        <div class="compare-body">
+          <div class="compare-row"><span class="compare-row-label">Hiring</span><span class="compare-row-value">3 – 6 months</span></div>
+          <div class="compare-row"><span class="compare-row-label">Onboarding ramp</span><span class="compare-row-value">3 – 4 months</span></div>
+          <div class="compare-row"><span class="compare-row-label">Trial-and-error frameworks</span><span class="compare-row-value">6 – 8 months</span></div>
+          <div class="compare-row"><span class="compare-row-label">Leadership distraction</span><span class="compare-row-value">High, ongoing</span></div>
+          <div class="compare-row"><span class="compare-row-label">Implementation rigor</span><span class="compare-row-value">Variable</span></div>
+          <div class="compare-row"><span class="compare-row-label">Total cost (loaded)</span><span class="compare-row-value">$150K+ year one</span></div>
+        </div>
+      </div>
+
+      <div class="compare-col">
+        <div class="compare-head">
+          <div class="compare-name">Hire a traditional firm</div>
+          <div class="compare-tag">The expensive path</div>
+          <div class="compare-time">3 – 6 months</div>
+        </div>
+        <div class="compare-body">
+          <div class="compare-row"><span class="compare-row-label">Procurement</span><span class="compare-row-value">4 – 8 weeks</span></div>
+          <div class="compare-row"><span class="compare-row-label">Discovery phase</span><span class="compare-row-value">4 – 6 weeks</span></div>
+          <div class="compare-row"><span class="compare-row-label">Engagement length</span><span class="compare-row-value">3 – 4 months</span></div>
+          <div class="compare-row"><span class="compare-row-label">Final deliverable</span><span class="compare-row-value">A report; you implement</span></div>
+          <div class="compare-row"><span class="compare-row-label">Implementation</span><span class="compare-row-value">On you</span></div>
+          <div class="compare-row"><span class="compare-row-label">Total cost</span><span class="compare-row-value">$100K – $250K</span></div>
+        </div>
+      </div>
+
+      <div class="compare-col peregrine">
+        <div class="compare-head">
+          <div class="compare-name">Engage Peregrine</div>
+          <div class="compare-tag">Immediate · Implementation included</div>
+          <div class="compare-time">Stage-calibrated</div>
+        </div>
+        <div class="compare-body">
+          <div class="compare-row"><span class="compare-row-label">Procurement</span><span class="compare-row-value">Days, not weeks</span></div>
+          <div class="compare-row"><span class="compare-row-label">Discovery</span><span class="compare-row-value">Stage 01 (calibrated)</span></div>
+          <div class="compare-row"><span class="compare-row-label">Engagement length</span><span class="compare-row-value">Five stages, depth-tuned</span></div>
+          <div class="compare-row"><span class="compare-row-label">Final deliverable</span><span class="compare-row-value">Working tools, top fixes implemented</span></div>
+          <div class="compare-row"><span class="compare-row-label">Implementation</span><span class="compare-row-value">Included in Stage 04</span></div>
+          <div class="compare-row"><span class="compare-row-label">Total cost</span><span class="compare-row-value">Fixed-fee, milestone-based</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Visual timeline -->
+  <section>
+    <div class="section-eyebrow">The five-stage arc</div>
+    <h2>From kickoff to a running database, visualized.</h2>
+
+    <div class="timeline-viz">
+      <div class="timeline-track">
+        <div class="timeline-fill"></div>
+        <div class="timeline-marker" style="left: 0%;"></div>
+        <div class="timeline-marker" style="left: 25%;"></div>
+        <div class="timeline-marker" style="left: 50%;"></div>
+        <div class="timeline-marker" style="left: 75%;"></div>
+        <div class="timeline-marker" style="left: 100%;"></div>
+
+        <div class="timeline-label" style="left: 0%;">
+          <div class="timeline-label-week">Stage 01</div>
+          <div class="timeline-label-text">Discover · Map and meet</div>
+        </div>
+        <div class="timeline-label" style="left: 25%;">
+          <div class="timeline-label-week">Stage 02</div>
+          <div class="timeline-label-text">Diagnose · Score and rank</div>
+        </div>
+        <div class="timeline-label" style="left: 50%;">
+          <div class="timeline-label-week">Stage 03</div>
+          <div class="timeline-label-text">Design · Frameworks + database schema</div>
+        </div>
+        <div class="timeline-label" style="left: 75%;">
+          <div class="timeline-label-week">Stage 04</div>
+          <div class="timeline-label-text">Deliver · Database live, fixes shipped</div>
+        </div>
+        <div class="timeline-label" style="left: 100%;">
+          <div class="timeline-label-week">Stage 05</div>
+          <div class="timeline-label-text">Compound · Optional ongoing</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 16px; font-size: 14px; color: var(--ink-soft); font-style: italic; text-align: center;">Stage depth calibrated to operation depth. Either side may stop at any milestone — fees paid through the most recent stage, no further obligation.</p>
+    </div>
+  </section>
+
+  <!-- The "why we move fast" angle -->
+  <section>
+    <div class="section-eyebrow">Why we can move quickly</div>
+    <h2>Because the method is the whole job.</h2>
+    <p>Hourly-billing consulting firms have an incentive to extend engagements. Their methods stay deliberately generic so they apply to everything.</p>
+    <p>In-house teams are figuring it out for the first time. Every framework gets built from scratch. Every lesson is learned the hard way.</p>
+    <p><strong>Peregrine works differently.</strong> The Five Stages aren't a marketing diagram — they're the actual method we run. The frameworks are pre-built. The questions are pre-validated. The database architecture is pre-designed and modularly customized. What we tune is the answers — because the answers are unique to your business.</p>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Ready to start?</h2>
+    <p>Days from verbal yes to kickoff. Stages calibrated to your operation. The database deployed by stage 4. Real outcomes in the operation, not a binder on a shelf.</p>
+    <a href="/">About Peregrine</a>
+    <a href="/pulse" class="secondary">See the database we build</a>
+  </div>
+
+  <div class="doc-footer">
+    <span class="peregrine">Peregrine Consultants</span><br>
+    The method is the product.<br>
+    <span style="font-style: italic; opacity: 0.8;">Confidential. Prepared for prospective and active engagements.</span>
+  </div>
+
+</div>
+
+</body>
+</html>

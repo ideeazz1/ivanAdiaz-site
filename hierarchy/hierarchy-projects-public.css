@@ -1,0 +1,91 @@
+/**
+ * Project catalog — brand overrides on top of legacy layout.
+ * Loaded after inline projects styles; ivan-ambient-surface resets body bg.
+ */
+
+.hierarchy-public.projects-page {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.hierarchy-public.projects-page .topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(248, 249, 250, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--line);
+}
+
+.hierarchy-public.projects-page .nav-brand {
+  font-family: var(--display);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.hierarchy-public.projects-page .nav-links a:hover,
+.hierarchy-public.projects-page .nav-links a[aria-current="page"] {
+  color: var(--accent);
+}
+
+.hierarchy-public.projects-page h1,
+.hierarchy-public.projects-page h2,
+.hierarchy-public.projects-page .card-h h3,
+.hierarchy-public.projects-page .nav-brand {
+  font-family: var(--display);
+}
+
+.hierarchy-public.projects-page .eyebrow,
+.hierarchy-public.projects-page .flow strong,
+.hierarchy-public.projects-page .seq strong,
+.hierarchy-public.projects-page .foot a {
+  color: var(--accent);
+}
+
+.hierarchy-public.projects-page .stat.solid b,
+.hierarchy-public.projects-page .pill.active,
+.hierarchy-public.projects-page .pill.exists,
+.hierarchy-public.projects-page .tree .ok {
+  color: #3d6b54;
+}
+
+.hierarchy-public.projects-page .card,
+.hierarchy-public.projects-page .stat,
+.hierarchy-public.projects-page .flow,
+.hierarchy-public.projects-page .tree,
+.hierarchy-public.projects-page .seq article {
+  background: var(--surface);
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 6px 20px rgba(70, 76, 68, 0.07);
+  backdrop-filter: blur(10px);
+}
+
+.hierarchy-public.projects-page .launch-btn,
+.hierarchy-public.projects-page .tree,
+.hierarchy-public.projects-page .stat.missing,
+.hierarchy-public.projects-page .bar .m {
+  display: none !important;
+}
+
+.hierarchy-public.projects-page .stats {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.hierarchy-public.projects-page .foot a[href*="/private/"],
+.hierarchy-public.projects-page .lede a[href*="/private/"] {
+  display: none;
+}
+
+.hierarchy-public.projects-page .id {
+  font-family: var(--mono);
+}
+
+.hierarchy-public.projects-page .row-body .row-link {
+  color: var(--accent);
+}
+
+.hierarchy-public.projects-page .hierarchy-tabs {
+  margin-top: 0;
+}

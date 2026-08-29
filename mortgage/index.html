@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer src="/config/plausible.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortgage Lending | Ivan Diaz, NMLS #501968</title>
+<meta name="description" content="Apply, client tools, Homebot, reviews, and mortgage resources from Ivan Diaz, NMLS #501968.">
+<link rel="canonical" href="https://ivanadiaz.com/mortgage/">
+<meta property="og:title" content="Mortgage Lending | Ivan Diaz">
+<meta property="og:description" content="Mortgage strategist with an operator’s mindset. Loan officer by trade. Operator by design.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ivanadiaz.com/mortgage/">
+<meta property="og:image" content="https://ivanadiaz.com/preview-card.png">
+<meta property="og:image:width" content="630">
+<meta property="og:image:height" content="364">
+<meta property="og:image:alt" content="Ivan Diaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mortgage Lending | Ivan Diaz">
+<meta name="twitter:description" content="Mortgage strategist with an operator’s mindset. Loan officer by trade. Operator by design.">
+<meta name="twitter:image" content="https://ivanadiaz.com/preview-card.png">
+<meta name="theme-color" content="#343A40">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/preview-card.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/config/site-top-bar-mobile.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #343A40;
+    --soft: #6e6e73;
+    --display: Outfit, Inter, system-ui, sans-serif;
+    --card: rgba(255, 255, 255, 0.88);
+    --line: rgba(52, 58, 64, 0.12);
+    --site-content-width: min(960px, calc(100% - 32px));
+  }
+  html { height: 100%; }
+  body {
+    font-family: var(--display);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+    color: #343A40;
+    background-color: #F4F2EA;
+    background-image:
+      radial-gradient(ellipse 105% 72% at 18% 4%, rgba(255, 255, 255, 0.78) 0%, transparent 58%),
+      radial-gradient(ellipse 92% 66% at 84% 16%, rgba(229, 226, 215, 0.55) 0%, transparent 54%),
+      linear-gradient(165deg, #F8F7F2 0%, #F2F0E8 46%, #F6F5F0 100%);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 20% 28%, rgba(218, 214, 201, 0.24) 0%, transparent 44%),
+      radial-gradient(circle at 78% 22%, rgba(245, 241, 229, 0.30) 0%, transparent 40%),
+      radial-gradient(circle at 55% 80%, rgba(224, 220, 207, 0.20) 0%, transparent 42%);
+    filter: blur(48px);
+    animation: ambientDrift 42s ease-in-out infinite alternate;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @media (min-width: 721px) {
+    html, body { height: 100%; overflow: hidden; }
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 8px;
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-self: stretch;
+    padding: 2px 24px 0;
+  }
+  .top-bar__pill {
+    pointer-events: auto;
+    width: 100%;
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 22px 16px 24px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid rgba(52, 58, 64, 0.14);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    --blob-x: 50%;
+    --blob-y: 50%;
+    transition: width 0.28s ease, max-width 0.28s ease, padding 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, --blob-x 0.3s ease-out, --blob-y 0.3s ease-out;
+  }
+  .top-bar__pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-image:
+      linear-gradient(165deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 55%, rgba(240, 245, 255, 0.08) 100%),
+      radial-gradient(circle at var(--blob-x, 50%) var(--blob-y, 50%), rgba(255, 255, 255, 0.85) 0%, rgba(170, 200, 255, 0.55) 14%, rgba(0, 102, 180, 0.32) 30%, rgba(0, 66, 136, 0.12) 48%, transparent 62%),
+      radial-gradient(circle at 78% 22%, rgba(11, 195, 65, 0.2) 0%, transparent 52%),
+      radial-gradient(circle at 18% 78%, rgba(100, 160, 255, 0.38) 0%, transparent 55%),
+      radial-gradient(circle at 52% 58%, rgba(0, 66, 136, 0.22) 0%, transparent 58%);
+    background-size: 100% 100%, 100% 100%, 175% 175%, 165% 165%, 190% 190%;
+    background-position: center, center, 0% 0%, 100% 100%, 50% 50%;
+    background-repeat: no-repeat;
+  }
+  .top-bar__pill:hover::before {
+    opacity: 1;
+    animation: meshDrift 8s ease-in-out infinite;
+  }
+  .top-bar__brand,
+  .top-bar__menu-toggle,
+  .top-bar__links { position: relative; z-index: 1; }
+  .top-bar__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-size: 26px;
+    line-height: 1.15;
+    min-width: 0;
+  }
+  .top-bar__brand span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .top-bar__mark {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+  .top-bar__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-end;
+  }
+  .top-bar__links a {
+    display: block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--soft);
+    text-decoration: none;
+  }
+  .top-bar__links a[aria-current="page"] {
+    color: var(--ink);
+    font-weight: 800;
+    background: transparent;
+  }
+  .top-bar__links a:hover { color: var(--ink); }
+  .top-bar.is-compact {
+    width: var(--site-content-width);
+    max-width: none;
+    margin-inline: auto;
+    padding-inline: 0;
+    align-self: center;
+  }
+  .top-bar.is-compact .top-bar__pill {
+    width: 100%;
+    max-width: none;
+    padding: 8px 16px 8px 18px;
+    background: #F8F9FA;
+    border-color: rgba(52, 58, 64, 0.14);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  .top-bar.is-compact .top-bar__brand { font-size: 20px; gap: 0.5rem; }
+  .top-bar.is-compact .top-bar__mark { width: 32px; height: 32px; }
+  .top-bar.is-compact .top-bar__links a {
+    padding: 6px 12px;
+    font-size: 0.95rem;
+  }
+
+  .page {
+    position: relative;
+    z-index: 2;
+    width: min(960px, calc(100% - 32px));
+    margin: 12px auto 10px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .intro { text-align: center; margin-bottom: 12px; flex: 0 0 auto; }
+  .intro h1 { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; }
+  .intro p { font-size: 16px; font-weight: 500; opacity: 0.62; margin-top: 4px; }
+  .nmls { font-size: 12px; opacity: 0.4; letter-spacing: 0.04em; margin-top: 6px; }
+
+  .carousel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .carousel__rail {
+    flex: 0 0 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 228px;
+  }
+  .carousel__more {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    opacity: 0.35;
+  }
+  .carousel__more--up { border-bottom: 6px solid var(--ink); cursor: pointer; }
+  .carousel__more--down { border-top: 6px solid var(--ink); cursor: pointer; }
+  .carousel__more.is-hidden { visibility: hidden; }
+  .carousel__marks {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .carousel__mark {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(52, 58, 64, 0.22);
+    cursor: pointer;
+  }
+  .carousel__mark[aria-current="true"] {
+    height: 22px;
+    background: #343A40;
+  }
+  .carousel__stage {
+    flex: 1;
+    min-width: 0;
+    height: 244px;
+    overflow: hidden;
+  }
+  .carousel__track {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @property --blob-x { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+  @property --blob-y { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+
+  .split-card {
+    display: flex;
+    height: 228px;
+    min-height: 228px;
+    text-decoration: none;
+    color: inherit;
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 32px;
+    box-shadow: 0 8px 28px rgba(70, 76, 68, 0.07), 0 1px 3px rgba(52, 58, 64, 0.05);
+    overflow: hidden;
+    isolation: isolate;
+    position: relative;
+    --blob-x: 50%;
+    --blob-y: 50%;
+    transition: box-shadow 0.22s ease, --blob-x 0.3s ease-out, --blob-y 0.3s ease-out;
+  }
+  .split-card:focus { outline: none; }
+  .split-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-image:
+      linear-gradient(165deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 55%, rgba(240, 245, 255, 0.08) 100%),
+      radial-gradient(circle at var(--blob-x, 50%) var(--blob-y, 50%), rgba(255, 255, 255, 0.85) 0%, rgba(170, 200, 255, 0.55) 14%, rgba(0, 102, 180, 0.32) 30%, rgba(0, 66, 136, 0.12) 48%, transparent 62%),
+      radial-gradient(circle at 78% 22%, rgba(11, 195, 65, 0.2) 0%, transparent 52%),
+      radial-gradient(circle at 18% 78%, rgba(100, 160, 255, 0.38) 0%, transparent 55%),
+      radial-gradient(circle at 52% 58%, rgba(0, 66, 136, 0.22) 0%, transparent 58%);
+    background-size: 100% 100%, 100% 100%, 175% 175%, 165% 165%, 190% 190%;
+    background-position: center, center, 0% 0%, 100% 100%, 50% 50%;
+    background-repeat: no-repeat;
+  }
+  .split-card:hover { box-shadow: 0 16px 36px rgba(70, 76, 68, 0.12); }
+  .split-card:hover::before {
+    opacity: 1;
+    animation: meshDrift 8s ease-in-out infinite;
+  }
+  @keyframes meshDrift {
+    0%, 100% { background-position: center, center, 0% 20%, 100% 80%, 48% 52%; }
+    50%       { background-position: center, center, 100% 60%, 0% 40%, 58% 42%; }
+  }
+  .split-card.is-swap { flex-direction: row-reverse; }
+  .split-card__details,
+  .split-card__media { flex: 1 1 50%; min-width: 0; }
+  .split-card__details {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px 36px;
+    gap: 8px;
+  }
+  .brand { font-size: 15px; font-weight: 600; opacity: 0.72; }
+  .site { font-size: 13px; font-weight: 500; opacity: 0.48; }
+  .kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; opacity: 0.42;
+  }
+  .split-card h2 {
+    font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15;
+  }
+  .cta-pill {
+    align-self: flex-start;
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .cta-pill::after {
+    content: "";
+    width: 6px; height: 6px;
+    border-top: 1.5px solid #adb5bd;
+    border-right: 1.5px solid #adb5bd;
+    transform: rotate(45deg);
+  }
+  .split-card__media {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--line);
+    height: 228px;
+    overflow: hidden;
+    background: #f4f6f8;
+  }
+  .split-card__media > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .split-card:has(.is-inset) .split-card__details { flex: 1.2 1 56%; }
+  .split-card:has(.is-inset) .split-card__media { flex: 0.8 1 44%; }
+  .split-card:has(.is-inset) h2 { font-size: 24px; }
+  .split-card__media.is-inset > img {
+    width: calc(100% - 56px);
+    height: calc(100% - 72px);
+    object-fit: contain;
+  }
+  .split-card.is-swap .split-card__media { border-left: 0; border-right: 1px solid var(--line); }
+
+  footer {
+    margin-top: 10px;
+    text-align: center;
+    flex: 0 0 auto;
+    font-size: 11px;
+    color: var(--ink);
+    opacity: 0.38;
+    letter-spacing: 0.05em;
+  }
+  footer a { color: inherit; text-decoration: none; }
+
+  @keyframes ambientDrift {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(2.5%, -1.5%) scale(1.04); }
+  }
+
+  @media (max-width: 720px) {
+    body { padding-bottom: 24px; }
+    .top-bar { padding: 2px 12px 0; top: 4px; }
+    .top-bar__pill { padding: 12px 14px 12px 16px; gap: 10px; border-radius: 20px; }
+    .top-bar__brand { font-size: 22px; }
+    .top-bar__mark { width: 36px; height: 36px; }
+    .top-bar__links { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 2px; margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(52, 58, 64, 0.1); }
+    .top-bar.is-menu-open .top-bar__links { display: flex; }
+    .top-bar__links li { width: 100%; }
+    .top-bar__links a { width: 100%; padding: 12px 14px; font-size: 1rem; text-align: left; border-radius: 12px; }
+    .page {
+      width: min(960px, calc(100% - 24px));
+      margin: 12px auto 0;
+      min-height: auto;
+    }
+    .carousel { display: block; }
+    .carousel__rail { display: none; }
+    .carousel__stage { height: auto; overflow: visible; }
+    .carousel__track {
+      transform: none !important;
+      gap: 20px;
+      padding-bottom: 8px;
+    }
+    .split-card,
+    .split-card.is-swap {
+      flex-direction: column;
+      height: auto;
+      min-height: 0;
+    }
+    .split-card__details {
+      order: 1;
+      padding: 24px 22px;
+    }
+    .split-card__media,
+    .split-card.is-swap .split-card__media {
+      order: 2;
+      width: 100%;
+      height: auto;
+      min-height: 180px;
+      max-height: 220px;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+    .split-card.is-swap .split-card__media {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+      border-right: 0;
+    }
+    .split-card h2 { font-size: 22px; }
+    footer {
+      margin-top: 28px;
+      padding: 0 8px 12px;
+      position: relative;
+      z-index: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::before { animation: none; }
+    .top-bar__pill:hover::before,
+    .split-card:hover::before { animation: none; }
+    .carousel__track { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar" aria-label="Site header">
+  <nav class="top-bar__pill">
+    <a class="top-bar__brand" href="/">
+      <img class="top-bar__mark" src="/id-logo.png" width="44" height="44" alt="">
+      <span>Ivan A Diaz</span>
+    </a>
+    <button class="top-bar__menu-toggle" type="button" aria-expanded="false" aria-controls="top-bar-nav" aria-label="Open menu">
+      <span class="top-bar__menu-icon" aria-hidden="true"></span>
+    </button>
+    <ul class="top-bar__links" id="top-bar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="#apply" aria-current="page">Apply w/ Me</a></li>
+      <li><a href="/experience/">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="page">
+  <header class="intro">
+    <h1>Mortgage Lending</h1>
+    <p>Apply, client tools, and reviews</p>
+    <p class="nmls">NMLS #501968</p>
+  </header>
+
+  <div class="carousel" id="carousel">
+    <div class="carousel__rail" aria-label="More cards">
+      <span class="carousel__more carousel__more--up is-hidden" id="more-up"></span>
+      <div class="carousel__marks" id="marks"></div>
+      <span class="carousel__more carousel__more--down" id="more-down"></span>
+    </div>
+    <div class="carousel__stage">
+      <div class="carousel__track" id="track">
+        <a id="apply" class="split-card" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">Work with Me</p>
+            <h2>Apply with Me</h2>
+            <p class="brand">Assurance Financial</p>
+            <p class="site">assurancemortgage.com</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media">
+            <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fassurancemortgage.com%2Fassurance_officers%2Fivan-diaz%2F?w=920" alt="Apply with Ivan">
+          </div>
+        </a>
+
+        <a class="split-card is-swap" href="https://idp.elliemae.com/authorize?client_id=srtrz0d2&site_id=9548862087&response_type=code&redirect_uri=https%3A%2F%2Fassurance.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3Flar%3Didiaz%26workFlowId%3D67079%26_gl%3D1*dl3shk*_ga*MTAxMDgxMjc1OC4xNzI5MTA1NjI3*_ga_1PDFYSY743*MTcyOTg3OTM2Mi42LjEuMTcyOTg3OTk5Ni40MC4wLjA.%26dest%3D%2Floan-app%2F%26siteId%3D9548862087&scope=ccbp%20cc&instance_id=be11130424&logo_url=https%3A%2F%2Fstore.asset.ellieservices.com%2F6a134995-5f29-4900-9172-ccf8d134940f&logo_alt_text=Logo&logo_is_disabled&bust=393&apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">Work with Me</p>
+            <h2>Log In / Sign Documents</h2>
+            <p class="brand">Consumer Connect</p>
+            <p class="site">assurance.mymortgage-online.com</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media is-inset">
+            <img src="/mortgage/consumer-connect.png" alt="Consumer Connect login">
+          </div>
+        </a>
+
+        <a class="split-card" href="https://get.homebot.ai/?id=ab559b7a-6390-4c59-8aaf-b723359eb766" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">Homebot</p>
+            <h2>What Is Your Home Worth?</h2>
+            <p class="brand">Homebot</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media">
+            <img src="/mortgage/homebot-worth.png" alt="Homebot home value tracker">
+          </div>
+        </a>
+
+        <a class="split-card is-swap" href="https://c.homebotapp.com/home-search/lead/ab559b7a-6390-4c59-8aaf-b723359eb766" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">Homebot</p>
+            <h2>Search for Your New Home</h2>
+            <p class="brand">Homebot</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media">
+            <img src="/mortgage/homebot-search.png" alt="Homebot home search">
+          </div>
+        </a>
+
+        <a class="split-card" href="https://homebot.page.link/?apn=com.homebot.app.android&isi=6448762620&ibi=com.homebot.app.ios&link=https%3A%2F%2Fhomebotapp.com%2F%3Fshare_code%3Divan5894" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">Homebot</p>
+            <h2>Download the Homebot App</h2>
+            <p class="brand">Homebot</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media">
+            <img src="/mortgage/homebot-app.webp" alt="Homebot mobile app">
+          </div>
+        </a>
+
+        <a class="split-card is-swap" href="https://www.experience.com/reviews/ivan-diaz-394918" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">About Me</p>
+            <h2>Experience.com Reviews</h2>
+            <p class="brand">Experience.com</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media">
+            <img src="/mortgage/experience-reviews.png" alt="Experience.com reviews">
+          </div>
+        </a>
+
+        <a class="split-card" href="https://assurancemortgage.com/contact-us/assurance-financial-austin/" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">About Me</p>
+            <h2>Austin Office</h2>
+            <p class="brand">Assurance Financial</p>
+            <p class="site">assurancemortgage.com</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media is-inset">
+            <img src="/mortgage/austin-office.png" alt="Assurance Financial Austin office">
+          </div>
+        </a>
+
+        <a class="split-card is-swap" href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/501968" target="_blank" rel="noopener noreferrer">
+          <div class="split-card__details">
+            <p class="kicker">About Me</p>
+            <h2>Verify My License</h2>
+            <p class="brand">NMLS Consumer Access</p>
+            <p class="site">nmlsconsumeraccess.org</p>
+            <span class="cta-pill">Open</span>
+          </div>
+          <div class="split-card__media is-inset">
+            <img src="/mortgage/nmls-verify.svg" alt="NMLS Consumer Access">
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer id="contact"><a href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/501968" target="_blank" rel="noopener noreferrer">NMLS #501968</a> &nbsp;·&nbsp; ivanadiaz.com/mortgage &nbsp;·&nbsp; Equal Housing Lender</footer>
+</div>
+<script>
+  document.querySelectorAll('.split-card, .top-bar__pill').forEach(function (el) {
+    el.addEventListener('mousemove', function (e) {
+      var rect = el.getBoundingClientRect();
+      el.style.setProperty('--blob-x', ((e.clientX - rect.left) / rect.width) * 100 + '%');
+      el.style.setProperty('--blob-y', ((e.clientY - rect.top) / rect.height) * 100 + '%');
+    });
+    el.addEventListener('mouseleave', function () {
+      el.style.setProperty('--blob-x', '50%');
+      el.style.setProperty('--blob-y', '50%');
+    });
+  });
+
+  (function () {
+    var STEP = 244;
+    var track = document.getElementById('track');
+    var marksEl = document.getElementById('marks');
+    var moreUp = document.getElementById('more-up');
+    var moreDown = document.getElementById('more-down');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.carousel__track .split-card'));
+    if (!track || !marksEl || !cards.length) return;
+
+    var index = 0;
+    var locked = false;
+    var marks = cards.map(function (_, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'carousel__mark';
+      btn.setAttribute('aria-label', 'Card ' + (i + 1));
+      btn.addEventListener('click', function () { go(i); });
+      marksEl.appendChild(btn);
+      return btn;
+    });
+
+    function go(next) {
+      var last = cards.length - 1;
+      index = Math.max(0, Math.min(last, next));
+      track.style.transform = 'translateY(' + (-index * STEP) + 'px)';
+      document.documentElement.classList.toggle('header-compact', index > 0);
+      var bar = document.querySelector('.top-bar');
+      if (bar) bar.classList.toggle('is-compact', index > 0 || window.scrollY > 40);
+      marks.forEach(function (btn, i) {
+        if (i === index) btn.setAttribute('aria-current', 'true');
+        else btn.removeAttribute('aria-current');
+      });
+      moreUp.classList.toggle('is-hidden', index === 0);
+      moreDown.classList.toggle('is-hidden', index === last);
+    }
+
+    function step(dir) {
+      if (locked) return;
+      var next = index + dir;
+      if (next < 0 || next >= cards.length) return;
+      locked = true;
+      go(next);
+      window.setTimeout(function () { locked = false; }, 420);
+    }
+
+    window.addEventListener('wheel', function (e) {
+      if (window.matchMedia('(max-width: 720px)').matches) return;
+      e.preventDefault();
+      if (Math.abs(e.deltaY) < 8) return;
+      step(e.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); step(1); }
+      if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
+    });
+
+    moreUp.addEventListener('click', function () { step(-1); });
+    moreDown.addEventListener('click', function () { step(1); });
+
+    go(0);
+  }());
+</script>
+<script src="/config/site-top-bar.js" defer></script>
+</body>
+</html>

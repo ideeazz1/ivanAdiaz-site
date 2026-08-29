@@ -1,0 +1,193 @@
+/**
+ * Public hierarchy hub — nav, tabs, typography, glass cards.
+ * Uses config/ivan-ambient-surface.css for background + fonts.
+ */
+
+/* Desktop-only hierarchy background tuning.
+ * Mobile keeps the shared ambient surface unchanged; desktop gets a more
+ * anchored sage/stone balance so the color reads consistently on wide screens.
+ */
+@media (min-width: 900px) {
+  body.hierarchy-public.ivan-surface {
+    background-color: #f7f8f5;
+    background-image:
+      radial-gradient(ellipse 62% 86% at 10% 10%, rgba(72, 120, 95, 0.18) 0%, rgba(72, 120, 95, 0.07) 42%, transparent 70%),
+      radial-gradient(ellipse 50% 62% at 33% 18%, rgba(196, 178, 152, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 56% 70% at 88% 14%, rgba(120, 140, 220, 0.09) 0%, transparent 62%),
+      radial-gradient(ellipse 68% 82% at 20% 82%, rgba(88, 145, 118, 0.10) 0%, transparent 66%),
+      radial-gradient(ellipse 55% 66% at 78% 82%, rgba(160, 180, 255, 0.07) 0%, transparent 64%),
+      linear-gradient(165deg, #fafbf8 0%, #eef2ed 42%, #f7f8f5 72%, #e4e9e3 100%);
+    background-attachment: fixed;
+  }
+
+  body.hierarchy-public.ivan-surface::before {
+    background:
+      radial-gradient(circle at 18% 28%, rgba(72, 120, 95, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 36% 62%, rgba(196, 178, 152, 0.07) 0%, transparent 35%),
+      radial-gradient(circle at 80% 20%, rgba(130, 150, 230, 0.09) 0%, transparent 40%),
+      radial-gradient(circle at 58% 82%, rgba(88, 145, 118, 0.08) 0%, transparent 40%);
+  }
+}
+
+.hierarchy-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px clamp(16px, 4vw, 28px);
+  border-bottom: 1px solid var(--line);
+  background: rgba(248, 249, 250, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.hierarchy-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.hierarchy-brand__mark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.hierarchy-brand__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.03em;
+}
+
+.hierarchy-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  list-style: none;
+}
+
+.hierarchy-nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.hierarchy-nav-links a:hover,
+.hierarchy-nav-links a[aria-current="page"] {
+  color: var(--accent);
+}
+
+.hierarchy-wrap {
+  width: min(1140px, 100%);
+  margin: 0 auto;
+  padding: 32px clamp(16px, 4vw, 22px) 72px;
+}
+
+.hierarchy-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.hierarchy-wrap h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.85rem, 4.5vw, 2.65rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 10px;
+}
+
+.hierarchy-lede {
+  max-width: 52ch;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  margin-bottom: 8px;
+}
+
+.hierarchy-wrap h2 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 32px 0 14px;
+}
+
+.hierarchy-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hierarchy-tabs a {
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.hierarchy-tabs a:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.hierarchy-tabs a[aria-current="page"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: rgba(0, 66, 136, 0.18);
+}
+
+.glass-card {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(70, 76, 68, 0.07), 0 1px 3px rgba(52, 58, 64, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.hierarchy-foot {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.hierarchy-foot a { color: var(--accent); }
+
+/* Public proof mode — hide operator controls */
+.hierarchy-public .launch-btn,
+.hierarchy-public .card-h-actions .launch-btn,
+.hierarchy-public script[src*="project-launch"] { display: none !important; }
+
+.hierarchy-public .stats.missing-heavy .stat.missing { display: none; }
+.hierarchy-public .tree,
+.hierarchy-public .deps + .seq { /* keep */ }
+
+.hierarchy-proof-banner {
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+}
+
+.hierarchy-proof-banner a { color: var(--accent); font-weight: 500; }

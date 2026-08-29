@@ -1,0 +1,131 @@
+/**
+ * Mercury mesh / cursor blob buttons — shared with ivanadiaz.com home.
+ * Use .link-btn on <a> or <button>; .primary for highlighted CTA.
+ */
+@property --blob-x {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+@property --blob-y {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  text-decoration: none;
+  color: #343a40;
+  font-family: var(--display, Outfit, Inter, system-ui, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(70, 76, 68, 0.07), 0 1px 3px rgba(52, 58, 64, 0.05);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.3;
+  --blob-x: 50%;
+  --blob-y: 50%;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    background 180ms ease,
+    --blob-x 0.3s ease-out,
+    --blob-y 0.3s ease-out;
+}
+
+.link-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  background-image:
+    linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(255, 255, 255, 0.12) 55%,
+      rgba(240, 245, 255, 0.08) 100%
+    ),
+    radial-gradient(
+      circle at var(--blob-x, 50%) var(--blob-y, 50%),
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(170, 200, 255, 0.55) 14%,
+      rgba(0, 102, 180, 0.32) 30%,
+      rgba(0, 66, 136, 0.12) 48%,
+      transparent 62%
+    ),
+    radial-gradient(circle at 78% 22%, rgba(11, 195, 65, 0.2) 0%, transparent 52%),
+    radial-gradient(circle at 18% 78%, rgba(100, 160, 255, 0.38) 0%, transparent 55%),
+    radial-gradient(circle at 52% 58%, rgba(0, 66, 136, 0.22) 0%, transparent 58%);
+  background-size: 100% 100%, 100% 100%, 175% 175%, 165% 165%, 190% 190%;
+  background-position: center, center, 0% 0%, 100% 100%, 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.link-btn .btn-label {
+  position: relative;
+  z-index: 1;
+}
+
+.link-btn:hover {
+  transform: scale(1.015);
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(10px) saturate(1.3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -1px 0 rgba(0, 66, 136, 0.05),
+    inset 0 8px 24px rgba(180, 200, 255, 0.15),
+    0 0 0 1px rgba(160, 180, 255, 0.28),
+    0 10px 26px rgba(0, 42, 88, 0.08);
+}
+
+.link-btn:hover::before {
+  opacity: 1;
+  animation: linkBtnMeshDrift 8s ease-in-out infinite alternate;
+}
+
+.link-btn.primary {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.link-btn.primary:hover {
+  transform: scale(1.04);
+  backdrop-filter: blur(12px) saturate(1.35);
+  -webkit-backdrop-filter: blur(12px) saturate(1.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 rgba(0, 66, 136, 0.06),
+    inset 0 8px 24px rgba(180, 200, 255, 0.18),
+    0 0 0 1px rgba(160, 180, 255, 0.32),
+    0 10px 28px rgba(0, 42, 88, 0.1);
+}
+
+@keyframes linkBtnMeshDrift {
+  0%, 100% { background-position: center, center, 0% 20%, 100% 80%, 48% 52%; }
+  50% { background-position: center, center, 100% 60%, 0% 40%, 58% 42%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-btn:hover { transform: none; }
+  .link-btn:hover::before { animation: none; }
+}

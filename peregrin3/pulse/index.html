@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer src="/config/plausible.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/preview-card.png">
+<meta name="theme-color" content="#343A40">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Pulse — The operations platform for SMB efficiency</title>
+<meta name="description" content="A live intelligence platform tuned to your business. Sales pipeline, operations monitoring, owner-level visibility, visual proposal generator, and automated handoffs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1f1d18;
+    --ink-light: #4a463e;
+    --ink-soft: #756f63;
+    --paper: #faf6ec;
+    --paper-deep: #f3ecd9;
+    --paper-warm: #f7f0dd;
+    --accent: #6b3326;
+    --accent-light: #a06554;
+    --accent-soft: #f1e5e0;
+    --line: #d4cab2;
+    --line-soft: #e8dfc7;
+    --gold: #b88c2a;
+    --green: #4a7547;
+    --green-soft: #e8f0e6;
+    --red: #b53a3a;
+    --red-soft: #fbe6e6;
+    --amber: #b8801f;
+    --amber-soft: #faf0d8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Top nav */
+  .topnav {
+    border-bottom: 1px solid var(--line);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  @media (max-width: 640px) { .topnav { padding: 14px 22px; } }
+  .nav-brand {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+  @media (max-width: 540px) { .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } }
+
+  .container { max-width: 980px; margin: 0 auto; padding: 64px 32px 100px; }
+  @media (max-width: 640px) { .container { padding: 48px 22px 60px; } }
+
+  /* Hero */
+  .hero { margin-bottom: 64px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 22px;
+  }
+  h1.hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(44px, 6vw, 68px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero-deck {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(20px, 2.4vw, 24px);
+    line-height: 1.4;
+    color: var(--ink-light);
+    max-width: 760px;
+  }
+
+  /* Section */
+  section { margin-top: 72px; }
+  .section-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 3.4vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-light);
+    line-height: 1.5;
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+  p {
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    color: var(--ink-light);
+    max-width: 760px;
+  }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  /* Big quote */
+  .big-quote {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.3;
+    color: var(--ink);
+    border-left: 4px solid var(--accent);
+    padding: 12px 0 12px 28px;
+    margin: 36px 0;
+    max-width: 880px;
+  }
+
+  /* Mockup screen — used for all dashboard mockups */
+  .mockup {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 6px 28px rgba(31,29,24,0.08), 0 1px 3px rgba(31,29,24,0.04);
+    margin-top: 24px;
+    overflow: hidden;
+  }
+  .mockup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 22px;
+    background: linear-gradient(to bottom, #fcfaf3, white);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .mockup-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+  .mockup-title .sub { color: var(--ink-soft); font-weight: 400; margin-left: 8px; }
+  .mockup-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--green);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .mockup-body { padding: 22px 24px; }
+
+  /* KPI cards */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 700px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  .kpi {
+    background: var(--paper-deep);
+    padding: 14px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--line-soft);
+  }
+  .kpi-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .kpi-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .kpi-trend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .kpi-trend.down { color: var(--red); }
+  .kpi-trend.flat { color: var(--ink-soft); }
+
+  /* Mockup table */
+  .mtable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .mtable thead th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .mtable thead th.right, .mtable td.right { text-align: right; }
+  .mtable thead th.center, .mtable td.center { text-align: center; }
+  .mtable td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .mtable tr:last-child td { border-bottom: none; }
+  .mtable td.muted { color: var(--ink-soft); }
+  .mtable td.num { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+  /* Status pills */
+  .pill {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .pill.green { background: var(--green-soft); color: var(--green); }
+  .pill.amber { background: var(--amber-soft); color: var(--amber); }
+  .pill.red { background: var(--red-soft); color: var(--red); }
+  .pill.gray { background: var(--paper-deep); color: var(--ink-soft); }
+  .pill.blue { background: #e6eef5; color: #2c5282; }
+
+  /* Compliance grid (Operations view) */
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 800px) { .compliance-grid { grid-template-columns: repeat(2, 1fr); } }
+  .comp-cell {
+    background: var(--paper-deep);
+    padding: 10px 12px;
+    border-radius: 3px;
+    border-left: 3px solid var(--green);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  .comp-cell.amber { border-left-color: var(--amber); }
+  .comp-cell.red { border-left-color: var(--red); background: var(--red-soft); }
+  .comp-cell-name { font-weight: 500; color: var(--ink); }
+  .comp-cell-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .comp-cell .green-text { color: var(--green); }
+  .comp-cell .amber-text { color: var(--amber); }
+  .comp-cell .red-text { color: var(--red); }
+
+  /* Owner view trend chart (CSS-only) */
+  .owner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 700px) { .owner-grid { grid-template-columns: 1fr; } }
+  .owner-card {
+    background: var(--paper-deep);
+    padding: 18px 20px;
+    border-radius: 4px;
+    border: 1px solid var(--line-soft);
+  }
+  .owner-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .owner-card-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  /* Mini CSS-only "chart" bars */
+  .mini-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 36px;
+    margin-top: 8px;
+  }
+  .mini-bar {
+    flex: 1;
+    background: var(--accent-light);
+    border-radius: 1px 1px 0 0;
+    opacity: 0.7;
+  }
+  .mini-bar.tall { background: var(--accent); opacity: 1; }
+
+  /* Visual Proposal Generator section */
+  .vpg {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 6px 28px rgba(31,29,24,0.08), 0 1px 3px rgba(31,29,24,0.04);
+    margin-top: 24px;
+    overflow: hidden;
+  }
+  .vpg-header {
+    background: var(--accent);
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .vpg-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .vpg-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
+  .vpg-body { padding: 28px 32px; }
+  .vpg-prospect {
+    background: var(--paper-deep);
+    padding: 14px 18px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .vpg-prospect strong { color: var(--accent); font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; }
+
+  .vpg-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 700px) { .vpg-compare { grid-template-columns: 1fr; } }
+  .vpg-side {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .vpg-side-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-deep);
+  }
+  .vpg-side-header.diy { background: #fff5e8; border-bottom-color: #e6cea0; }
+  .vpg-side-header.outsource { background: var(--green-soft); border-bottom-color: #b5d6b8; }
+  .vpg-side-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .vpg-side-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .vpg-line-items {
+    padding: 12px 16px;
+  }
+  .vpg-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--ink-light);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .vpg-line:last-of-type { border-bottom: 1px solid var(--ink); margin-bottom: 8px; }
+  .vpg-line-label.warn { color: var(--red); }
+  .vpg-line-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .vpg-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0 0 0;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .vpg-total .label { font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); font-weight: 500; }
+
+  .vpg-savings {
+    background: var(--green);
+    color: white;
+    padding: 22px 26px;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 16px;
+  }
+  .vpg-savings-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    opacity: 0.85;
+    margin-bottom: 4px;
+  }
+  .vpg-savings-msg {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .vpg-savings-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: right;
+  }
+  @media (max-width: 600px) { .vpg-savings { grid-template-columns: 1fr; } .vpg-savings-amount { text-align: left; } }
+
+  /* CSS bar chart */
+  .bar-chart {
+    margin: 24px 0 12px 0;
+    padding: 16px 18px;
+    background: var(--paper-deep);
+    border-radius: 4px;
+    border: 1px solid var(--line-soft);
+  }
+  .bar-chart-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .bars {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    height: 140px;
+  }
+  .bar-group {
+    flex: 1;
+    text-align: center;
+  }
+  .bar {
+    margin: 0 auto;
+    border-radius: 2px 2px 0 0;
+    width: 60%;
+    position: relative;
+  }
+  .bar-amount {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .bar-label {
+    margin-top: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* API integration diagram */
+  .api-diagram {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 4px 18px rgba(31,29,24,0.06);
+    padding: 32px;
+    margin-top: 24px;
+  }
+  .api-flow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .api-row {
+    display: grid;
+    grid-template-columns: auto 1fr 80px;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--line);
+    align-items: center;
+  }
+  .api-row:last-child { border-bottom: none; }
+  .api-step {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--accent);
+    width: 32px;
+    text-align: center;
+  }
+  .api-event {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .api-event strong { font-weight: 600; }
+  .api-event em { color: var(--ink-soft); font-style: normal; font-size: 12px; display: block; margin-top: 2px; }
+  .api-target {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-align: right;
+    font-weight: 500;
+  }
+
+  /* CTA */
+  .cta {
+    background: var(--accent);
+    color: white;
+    padding: 44px 40px;
+    border-radius: 6px;
+    margin-top: 56px;
+    text-align: center;
+  }
+  .cta h2 {
+    color: white;
+    margin-bottom: 14px;
+    font-size: clamp(26px, 3.2vw, 34px);
+  }
+  .cta p { color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 22px; font-size: 16px; }
+  .cta a {
+    display: inline-block;
+    background: white;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px 26px;
+    border-radius: 3px;
+    margin: 6px;
+    font-size: 15px;
+    transition: transform 0.15s;
+  }
+  .cta a:hover { transform: translateY(-1px); }
+  .cta a.secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.7;
+  }
+  .doc-footer .peregrine {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="/" class="nav-brand">Peregrine Consultants</a>
+  <div class="nav-links">
+    <a href="/pulse" class="active">Platform</a>
+    <a href="/process">Process</a>
+    <a href="mailto:ivan@ivanadiaz.com">Contact</a>
+  </div>
+</nav>
+
+<div style="padding:12px 24px;background:#f1e5e0;border-bottom:1px solid #d4cab2;text-align:center;font:600 13px/1.5 Inter,sans-serif;color:#6b3326;">Historical solution hypothesis · Pulse is not the current roadmap or a promised client deliverable.</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-eyebrow">The Source-of-Truth Database · Built into every engagement</div>
+    <h1 class="hero-title">The system your team operates from.</h1>
+    <p class="hero-deck">Every Peregrine engagement delivers a custom database — built for your business, tuned to your stack, sharper than anything off the shelf. Compliance scoring, profitability scoring, sales workflow, service workflow, role-based access, integrations with the systems you already run.</p>
+
+    <div style="margin-top: 32px; padding: 18px 22px; background: var(--paper-deep); border: 1px solid var(--line); border-radius: 4px; font-size: 14px; color: var(--ink-light); line-height: 1.55;">
+      <strong style="color: var(--ink);">Note on the mockups below.</strong> These are conceptual renderings of the database we design and build during the engagement — not screenshots of a deployed product. Your version would be configured to your stack, your data, your team's actual workflow. The point of the mockups is to show what kind of intelligence the system surfaces, in a form your team would actually use.
+    </div>
+  </header>
+
+  <!-- Thesis -->
+  <section>
+    <div class="section-eyebrow">The thesis</div>
+    <h2>From snapshot to system.</h2>
+    <p class="lede">A diagnostic produces a still photograph of your business at a point in time. Pulse turns it into a moving picture — refreshed daily, scored automatically, and presented to each role in the form they need to act on.</p>
+
+    <p>Most small businesses run on a stack of generic tools — a CRM that wasn't built for them, a spreadsheet that ages out, an HRIS that holds data nobody can query. The result: insights live in three places, decisions get delayed, and money gets left on the table because nobody saw it in time.</p>
+
+    <p><strong>The database is the layer that pulls it all together</strong> — built on top of the systems you already run, surfaced through dashboards designed for who's actually using them. It scores every client on profitability and compliance. Tracks every relationship from prospect to renewal. Drives the alerts your team needs and the reports leadership reviews. Talks to your existing systems via API; could replace pieces if and when that makes sense.</p>
+
+    <p style="font-style: italic; color: var(--ink-soft); font-size: 15px;">This isn't a Phase 2 conversation or a follow-on engagement. The database is part of the diagnostic engagement itself — built into the work, not bolted onto the end.</p>
+  </section>
+
+  <!-- Sales view mockup -->
+  <section>
+    <div class="section-eyebrow">For the sales side</div>
+    <h2>"Where should I spend my time this week?"</h2>
+    <p class="lede">Every Monday morning, sales reps and managers see exactly where the leverage is — ranked, dollarized, and ready to act on.</p>
+
+    <div class="mockup">
+      <div class="mockup-header">
+        <div class="mockup-title">Sales · Opportunity Queue<span class="sub">Q2 2026 · 12 active deals</span></div>
+        <div class="mockup-tag">Live</div>
+      </div>
+      <div class="mockup-body">
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi-label">Active deals</div>
+            <div class="kpi-value">12</div>
+            <div class="kpi-trend">across pipeline stages</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Renegotiation candidates</div>
+            <div class="kpi-value">5</div>
+            <div class="kpi-trend">flagged this quarter</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Avg time in stage</div>
+            <div class="kpi-value">14d</div>
+            <div class="kpi-trend flat">vs target 21d</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Renewals next 90 days</div>
+            <div class="kpi-value">7</div>
+            <div class="kpi-trend">2 flagged at risk</div>
+          </div>
+        </div>
+
+        <table class="mtable">
+          <thead>
+            <tr>
+              <th>Client / Opportunity</th>
+              <th>Type</th>
+              <th class="right">Annual Lift</th>
+              <th class="center">Status</th>
+              <th class="right">Days in stage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Acme Manufacturing</td>
+              <td class="muted">Existing — Renegotiation</td>
+              <td class="right num">+$8,400</td>
+              <td class="center"><span class="pill red">Move now</span></td>
+              <td class="right num">12</td>
+            </tr>
+            <tr>
+              <td>Sunbelt Construction</td>
+              <td class="muted">Existing — Expansion</td>
+              <td class="right num">+$14,200</td>
+              <td class="center"><span class="pill amber">Discovery</span></td>
+              <td class="right num">5</td>
+            </tr>
+            <tr>
+              <td>Riverside Logistics</td>
+              <td class="muted">New prospect</td>
+              <td class="right num">$22,000</td>
+              <td class="center"><span class="pill blue">Proposed</span></td>
+              <td class="right num">3</td>
+            </tr>
+            <tr>
+              <td>Metro Services Group</td>
+              <td class="muted">Existing — Renegotiation</td>
+              <td class="right num">+$5,100</td>
+              <td class="center"><span class="pill red">Move now</span></td>
+              <td class="right num">19</td>
+            </tr>
+            <tr>
+              <td>Oak Valley Healthcare</td>
+              <td class="muted">Existing — Renewal</td>
+              <td class="right num">$0</td>
+              <td class="center"><span class="pill green">Healthy</span></td>
+              <td class="right num">—</td>
+            </tr>
+            <tr>
+              <td>Coastal Retail Group</td>
+              <td class="muted">Existing — Renewal at risk</td>
+              <td class="right num">($31K at risk)</td>
+              <td class="center"><span class="pill amber">Renewal risk</span></td>
+              <td class="right num">28</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Operations view mockup -->
+  <section>
+    <div class="section-eyebrow">For the operations side</div>
+    <h2>"Where is risk and friction concentrated this week?"</h2>
+    <p class="lede">Compliance posture, margin watch, onboarding tracking, filing calendars — all in one daily view. Any change of state generates an alert before it becomes a fire drill.</p>
+
+    <div class="mockup">
+      <div class="mockup-header">
+        <div class="mockup-title">Operations · Risk &amp; Margin Monitor<span class="sub">Updated 4 hours ago</span></div>
+        <div class="mockup-tag">Live</div>
+      </div>
+      <div class="mockup-body">
+
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); margin-bottom: 10px;">Compliance posture · 20 categories</div>
+        <div class="compliance-grid">
+          <div class="comp-cell"><span class="comp-cell-name">Worker classification</span><span class="comp-cell-status green-text">OK</span></div>
+          <div class="comp-cell amber"><span class="comp-cell-name">WC class codes</span><span class="comp-cell-status amber-text">Drift</span></div>
+          <div class="comp-cell"><span class="comp-cell-name">Payroll tax timing</span><span class="comp-cell-status green-text">OK</span></div>
+          <div class="comp-cell red"><span class="comp-cell-name">401(k) deposits</span><span class="comp-cell-status red-text">Tier 1</span></div>
+          <div class="comp-cell"><span class="comp-cell-name">ACA reporting</span><span class="comp-cell-status green-text">Filed</span></div>
+          <div class="comp-cell"><span class="comp-cell-name">I-9 documentation</span><span class="comp-cell-status green-text">OK</span></div>
+          <div class="comp-cell amber"><span class="comp-cell-name">SUI / state tax</span><span class="comp-cell-status amber-text">Review</span></div>
+          <div class="comp-cell"><span class="comp-cell-name">FLSA exemption</span><span class="comp-cell-status green-text">OK</span></div>
+        </div>
+
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); margin: 22px 0 10px 0;">Margin watch · clients trending down</div>
+        <table class="mtable">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th class="right">Margin %</th>
+              <th class="right">Δ vs LQ</th>
+              <th class="center">Root cause</th>
+              <th class="center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Metro Services Group</td>
+              <td class="right num">12%</td>
+              <td class="right num" style="color: var(--red);">−18 pts</td>
+              <td class="center muted">Hours up, revenue flat</td>
+              <td class="center"><span class="pill red">Renegotiate</span></td>
+            </tr>
+            <tr>
+              <td>Acme Manufacturing</td>
+              <td class="right num">28%</td>
+              <td class="right num" style="color: var(--amber);">−6 pts</td>
+              <td class="center muted">Headcount expansion</td>
+              <td class="center"><span class="pill amber">Watch</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft); margin: 22px 0 10px 0;">Active onboardings · 4 in flight</div>
+        <table class="mtable">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th class="center">Stage</th>
+              <th class="right">Day</th>
+              <th class="center">SLA</th>
+              <th class="center">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Riverside Logistics</td><td class="center"><span class="pill blue">Census</span></td><td class="right num">8 / 45</td><td class="center"><span class="pill green">On track</span></td><td class="center muted">M. Chen</td></tr>
+            <tr><td>Highland Tech Group</td><td class="center"><span class="pill blue">Payroll setup</span></td><td class="right num">23 / 45</td><td class="center"><span class="pill green">On track</span></td><td class="center muted">M. Chen</td></tr>
+            <tr><td>Westside Properties</td><td class="center"><span class="pill amber">Benefits</span></td><td class="right num">38 / 45</td><td class="center"><span class="pill amber">At risk</span></td><td class="center muted">L. Reyes</td></tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Owner view mockup -->
+  <section>
+    <div class="section-eyebrow">For the owner</div>
+    <h2>"How is the business actually performing?"</h2>
+    <p class="lede">Board-style executive view. Quarterly trends, top opportunities, compliance executive summary, and the wins your team has booked.</p>
+
+    <div class="mockup">
+      <div class="mockup-header">
+        <div class="mockup-title">Owner · Book Health Summary<span class="sub">Q2 2026</span></div>
+        <div class="mockup-tag">Live</div>
+      </div>
+      <div class="mockup-body">
+
+        <div class="owner-grid">
+          <div class="owner-card">
+            <div class="owner-card-label">Active client count</div>
+            <div class="owner-card-value">62</div>
+            <div class="kpi-trend">net +3 this quarter</div>
+            <div class="mini-bars">
+              <div class="mini-bar" style="height: 70%;"></div>
+              <div class="mini-bar" style="height: 72%;"></div>
+              <div class="mini-bar" style="height: 75%;"></div>
+              <div class="mini-bar" style="height: 78%;"></div>
+              <div class="mini-bar" style="height: 80%;"></div>
+              <div class="mini-bar" style="height: 82%;"></div>
+              <div class="mini-bar" style="height: 88%;"></div>
+              <div class="mini-bar tall" style="height: 100%;"></div>
+            </div>
+          </div>
+          <div class="owner-card">
+            <div class="owner-card-label">Margin distribution</div>
+            <div class="owner-card-value" style="font-size: 22px; line-height: 1.2;">Healthy: 41 · Watch: 16 · Loss: 5</div>
+            <div class="kpi-trend">5 renegotiation candidates</div>
+          </div>
+          <div class="owner-card">
+            <div class="owner-card-label">Compliance posture</div>
+            <div class="owner-card-value" style="font-size: 24px; line-height: 1.2;">17 green · 2 amber · 1 red</div>
+            <div class="kpi-trend down">1 Tier 1 needs ownership review</div>
+          </div>
+          <div class="owner-card">
+            <div class="owner-card-label">Onboardings in flight</div>
+            <div class="owner-card-value">4</div>
+            <div class="kpi-trend">3 on track · 1 at risk</div>
+          </div>
+        </div>
+
+        <table class="mtable">
+          <thead>
+            <tr>
+              <th>Top opportunity (this quarter)</th>
+              <th class="right">$ Lift</th>
+              <th class="center">Status</th>
+              <th class="muted">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Sunbelt Construction expansion</td><td class="right num">+$14.2K</td><td class="center"><span class="pill amber">Discovery</span></td><td class="muted">A. Diaz</td></tr>
+            <tr><td>Acme Manufacturing renegotiation</td><td class="right num">+$8.4K</td><td class="center"><span class="pill red">Move now</span></td><td class="muted">A. Diaz</td></tr>
+            <tr><td>Riverside Logistics close</td><td class="right num">+$22K (new)</td><td class="center"><span class="pill blue">Proposed</span></td><td class="muted">M. Chen</td></tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual Proposal Generator -->
+  <section>
+    <div class="section-eyebrow">For the prospect — the headline feature</div>
+    <h2>The Visual Proposal Generator</h2>
+    <p class="lede">A force multiplier for sales reps. Enter the prospect's setup, and the platform generates a side-by-side cost comparison branded for your firm and the prospect — in minutes, not hours.</p>
+
+    <div class="vpg">
+      <div class="vpg-header">
+        <div class="vpg-title">Cost Comparison · Prepared for Riverside Logistics</div>
+        <div class="vpg-tag">Auto-generated</div>
+      </div>
+      <div class="vpg-body">
+
+        <div class="vpg-prospect">
+          <strong>Riverside Logistics</strong> · 38 employees · TX + NM · Currently doing payroll in-house with a part-time HR contractor
+        </div>
+
+        <div class="vpg-compare">
+          <div class="vpg-side">
+            <div class="vpg-side-header diy">
+              <div class="vpg-side-name">In-House (current)</div>
+              <div class="vpg-side-tag">DIY · with hidden costs</div>
+            </div>
+            <div class="vpg-line-items">
+              <div class="vpg-line"><span class="vpg-line-label">Part-time HR contractor</span><span class="vpg-line-amount">$48,000</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Bookkeeper time on payroll</span><span class="vpg-line-amount">$18,000</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Benefits broker fees</span><span class="vpg-line-amount">$14,400</span></div>
+              <div class="vpg-line"><span class="vpg-line-label warn">Avg compliance/error penalty exposure</span><span class="vpg-line-amount">$8,000</span></div>
+              <div class="vpg-line"><span class="vpg-line-label warn">Owner time spent on HR/payroll</span><span class="vpg-line-amount">$22,000</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Workers comp admin overhead</span><span class="vpg-line-amount">$6,200</span></div>
+              <div class="vpg-total">
+                <div><div class="label">All-in annual cost</div></div>
+                <div>$116,600</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vpg-side">
+            <div class="vpg-side-header outsource">
+              <div class="vpg-side-name">Full PEO · Outsourced</div>
+              <div class="vpg-side-tag">Single all-in fee</div>
+            </div>
+            <div class="vpg-line-items">
+              <div class="vpg-line"><span class="vpg-line-label">Per-employee monthly fee</span><span class="vpg-line-amount">$45,600</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Benefits broker (included)</span><span class="vpg-line-amount">—</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Workers comp (included)</span><span class="vpg-line-amount">—</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Compliance support (included)</span><span class="vpg-line-amount">—</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">HRIS / payroll tech (included)</span><span class="vpg-line-amount">—</span></div>
+              <div class="vpg-line"><span class="vpg-line-label">Owner time recovered</span><span class="vpg-line-amount" style="color: var(--green);">+$22,000 value</span></div>
+              <div class="vpg-total">
+                <div><div class="label">All-in annual cost</div></div>
+                <div>$45,600</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bar-chart">
+          <div class="bar-chart-title">Annual cost comparison (visualized)</div>
+          <div class="bars">
+            <div class="bar-group">
+              <div class="bar" style="height: 100%; background: #c87a18;"><span class="bar-amount">$116,600</span></div>
+              <div class="bar-label">In-house</div>
+            </div>
+            <div class="bar-group">
+              <div class="bar" style="height: 39%; background: var(--green);"><span class="bar-amount">$45,600</span></div>
+              <div class="bar-label">Full PEO</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vpg-savings">
+          <div>
+            <div class="vpg-savings-label">Year-one savings</div>
+            <div class="vpg-savings-msg">Plus the time recovered for leadership to grow the business — not run payroll.</div>
+          </div>
+          <div class="vpg-savings-amount">$71,000</div>
+        </div>
+
+      </div>
+    </div>
+
+    <p style="margin-top: 24px;"><strong>Why this matters:</strong> Some prospects respond to numbers. Some respond to visuals. Pulse handles both — and lets the sales rep produce a custom, branded comparison in minutes. Reduces proposal-prep time from a half-day to ten minutes.</p>
+  </section>
+
+  <!-- API Integration -->
+  <section>
+    <div class="section-eyebrow">The seam between sales and operations — eliminated</div>
+    <h2>Close to onboarding, automated.</h2>
+    <p class="lede">When a deal closes in Pulse, the platform pushes the new client into every downstream system that needs them — automatically, without re-keying data, without "did sales tell ops?"</p>
+
+    <div class="api-diagram">
+      <div class="api-flow">
+        <div class="api-row">
+          <div class="api-step">1</div>
+          <div class="api-event"><strong>Deal moves to "Won"</strong> in Pulse<em>Triggered automatically when contract is countersigned</em></div>
+          <div class="api-target">Pulse</div>
+        </div>
+        <div class="api-row">
+          <div class="api-step">2</div>
+          <div class="api-event"><strong>Client record created</strong> in HRIS<em>Pre-populated employee roster from sales census data</em></div>
+          <div class="api-target">PrismHR / iSolved</div>
+        </div>
+        <div class="api-row">
+          <div class="api-step">3</div>
+          <div class="api-event"><strong>Benefits enrollment workflow</strong> initiated<em>Eligible employees notified; election windows scheduled</em></div>
+          <div class="api-target">Benefits Admin</div>
+        </div>
+        <div class="api-row">
+          <div class="api-step">4</div>
+          <div class="api-event"><strong>Workers comp policy request</strong> sent to carrier<em>Class codes pre-mapped from industry data</em></div>
+          <div class="api-target">Carrier portal</div>
+        </div>
+        <div class="api-row">
+          <div class="api-step">5</div>
+          <div class="api-event"><strong>State tax registrations</strong> initiated<em>Multi-state work tracked in the operations view</em></div>
+          <div class="api-target">State authorities</div>
+        </div>
+        <div class="api-row">
+          <div class="api-step">6</div>
+          <div class="api-event"><strong>Onboarding lead notified</strong> with a complete pre-filled checklist<em>Operations view updates with the new active onboarding</em></div>
+          <div class="api-target">Operations</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 22px;"><strong>The pain this solves:</strong> The "did sales tell ops?" gap is one of the most common sources of onboarding friction. Pulse closes it structurally — not procedurally.</p>
+  </section>
+
+  <!-- Future-proofing -->
+  <section>
+    <div class="section-eyebrow">Why now matters</div>
+    <h2>The firms that win the next decade will operate on a live data layer.</h2>
+    <p class="lede">This is a relevance argument, not an AI pitch.</p>
+    <p>From my read after twenty-five years in financial services: the businesses being squeezed are the ones still running on spreadsheets, email, and tribal knowledge. The ones investing in real operational tooling — sharper sales motion, smoother onboarding, automated client intelligence — will outprice and outserve them on the basics. The database is how you stay the obvious choice as the tools the industry runs on keep changing.</p>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>The database is the engagement.</h2>
+    <p>Not a follow-on. Not a Phase 2. Built into the work from kickoff, deployed to production by stage 4, and running in your operation when we hand off. Every Peregrine engagement, every time.</p>
+    <a href="/">Back to Peregrine</a>
+    <a href="/process" class="secondary">See our process</a>
+  </div>
+
+  <div class="doc-footer">
+    <span class="peregrine">Peregrine Consultants</span><br>
+    Pulse · The operations platform for SMB efficiency<br>
+    <span style="font-style: italic; opacity: 0.8;">Mockups are illustrative. Actual views configured to your business and stack during the build.</span>
+  </div>
+
+</div>
+
+</body>
+</html>

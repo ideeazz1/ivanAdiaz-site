@@ -1,0 +1,28 @@
+/* Shared hierarchy hub tabs — OS map · Daily rhythm · Projects */
+.hierarchy-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line, rgba(42, 47, 44, 0.1));
+}
+.hierarchy-tabs a {
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink-soft, #5c6560);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.hierarchy-tabs a:hover {
+  color: var(--sage, #3d6b54);
+  background: rgba(61, 107, 84, 0.06);
+}
+.hierarchy-tabs a[aria-current="page"] {
+  color: var(--sage, #3d6b54);
+  background: var(--sage-soft, #e4efe8);
+  border-color: rgba(61, 107, 84, 0.22);
+}

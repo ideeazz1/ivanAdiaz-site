@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer src="/config/plausible.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/preview-card.png">
+<meta name="theme-color" content="#343A40">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Peregrine Consultants — An efficiency machine for small business</title>
+<meta name="description" content="Peregrine Consultants brings a vision of what can be streamlined and how to use every role more efficiently. Diagnostic engagements, intelligence platforms, and ongoing partnership.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1f1d18;
+    --ink-light: #4a463e;
+    --ink-soft: #756f63;
+    --paper: #faf6ec;
+    --paper-deep: #f3ecd9;
+    --paper-warm: #f7f0dd;
+    --accent: #6b3326;
+    --accent-light: #a06554;
+    --accent-soft: #f1e5e0;
+    --line: #d4cab2;
+    --line-soft: #e8dfc7;
+    --gold: #b88c2a;
+    --green: #4a7547;
+    --green-soft: #e8f0e6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Top nav */
+  .topnav {
+    border-bottom: 1px solid var(--line);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  @media (max-width: 640px) { .topnav { padding: 14px 22px; } }
+  .nav-brand {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-light);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  @media (max-width: 540px) { .nav-links { gap: 16px; } .nav-links a { font-size: 13px; } }
+
+  .container { max-width: 880px; margin: 0 auto; padding: 80px 40px 100px; }
+  @media (max-width: 640px) { .container { padding: 56px 24px 60px; } }
+
+  /* Hero */
+  .hero { margin-bottom: 80px; padding-bottom: 56px; border-bottom: 1px solid var(--line); }
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  h1.hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(48px, 7vw, 80px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .hero-deck {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.4;
+    color: var(--ink-light);
+    max-width: 720px;
+  }
+
+  /* Section structure */
+  section { margin-top: 72px; }
+  .section-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(32px, 4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-light);
+    line-height: 1.5;
+    margin-bottom: 36px;
+    max-width: 720px;
+  }
+  p {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    color: var(--ink-light);
+    max-width: 720px;
+  }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  /* Big quote */
+  .big-quote {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(26px, 3.5vw, 36px);
+    line-height: 1.3;
+    color: var(--ink);
+    border-left: 4px solid var(--accent);
+    padding: 12px 0 12px 32px;
+    margin: 40px 0;
+    max-width: 880px;
+  }
+
+  /* Build vs Buy 3-column */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+  @media (max-width: 800px) { .compare { grid-template-columns: 1fr; } }
+  .compare-col {
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+    padding: 28px 24px;
+    border-radius: 4px;
+  }
+  .compare-col.peregrine {
+    background: var(--accent-soft);
+    border: 2px solid var(--accent);
+    position: relative;
+  }
+  .compare-col.peregrine::before {
+    content: "Peregrine";
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--accent);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .compare-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .compare-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  .compare-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+  }
+  .compare-list li {
+    font-size: 14px;
+    color: var(--ink-light);
+    padding: 6px 0 6px 22px;
+    line-height: 1.5;
+    position: relative;
+  }
+  .compare-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: var(--accent-light);
+  }
+  .compare-col.peregrine .compare-list li::before { color: var(--accent); content: "→"; font-weight: 600; }
+  .compare-time {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .compare-col.peregrine .compare-time { color: var(--accent); border-top-color: var(--accent-light); }
+
+  /* Three-tier offering */
+  .tiers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  @media (max-width: 800px) { .tiers { grid-template-columns: 1fr; } }
+  .tier {
+    background: white;
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--accent);
+    padding: 28px 24px;
+    border-radius: 4px;
+  }
+  .tier-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .tier h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .tier p {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .tier .tier-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    padding-top: 10px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  /* About */
+  .about {
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 36px 40px;
+    margin-top: 28px;
+  }
+  .about p { font-size: 16px; max-width: 720px; }
+
+  /* CTA */
+  .cta {
+    background: var(--accent);
+    color: white;
+    padding: 48px 44px;
+    border-radius: 6px;
+    margin-top: 56px;
+    text-align: center;
+  }
+  .cta h2 {
+    color: white;
+    margin-bottom: 14px;
+    font-size: clamp(28px, 3.4vw, 36px);
+  }
+  .cta p { color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 24px; font-size: 16px; }
+  .cta a {
+    display: inline-block;
+    background: white;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 3px;
+    margin: 6px;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    transition: transform 0.15s;
+  }
+  .cta a:hover { transform: translateY(-1px); }
+  .cta a.secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.7;
+  }
+  .doc-footer .peregrine {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="/" class="nav-brand">Peregrine Consultants</a>
+  <div class="nav-links">
+    <a href="/peregrin3/pulse/">Platform</a>
+    <a href="/peregrin3/process/">Process</a>
+    <a href="mailto:ivan@ivanadiaz.com">Contact</a>
+  </div>
+</nav>
+
+<div style="padding:12px 24px;background:#f1e5e0;border-bottom:1px solid #d4cab2;text-align:center;font:600 13px/1.5 Inter,sans-serif;color:#6b3326;">Concept archive · This database-first offer is under evidence-led redesign and is not the current Peregrine offer.</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-eyebrow">Operational Intelligence · Built for SMBs</div>
+    <h1 class="hero-title">An efficiency machine for small business.</h1>
+    <p class="hero-deck">We arrive at speed. We deliver with precision. We build the database that becomes the source of truth your team operates from — the engine that keeps your business sharp as the world keeps changing.</p>
+  </header>
+
+  <!-- Thesis -->
+  <section>
+    <div class="section-eyebrow">The thesis</div>
+    <h2>Most small businesses don't lack effort. They lack leverage.</h2>
+    <p class="lede">There is, somewhere in your operation, a client paying for a fraction of what you're delivering them. There is, somewhere, a service line being given away that should be priced. There is, somewhere, a compliance gap that nobody has pressure-tested in years.</p>
+
+    <p>None of these are unusual. They are the background hum of running a business that grew faster than its systems. They are also, individually and collectively, fixable — usually faster than people expect.</p>
+
+    <p><strong>Peregrine exists to find them, fix them, and build the system that prevents them from coming back.</strong></p>
+  </section>
+
+  <!-- Big quote -->
+  <div class="big-quote">"Find what could blow up. Find the money on the table. Build the database that does it without you next time."</div>
+
+  <!-- Who Peregrine is for -->
+  <section>
+    <div class="section-eyebrow">Who Peregrine is for</div>
+    <h2>Built for the squeezed middle.</h2>
+    <p class="lede">Every industry is bifurcating. Scale players consolidate at the top. Relationship-driven specialists hold the bottom. The independents in the middle — with the depth and the relationships and the local knowledge — get squeezed because the operational tooling that would let them compete isn't available for purchase.</p>
+
+    <p>Peregrine is built for the squeezed middle. Family-owned regional businesses where the owner is still the owner. Independent services firms whose unfair advantage is depth, not scale. Owner-operated SMBs that have outgrown spreadsheets but aren't ready for enterprise tooling. The businesses where the founder still answers the phone if needed.</p>
+
+    <p>I've been an independent caught in this squeeze myself — fifteen years in mortgage sales watching my industry consolidate around me. The pattern repeats across every vertical. The answer is the same: build the tools the independents need to compete. <strong>The database is the answer. Peregrine is the delivery mechanism.</strong></p>
+
+    <p style="font-size: 14px; color: var(--ink-soft); font-style: italic; max-width: 720px;">If your strategy is winning on scale, or you're a PE-backed rollup, or you need a prestige consultant brand on your engagement letter — we're not the right fit. We optimize for depth, not breadth.</p>
+  </section>
+
+  <!-- Build vs Buy -->
+  <section>
+    <div class="section-eyebrow">The build-vs-buy reality</div>
+    <h2>You're choosing between three options. Two of them cost more than you think.</h2>
+
+    <div class="compare">
+
+      <div class="compare-col">
+        <div class="compare-name">Build it in-house</div>
+        <div class="compare-tag">The slow path</div>
+        <ul class="compare-list">
+          <li>Pull leadership off their highest-leverage work</li>
+          <li>Hire someone — months to find, months to ramp</li>
+          <li>Reinvent every framework, learn every lesson the hard way</li>
+          <li>Half-finished systems sit in a folder on someone's desktop</li>
+          <li>Compounding distraction across the rest of the team</li>
+        </ul>
+        <div class="compare-time">12 – 18 months to value</div>
+      </div>
+
+      <div class="compare-col">
+        <div class="compare-name">Hire a traditional firm</div>
+        <div class="compare-tag">The expensive path</div>
+        <ul class="compare-list">
+          <li>Slow procurement, big-firm pricing</li>
+          <li>Generic methodology, often retrofitted</li>
+          <li>Engagement ends with a deliverable in a binder</li>
+          <li>Implementation is on you — they're already onto the next client</li>
+          <li>Three-month minimum typical, with implementation usually a separate phase the client funds</li>
+        </ul>
+        <div class="compare-time">3 – 6 months to value</div>
+      </div>
+
+      <div class="compare-col peregrine">
+        <div class="compare-name">Engage Peregrine</div>
+        <div class="compare-tag">The fast path</div>
+        <ul class="compare-list">
+          <li>Five-stage diagnostic, calibrated to the depth of your operation</li>
+          <li>A working database deployed by stage 4 — not a binder</li>
+          <li>Compliance, pricing, portfolio, operations — all four into one source-of-truth system</li>
+          <li>Self-correcting milestones; stop at any stage</li>
+          <li>The database stays after we leave; gets sharper as your team uses it</li>
+        </ul>
+        <div class="compare-time">Stage-calibrated</div>
+      </div>
+
+    </div>
+
+    <p style="margin-top: 28px;"><strong>The math is simple.</strong> Owners have already considered hiring someone. The question isn't "should we?" It's "who, and when do they start?" Peregrine arrives at speed — like the falcon we're named for — and the system we leave behind keeps working long after the engagement closes.</p>
+  </section>
+
+  <!-- What we do -->
+  <section>
+    <div class="section-eyebrow">What we do</div>
+    <h2>Three engagement tiers, each one earning the next.</h2>
+
+    <div class="tiers">
+
+      <div class="tier">
+        <div class="tier-num">Tier 1</div>
+        <h3>Diagnostic + Source-of-Truth Database</h3>
+        <p>The flagship engagement. Five-stage diagnostic across compliance, pricing, portfolio, and operations — and a custom database built into the engagement that becomes the system your team runs on. Not a report. Not a follow-on phase. The database is the deliverable.</p>
+        <div class="tier-meta">Fixed-fee · Stage-based · Stop at any milestone</div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-num">Tier 2</div>
+        <h3>Platform Expansion</h3>
+        <p>The database extends into a full operations platform. Sales pipeline workflow, visual proposal generator, automated close-to-onboarding handoff, advanced reporting. Decided after Tier 1 has earned the right.</p>
+        <div class="tier-meta">Built on the same database · Modular · Optional</div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-num">Tier 3</div>
+        <h3>Fractional Partnership</h3>
+        <p>Once the database is running, an embedded efficiency partner. Quarterly portfolio reviews, ongoing intelligence, recommendations on where to invest next. Predictable, compounding, embedded.</p>
+        <div class="tier-meta">Monthly retainer · Quarter-by-quarter · Ongoing</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Future-proofing -->
+  <section>
+    <div class="section-eyebrow">Why the timing matters</div>
+    <h2>The firms that hold their ground will be the ones with real operational infrastructure underneath them.</h2>
+    <p class="lede">This is a relevance argument, not an AI pitch.</p>
+
+    <p>From my read after twenty-five years in financial services — including watching independent loan officers get squeezed out by scale players over the past fifteen — the pattern repeats. Businesses still running on spreadsheets, email, and tribal knowledge get outpaced by competitors investing in real operational tooling. Sharper sales motion. Smoother onboarding. Automated client intelligence. None of it requires AI hype to be true.</p>
+
+    <p>The prospect deciding between you and a competitor isn't choosing on relationships alone. They're choosing on the experience: how fast you quote, how cleanly you onboard, how visibly you protect them. <strong>The database is how you stay the obvious choice.</strong></p>
+
+    <p>The investment doesn't depend on any specific future technology being right. It pays back on its first renegotiation. And it positions you to absorb whatever comes next, without rebuilding the foundation.</p>
+  </section>
+
+  <!-- The "even Alberto" framing -->
+  <section>
+    <div class="section-eyebrow">The principle that separates us</div>
+    <h2>Even leadership gets the efficiency lens.</h2>
+    <p class="lede">Often, leadership stays outside the engagement. The team below gets scrutinized. The leaders above stay comfortable. That's the social tax of most consulting work — and it's a reason engagements stall.</p>
+
+    <p>Peregrine works differently. <strong>Every role in the organization gets the same question:</strong> what is this person uniquely positioned to do, and how do we move everything else off their plate? The CEO. The HR head. The accounting lead. The sales reps. Same lens, applied evenly.</p>
+
+    <p>The result: leadership trusts the process because they're inside it. The team trusts it because nobody is exempt. And the work compounds because the people at the top stop being bottlenecks.</p>
+  </section>
+
+  <!-- About -->
+  <section>
+    <div class="section-eyebrow">Who you're working with</div>
+    <h2>You're not hiring a firm. You're hiring me.</h2>
+
+    <div class="about">
+      <p><strong>Ivan Diaz, Principal.</strong> Sales and operations specialist. Database architect. Workflow manager. Highly technical inside systems. Adaptable to almost any role inside an organization — and trained to spot the behavioral patterns that explain why something isn't working before anyone else has named them.</p>
+      <p><strong>Earlier:</strong> retail banking branch management at <strong>Wells Fargo and Chase</strong> — including running the San Leandro Main branch with 50+ employees, hundreds of millions in assets, and tens of thousands of monthly transactions. Hard compliance requirements <em>and</em> real sales goals. The same dual mandate every PEO, every staffing firm, every regional services business operates under. I've sat in that seat. I know what it costs in leadership time when the systems aren't doing the heavy lifting.</p>
+      <p><strong>The last fifteen years:</strong> mortgage sales. Underwriting expertise, behavioral pattern recognition with consumers, a personal database tracking hundreds of clients met during the process. The squeeze on independent loan officers — caught between scale players above and institution-driven specialists below — is the lived experience that informs everything Peregrine does. The tools that would let independents compete don't exist for purchase. I built mine. Peregrine is about building those tools for the rest of the independent operators in adjacent verticals.</p>
+      <p style="margin-bottom: 0;"><strong>When you engage Peregrine, you engage me directly.</strong> Operating from the Southwest. Serving SMBs nationally. First-name basis. No partner structure, no junior teams. The principal is the practitioner.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Ready to see what we'd find?</h2>
+    <p>The engagement is built around discovery and delivery. By stage 2, you'll know exactly what's working in your operation, what's at risk, and what's leaving money on the table. By stage 4, the top items are fixed and the database is running.</p>
+    <a href="mailto:ivan@ivanadiaz.com?subject=Peregrine%20%E2%80%94%20Engagement%20Inquiry">Start the conversation</a>
+    <a href="/peregrin3/process/" class="secondary">See how we work</a>
+  </div>
+
+  <div class="doc-footer">
+    <span class="peregrine">Peregrine Consultants</span><br>
+    I. Diaz · ivan@ivanadiaz.com · peregrin3.com<br>
+    <span style="font-style: italic; opacity: 0.8;">Confidential. Prepared for prospective and active engagements.</span>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+/* Compact recognition chips for the public Experience work snapshot. */
+.xp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.xp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 5px 10px 5px 7px;
+  border: 1px solid rgba(52, 58, 64, 0.11);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.xp-chip__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  background: rgba(34, 211, 238, 0.12);
+  color: #167f8f;
+  font-family: var(--display);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.xp-chip--company {
+  color: var(--ink);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+@media (max-width: 520px) {
+  .xp-chips { gap: 7px; }
+  .xp-chip { font-size: 0.74rem; }
+}

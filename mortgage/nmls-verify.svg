@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 640" role="img" aria-label="NMLS Consumer Access">
+  <rect width="920" height="640" fill="#f4f6f8"/>
+  <rect x="0" y="0" width="920" height="88" fill="#1d4f7a"/>
+  <text x="48" y="56" fill="#ffffff" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700">NMLS Consumer Access</text>
+  <rect x="48" y="140" width="824" height="412" rx="8" fill="#ffffff" stroke="#d5dde4"/>
+  <text x="80" y="198" fill="#6b7784" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="1.4">INDIVIDUAL</text>
+  <text x="80" y="268" fill="#1a2330" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700">Ivan A Diaz</text>
+  <text x="80" y="322" fill="#3d4a58" font-family="Arial, Helvetica, sans-serif" font-size="22">NMLS ID 501968</text>
+  <rect x="80" y="368" width="168" height="36" rx="18" fill="#e8f4ea"/>
+  <text x="164" y="392" text-anchor="middle" fill="#1f6b3a" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">Authorized</text>
+  <text x="80" y="470" fill="#7a8692" font-family="Arial, Helvetica, sans-serif" font-size="16">nmlsconsumeraccess.org</text>
+</svg>

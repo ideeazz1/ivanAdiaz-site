@@ -1,0 +1,165 @@
+/* Daily rhythm — agent / digest map */
+
+.rhythm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.rhythm-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--mono);
+}
+
+.rhythm-pill-digest { background: #e4ebf1; color: #3d5a73; }
+.rhythm-pill-agent { background: #e4efe8; color: #3d6b54; }
+.rhythm-pill-scout { background: #ebe8f4; color: #5a4d8c; }
+.rhythm-pill-worker { background: #f5edd6; color: #8a6a22; }
+.rhythm-pill-auto { background: #efeae6; color: #6b5b52; }
+.rhythm-pill-coach { background: #f3e4df; color: #8b4a3a; }
+
+.rhythm-layer-title {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  margin: 28px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rhythm-layer-title span {
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.rhythm-stack {
+  margin: 24px 0;
+  padding: 20px;
+  border-radius: var(--radius);
+}
+
+.rhythm-stack-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--line);
+}
+
+.rhythm-stack-row:last-child { border-bottom: none; }
+
+.rhythm-stack-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding-top: 2px;
+}
+
+.rhythm-stack-items { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.rhythm-chip {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.rhythm-chip small {
+  display: block;
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.rhythm-flow {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .rhythm-flow-3 {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: stretch;
+  }
+  .rhythm-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--ink-soft);
+    font-size: 20px;
+    padding: 0 4px;
+  }
+}
+
+@media (max-width: 767px) { .rhythm-arrow { display: none; } }
+
+.rhythm-card {
+  padding: 16px 18px;
+  border-radius: var(--radius);
+}
+
+.rhythm-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.rhythm-card p { font-size: 13px; color: var(--ink-soft); }
+.rhythm-card .tag { margin-top: 10px; }
+.rhythm-card-digest { border-left: 4px solid #3d5a73; }
+.rhythm-card-agent { border-left: 4px solid #3d6b54; }
+.rhythm-card-auto { border-left: 4px solid #6b5b52; }
+.rhythm-card-worker { border-left: 4px solid #8a6a22; }
+
+.rhythm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.rhythm-table th, .rhythm-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.rhythm-table th {
+  background: rgba(0, 0, 0, 0.03);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+.rhythm-table tr:last-child td { border-bottom: none; }
+
+.rhythm-table code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.rhythm-note {
+  margin-top: 32px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  border: 1px solid rgba(0, 66, 136, 0.15);
+  font-size: 13px;
+}
+
+.rhythm-note strong { color: var(--accent); }
+
+/* Public: hide internal Airtable lane codes in Headhunter split */
+.hierarchy-public .rhythm-table .col-internal { display: none; }
+.hierarchy-public .rhythm-table th.col-internal { display: none; }

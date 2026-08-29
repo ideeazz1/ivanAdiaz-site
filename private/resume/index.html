@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Draft — Ivan Diaz</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="/private/site-gate.js"></script>
+<style>
+  :root {
+    --ink: #343a40;
+    --soft: #707278;
+    --paper: #f6f5f2;
+    --surface: rgba(255,255,255,.82);
+    --line: rgba(52,58,64,.11);
+    --cyan: #22d3ee;
+    --display: Outfit, Inter, system-ui, sans-serif;
+    --sans: Inter, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--sans);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(34,211,238,.07), transparent 24rem),
+      linear-gradient(180deg, #fbfbfa 0%, #f4f3ef 100%);
+    min-height: 100vh;
+  }
+  a { color: inherit; }
+  .resume-shell {
+    width: min(1040px, calc(100% - 36px));
+    margin: 0 auto;
+    padding: 24px 0 72px;
+  }
+  .draft-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,.76);
+    font-size: 12px;
+    color: var(--soft);
+  }
+  .draft-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .draft-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); }
+  .back { text-decoration: none; font-weight: 600; }
+  .resume-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, .7fr);
+    gap: 42px;
+    align-items: end;
+    padding: 64px 0 50px;
+  }
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin: 0 0 14px;
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(3.1rem, 9vw, 7.2rem);
+    line-height: .9;
+    letter-spacing: -.045em;
+  }
+  .hero-copy {
+    margin: 18px 0 0;
+    max-width: 690px;
+    color: var(--soft);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+  .hero-side {
+    padding: 18px;
+    border-left: 2px solid rgba(34,211,238,.55);
+    color: var(--soft);
+    line-height: 1.55;
+  }
+  .hero-side strong { display: block; color: var(--ink); font-family: var(--display); font-size: 1.1rem; margin-bottom: 5px; }
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 18px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 31px;
+    top: 30px;
+    bottom: 30px;
+    width: 1px;
+    background: rgba(52,58,64,.13);
+  }
+  .role {
+    position: relative;
+    display: grid;
+    grid-template-columns: 64px minmax(0,1fr);
+    gap: 20px;
+  }
+  .role-mark {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(52,58,64,.12);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(52,58,64,.06);
+    font-family: var(--display);
+    font-weight: 800;
+    letter-spacing: -.03em;
+  }
+  .role-card {
+    padding: 24px 26px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    backdrop-filter: blur(8px);
+  }
+  .role-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-bottom: 8px;
+    color: #168da0;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .role h2 {
+    margin: 0 0 5px;
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: -.025em;
+  }
+  .role-org { margin: 0 0 14px; color: var(--soft); font-weight: 600; }
+  .role ul { margin: 0; padding-left: 20px; color: var(--soft); line-height: 1.55; }
+  .role li + li { margin-top: 7px; }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 17px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 31px;
+    padding: 5px 11px 5px 7px;
+    border: 1px solid rgba(52,58,64,.11);
+    border-radius: 999px;
+    background: rgba(255,255,255,.74);
+    color: var(--soft);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip i {
+    display: grid;
+    place-items: center;
+    width: 19px;
+    height: 19px;
+    border-radius: 6px;
+    background: rgba(34,211,238,.12);
+    color: #167f8f;
+    font-family: var(--display);
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .note {
+    margin: 34px 0 0 84px;
+    padding: 16px 18px;
+    border-left: 2px solid rgba(52,58,64,.18);
+    color: var(--soft);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  @media (max-width: 760px) {
+    .resume-shell { width: min(100% - 24px, 1040px); }
+    .resume-hero { grid-template-columns: 1fr; gap: 24px; padding: 44px 0 36px; }
+    .role { grid-template-columns: 48px minmax(0,1fr); gap: 12px; }
+    .role-mark { width: 48px; height: 48px; font-size: 12px; }
+    .timeline::before { left: 23px; }
+    .role-card { padding: 20px 18px; }
+    .note { margin-left: 60px; }
+  }
+</style>
+</head>
+<body>
+  <main class="resume-shell">
+    <div class="draft-bar">
+      <span class="draft-badge"><span class="draft-dot"></span>Private resume concept · draft</span>
+      <a class="back" href="/private/console/">Private console</a>
+    </div>
+
+    <header class="resume-hero">
+      <div>
+        <p class="eyebrow">Ivan A Diaz · career story</p>
+        <h1>Built across<br>the work.</h1>
+        <p class="hero-copy">A career through sales, leadership, mortgage judgment, relationships, operations, and the systems that make all of it run better.</p>
+      </div>
+      <div class="hero-side">
+        <strong>One story, not twelve job cards.</strong>
+        Repeated mortgage roles are grouped by craft. Companies stay visible through recognition chips; the progression stays readable.
+      </div>
+    </header>
+
+    <section class="timeline" aria-label="Career timeline draft">
+      <article class="role">
+        <div class="role-mark">NOW</div>
+        <div class="role-card">
+          <div class="role-meta"><span>Present</span><span>Mortgage · relationships · production</span></div>
+          <h2>Mortgage Loan Originator</h2>
+          <p class="role-org">Assurance Financial · Austin, TX · NMLS #501968</p>
+          <ul>
+            <li>Structures purchase and refinance opportunities and guides clients through high-stakes financing decisions.</li>
+            <li>Builds referral relationships while managing execution from first conversation through closing.</li>
+            <li>Brings guideline depth and practical problem-solving to complex files where judgment matters.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip"><i>AF</i>Assurance Financial</span>
+            <span class="chip"><i>MS</i>Mortgage Strategy</span>
+            <span class="chip"><i>BD</i>Business Development</span>
+            <span class="chip"><i>RM</i>Relationships</span>
+            <span class="chip"><i>CF</i>Complex Files</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="role">
+        <div class="role-mark">MTG</div>
+        <div class="role-card">
+          <div class="role-meta"><span>Mortgage career</span><span>Grouped experience</span></div>
+          <h2>Mortgage leadership & origination</h2>
+          <p class="role-org">The same craft across different platforms — grouped so the story does not become repetitive.</p>
+          <ul>
+            <li>Developed business through clients, real-estate relationships, referral partners, and repeat production.</li>
+            <li>Worked across changing markets, products, teams, and operating environments while keeping the client decision at the center.</li>
+            <li>Combined sales ownership with the guideline and structuring depth required to get difficult loans to a defensible answer.</li>
+          </ul>
+          <div class="chips" aria-label="Mortgage companies">
+            <span class="chip"><i>AF</i>Assurance Financial</span>
+            <span class="chip"><i>PH</i>Patriot Home Mortgage</span>
+            <span class="chip"><i>SM</i>Southern Mortgage Group</span>
+            <span class="chip"><i>KM</i>Key Movement</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="role">
+        <div class="role-mark">LEAD</div>
+        <div class="role-card">
+          <div class="role-meta"><span>Leadership foundation</span><span>Banking · people · accountability</span></div>
+          <h2>Retail banking management</h2>
+          <p class="role-org">Wells Fargo</p>
+          <ul>
+            <li>Led people, sales activity, customer relationships, and day-to-day branch execution.</li>
+            <li>Built the management habits that now show up in coaching, standards, ownership, and operating rhythm.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip"><i>WF</i>Wells Fargo</span>
+            <span class="chip"><i>PL</i>People Leadership</span>
+            <span class="chip"><i>SL</i>Sales Leadership</span>
+            <span class="chip"><i>OP</i>Operations</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="role">
+        <div class="role-mark">FDS</div>
+        <div class="role-card">
+          <div class="role-meta"><span>Forward-deployed systems</span><span>Current proof of work</span></div>
+          <h2>Forward-Deployed Systems Builder</h2>
+          <p class="role-org">Peregrin3 · ivanAdiaz · public GitHub</p>
+          <ul>
+            <li>Works inside real business processes to identify friction, design the solution, and deploy systems into the existing operating stack.</li>
+            <li>Builds workflows, decision support, automations, and intelligent tooling around live mortgage and business operations rather than isolated demos.</li>
+            <li>Uses version control, auditability, public proof, and repeatable validation so deployed systems can be trusted and improved over time.</li>
+          </ul>
+          <div class="chips" aria-label="Systems and software">
+            <span class="chip"><i>A</i>Airtable</span>
+            <span class="chip"><i>GW</i>Google Workspace</span>
+            <span class="chip"><i>AS</i>Apps Script</span>
+            <span class="chip"><i>CR</i>Cloud Run</span>
+            <span class="chip"><i>GH</i>GitHub</span>
+            <span class="chip"><i>AI</i>AI Systems</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="role">
+        <div class="role-mark">EDU</div>
+        <div class="role-card">
+          <div class="role-meta"><span>Education & continuing build</span></div>
+          <h2>Business, technology & applied learning</h2>
+          <p class="role-org">Golden Gate University · continuing technical education</p>
+          <ul>
+            <li>Business and information technology foundation, extended through ongoing software, data, automation, and agentic-systems learning.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip"><i>GG</i>Golden Gate University</span>
+            <span class="chip"><i>AT</i>Airtable Builder</span>
+            <span class="chip"><i>AS</i>Agentic Systems</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <p class="note"><strong>Draft rule:</strong> this page stays private until titles, dates, company grouping, and proof language are final. A conventional PDF download can be added later as a secondary option — the web resume is the primary experience.</p>
+  </main>
+</body>
+</html>

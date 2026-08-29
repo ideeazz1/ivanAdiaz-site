@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer src="/config/plausible.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/preview-card.png">
+<meta name="theme-color" content="#343A40">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Purchase Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/mockups/proposal-ivanadiaz.css">
+<script>
+  window.IVAN_PROPOSAL_PUBLIC_ORIGIN = 'https://ivanadiaz.com';
+</script>
+</head>
+<body>
+
+<div id="proposal-client-gate" class="login-wrap hidden" aria-live="polite">
+  <div class="login-card">
+    <p class="login-kicker">Purchase proposal</p>
+    <h1 class="login-title" id="proposal-client-gate-title">Loading…</h1>
+    <p class="login-error hidden" id="proposal-client-gate-error" role="alert"></p>
+  </div>
+</div>
+
+<div class="page hidden" id="proposal-client-page">
+  <header class="page-header">
+    <h1 id="page-title">Purchase Proposal</h1>
+    <p id="page-subtitle"></p>
+  </header>
+
+  <div class="card">
+    <div class="card-hdr">
+      <div>
+        <span class="hdr-label">Prepared for</span>
+        <div class="client-name readonly" id="client-name"></div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="proposal-table-layout">
+        <colgroup id="table-colgroup"></colgroup>
+        <thead id="table-head"></thead>
+      </table>
+      <div id="table-sections" class="proposal-sections"></div>
+    </div>
+    <div class="card-footer"><p id="footer-disclaimer"></p></div>
+  </div>
+
+  <div class="bottom-actions">
+    <div class="cta-primary-wrap">
+      <button type="button" class="link-btn proposal-cta" id="cta-primary"><span class="btn-label">Request Loan Estimate</span></button>
+      <time class="cta-requested-stamp hidden" id="cta-primary-stamp" datetime=""></time>
+    </div>
+    <button type="button" class="link-btn proposal-cta" id="cta-secondary"><span class="btn-label">Request More Options</span></button>
+  </div>
+  <div id="loan-estimate-panel" class="message-panel hidden" aria-hidden="true">
+    <label class="message-panel-label" for="loan-estimate-message">Add a message?</label>
+    <textarea id="loan-estimate-message" rows="6" placeholder="Optional note for your loan estimate request…"></textarea>
+    <div class="message-panel-actions">
+      <button type="button" class="btn-primary" id="loan-estimate-request">Request</button>
+      <button type="button" class="btn-cancel" id="loan-estimate-cancel">Cancel</button>
+    </div>
+    <p class="message-panel-status" id="loan-estimate-status"></p>
+  </div>
+  <div id="message-panel" class="message-panel hidden" aria-hidden="true">
+    <label class="message-panel-label" for="message-body">Message Ivan</label>
+    <textarea id="message-body" rows="6" placeholder="Type your message…"></textarea>
+    <div class="message-panel-actions">
+      <button type="button" class="btn-primary" id="message-send">Send</button>
+      <button type="button" class="btn-cancel" id="message-cancel">Cancel</button>
+    </div>
+    <p class="message-panel-status" id="message-status"></p>
+  </div>
+</div>
+
+<div id="amort-modal" class="amort-modal hidden" aria-hidden="true" role="dialog" aria-labelledby="amort-modal-title">
+  <div class="amort-modal-backdrop"></div>
+  <div class="amort-modal-panel">
+    <div class="amort-modal-hdr">
+      <h2 id="amort-modal-title">Amortization Schedule</h2>
+      <button type="button" class="amort-modal-close" aria-label="Close">×</button>
+    </div>
+    <iframe id="amort-modal-frame" class="amort-modal-frame" title="Amortization schedule"></iframe>
+  </div>
+</div>
+
+<script src="/config/proposal-api-config.js"></script>
+<script src="/mockups/fha-mortgage-insurance.js"></script>
+<script src="/mockups/proposal-engine.js"></script>
+<script>
+  (async function () {
+    await window.IVAN_PROPOSAL_API_BASE_READY;
+    ProposalEngine.ProposalApp.init('client');
+  })();
+</script>
+</body>
+</html>
