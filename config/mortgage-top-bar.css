@@ -201,3 +201,36 @@
 .page-shell .hero {
   background: transparent;
 }
+
+/* Texas-only sizing adjustments. */
+.texas-guide .hero-title-flag {
+  font-size: 60px !important;
+}
+
+.texas-guide .program-marquee__group {
+  min-height: 58px !important;
+}
+
+.texas-guide .program-marquee__item {
+  font-size: 0.84rem !important;
+  padding-inline: 1.9rem !important;
+}
+
+.texas-guide .program-marquee__item::after {
+  margin-left: 3.8rem !important;
+}
+
+@media (max-width: 720px) {
+  .texas-guide .hero-title-flag {
+    font-size: clamp(2.6rem, 11vw, 3.75rem) !important;
+  }
+
+  .texas-guide .program-marquee__group {
+    min-height: 52px !important;
+  }
+
+  .texas-guide .program-marquee__item {
+    font-size: 0.78rem !important;
+    padding-inline: 1.25rem !important;
+  }
+}
