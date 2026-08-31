@@ -35,6 +35,44 @@
   "areaServed": {"@type": "State", "name": "Texas"}
 }
 </script>
+
+<style>
+  /* Texas hero headline only — subtle flag-in-the-wind wash */
+  .hero-title-flag {
+    background-image: linear-gradient(
+      105deg,
+      #002868 0%,
+      #1e4a9a 14%,
+      #e8eef8 28%,
+      #bf0a30 44%,
+      #f4f7fb 58%,
+      #002868 74%,
+      #c62828 88%,
+      #e8eef8 100%
+    );
+    background-size: 240% 160%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: flag-wave-text 11s ease-in-out infinite;
+    filter: drop-shadow(0 1px 0 rgba(52, 58, 64, 0.12));
+  }
+
+  @keyframes flag-wave-text {
+    0%, 100% { background-position: 0% 42%; }
+    25% { background-position: 32% 58%; }
+    50% { background-position: 100% 48%; }
+    75% { background-position: 58% 35%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-title-flag {
+      animation: none;
+      background-position: 28% 50%;
+    }
+  }
+</style>
 </head>
 <body>
 <div class="top-bar" aria-label="Site header">
@@ -61,7 +99,7 @@
   <section class="hero">
     <div>
       <p class="eyebrow">Texas home financing</p>
-      <h1>A clearer path to your Texas home.</h1>
+      <h1 class="hero-title-flag">Texan&apos;s Guide to 100% Financing</h1>
       <p class="hero-copy">Start with the financing paths and tools that fit your situation, then talk through the numbers with an Austin-based loan officer who works across purchase, refinance, construction, FHA, VA, and eligible down payment assistance scenarios.</p>
       <div class="hero-actions">
         <a class="button primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Apply with Ivan</a>
