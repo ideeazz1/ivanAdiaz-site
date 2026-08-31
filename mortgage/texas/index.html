@@ -37,8 +37,32 @@
 </script>
 
 <style>
-  /* Texas hero headline only — subtle flag-in-the-wind wash */
+  .texas-guide {
+    overflow-x: hidden;
+  }
+
+  .texas-guide .page-shell {
+    width: min(1120px, calc(100% - 40px));
+  }
+
+  .texas-guide .hero {
+    min-height: clamp(560px, 72vh, 760px);
+    display: flex;
+    align-items: center;
+    padding: clamp(78px, 9vw, 124px) clamp(8px, 2vw, 24px) clamp(64px, 8vw, 96px);
+    background: transparent;
+    overflow: visible;
+  }
+
   .hero-title-flag {
+    width: 100%;
+    max-width: 1040px;
+    margin: 0;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: clamp(4rem, 8.4vw, 7.25rem);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
     background-image: linear-gradient(
       105deg,
       #002868 0%,
@@ -59,6 +83,71 @@
     filter: drop-shadow(0 1px 0 rgba(52, 58, 64, 0.12));
   }
 
+  .hero-title-flag .hero-line {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .hero-title-flag .hero-line:nth-child(2) {
+    margin-left: 12%;
+  }
+
+  .hero-title-flag .hero-line:nth-child(3) {
+    margin-left: 29%;
+  }
+
+  .hero-title-flag .hero-line + .hero-line {
+    margin-top: 0.08em;
+  }
+
+  .program-marquee {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    background: #002868;
+    color: #fff;
+    border-top: 1px solid rgba(255,255,255,.16);
+    border-bottom: 1px solid rgba(255,255,255,.16);
+  }
+
+  .program-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: program-scroll 22s linear infinite;
+    will-change: transform;
+  }
+
+  .program-marquee__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: 72px;
+  }
+
+  .program-marquee__item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0 2.25rem;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: clamp(.9rem, 1.35vw, 1.08rem);
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .program-marquee__item::after {
+    content: "•";
+    margin-left: 4.5rem;
+    opacity: .55;
+  }
+
+  .program-marquee:hover .program-marquee__track {
+    animation-play-state: paused;
+  }
+
   @keyframes flag-wave-text {
     0%, 100% { background-position: 0% 42%; }
     25% { background-position: 32% 58%; }
@@ -66,15 +155,67 @@
     75% { background-position: 58% 35%; }
   }
 
+  @keyframes program-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 720px) {
+    .texas-guide .page-shell {
+      width: min(100% - 24px, 1120px);
+    }
+
+    .texas-guide .hero {
+      min-height: 520px;
+      padding: 70px 0 58px;
+    }
+
+    .hero-title-flag {
+      font-size: clamp(3rem, 14vw, 4.8rem);
+      line-height: .9;
+    }
+
+    .hero-title-flag .hero-line:nth-child(2) {
+      margin-left: 8%;
+    }
+
+    .hero-title-flag .hero-line:nth-child(3) {
+      margin-left: 16%;
+    }
+
+    .program-marquee__group {
+      min-height: 62px;
+    }
+
+    .program-marquee__item {
+      padding: 0 1.5rem;
+      letter-spacing: .1em;
+    }
+
+    .program-marquee__item::after {
+      margin-left: 3rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-title-flag {
       animation: none;
       background-position: 28% 50%;
     }
+
+    .program-marquee__track {
+      width: 100%;
+      animation: none;
+      justify-content: center;
+    }
+
+    .program-marquee__group[aria-hidden="true"] {
+      display: none;
+    }
   }
 </style>
 </head>
-<body>
+<body class="texas-guide">
 <div class="top-bar" aria-label="Site header">
   <nav class="top-bar__pill">
     <a class="top-bar__brand" href="/">
@@ -96,81 +237,28 @@
 </div>
 
 <main class="page-shell">
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Texas home financing</p>
-      <h1 class="hero-title-flag">Texan&apos;s Guide to 100% Financing</h1>
-      <p class="hero-copy">Start with the financing paths and tools that fit your situation, then talk through the numbers with an Austin-based loan officer who works across purchase, refinance, construction, FHA, VA, and eligible down payment assistance scenarios.</p>
-      <div class="hero-actions">
-        <a class="button primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Apply with Ivan</a>
-        <a class="button" href="tel:+14152717740">Call (415) 271-7740</a>
+  <section class="hero" aria-labelledby="texas-guide-title">
+    <h1 class="hero-title-flag" id="texas-guide-title">
+      <span class="hero-line">Texan&apos;s Guide</span>
+      <span class="hero-line">to 100%</span>
+      <span class="hero-line">Financing</span>
+    </h1>
+  </section>
+
+  <section class="program-marquee" aria-label="Texas mortgage programs">
+    <div class="program-marquee__track">
+      <div class="program-marquee__group">
+        <span class="program-marquee__item">SETH Mortgage Programs</span>
+        <span class="program-marquee__item">TSAHC Mortgage Programs</span>
+        <span class="program-marquee__item">Chenoa Mortgage Programs</span>
       </div>
-    </div>
-    <aside class="credential-card" aria-label="Ivan Diaz credentials">
-      <strong>Ivan A. Diaz</strong>
-      <span>Mortgage Loan Originator</span>
-      <span>NMLS #501968</span>
-      <hr>
-      <strong>Austin, Texas</strong>
-      <span>Assurance Financial</span>
-      <span>7600 Burnet Road, Suite 315</span>
-    </aside>
-  </section>
-
-  <section class="content-section">
-    <div class="section-heading">
-      <p class="eyebrow">Start with the right conversation</p>
-      <h2>Financing is personal. The process should still be understandable.</h2>
-      <p>These are common starting points, not promises of approval. Ivan can help identify which options are worth evaluating after reviewing your goals and qualifying information.</p>
-    </div>
-    <div class="card-grid">
-      <article class="card">
-        <span class="tag">Buying</span>
-        <h3>Purchase and first-home planning</h3>
-        <p>Build a realistic budget, compare down-payment choices, and understand what pre-qualification means before you shop.</p>
-      </article>
-      <article class="card">
-        <span class="tag">Options</span>
-        <h3>FHA, VA, and assistance paths</h3>
-        <p>Explore government-backed loans and eligible assistance programs without assuming one program fits every borrower.</p>
-      </article>
-      <article class="card">
-        <span class="tag">Next chapter</span>
-        <h3>Refinance and construction</h3>
-        <p>Review the purpose, costs, and timeline of a refinance, construction, or renovation scenario before deciding.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="content-section">
-    <div class="section-heading">
-      <p class="eyebrow">Verified resources</p>
-      <h2>Useful tools, without the rate-chasing noise.</h2>
-    </div>
-    <ul class="resource-list">
-      <li><a href="https://www.mortgagenewsdaily.com/mortgage-rates" target="_blank" rel="noopener noreferrer">Today’s mortgage rate trends</a></li>
-      <li><a href="https://chenoafund.org/homebuyer/programs/" target="_blank" rel="noopener noreferrer">Chenoa Fund homebuyer programs</a></li>
-      <li><a href="https://c.homebotapp.com/home-search/lead/ab559b7a-6390-4c59-8aaf-b723359eb766" target="_blank" rel="noopener noreferrer">Search for a home with Homebot</a></li>
-      <li><a href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/501968" target="_blank" rel="noopener noreferrer">Verify Ivan’s NMLS record</a></li>
-    </ul>
-    <p class="fine-print">Program availability, qualification, rates, and payments vary by borrower and timing. This page is educational and is not a commitment to lend.</p>
-  </section>
-
-  <section class="content-section">
-    <div class="portal-callout">
-      <div>
-        <p class="eyebrow">For invited clients</p>
-        <h2>Your client portal is taking shape.</h2>
-        <p>Use your personalized invitation to review property information, loan options, and shared summaries. General sign-in access is still being connected.</p>
+      <div class="program-marquee__group" aria-hidden="true">
+        <span class="program-marquee__item">SETH Mortgage Programs</span>
+        <span class="program-marquee__item">TSAHC Mortgage Programs</span>
+        <span class="program-marquee__item">Chenoa Mortgage Programs</span>
       </div>
-      <a class="button" href="/portal/login.html">Open client portal</a>
     </div>
   </section>
 </main>
-
-<footer class="site-footer">
-  <p>Ivan Diaz · Mortgage Loan Originator · NMLS #501968</p>
-  <p>Equal Housing Lender · <a href="/mortgage/">ivanadiaz.com/mortgage</a></p>
-</footer>
 </body>
 </html>
