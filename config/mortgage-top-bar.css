@@ -185,3 +185,19 @@
 @media (prefers-reduced-motion: reduce) {
   .top-bar__pill:hover::before { animation: none; }
 }
+
+/* State-page cleanup: keep one mortgage header and remove boxed framing. */
+.top-bar::before,
+.top-bar.is-compact::before {
+  display: none;
+}
+
+.top-bar__pill,
+.top-bar.is-compact .top-bar__pill {
+  border: 0;
+  box-shadow: none;
+}
+
+.page-shell .hero {
+  background: transparent;
+}
