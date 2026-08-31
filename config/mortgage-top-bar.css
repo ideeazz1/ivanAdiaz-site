@@ -48,7 +48,7 @@
   padding: 16px 22px 16px 24px;
   border-radius: 999px;
   background: transparent;
-  border: 1px solid rgba(52, 58, 64, 0.14);
+  border: 0;
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -163,8 +163,8 @@
   max-width: none;
   padding: 8px 16px 8px 18px;
   background: #F8F9FA;
-  border-color: rgba(52, 58, 64, 0.14);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .top-bar.is-compact .top-bar__brand { font-size: 20px; gap: 0.5rem; }
