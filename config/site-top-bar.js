@@ -6,80 +6,86 @@
   var brand = document.querySelector('.top-bar__brand');
   var compactAt = 40;
   var path = window.location.pathname.replace(/\/+$/, '') || '/';
+  var isMortgageHome = path === '/mortgage';
+  var isTexas = path === '/mortgage/texas';
+  var isCalifornia = path === '/mortgage/california';
+  var isMortgagePath = isMortgageHome || isTexas || isCalifornia;
 
   if (!bar) return;
 
-  if (path === '/mortgage') {
+  if (isMortgagePath) {
     if (brand) brand.setAttribute('href', '/');
 
     if (nav) {
       nav.innerHTML = [
-        '<li><a href="/mortgage/" aria-current="page">Mortgage Home</a></li>',
-        '<li><a href="/texas/">Texas</a></li>',
-        '<li><a href="/california/">California</a></li>',
+        '<li><a href="/mortgage/"' + (isMortgageHome ? ' aria-current="page"' : '') + '>Mortgage Home</a></li>',
+        '<li><a href="/mortgage/texas/"' + (isTexas ? ' aria-current="page"' : '') + '>Texas</a></li>',
+        '<li><a href="/mortgage/california/"' + (isCalifornia ? ' aria-current="page"' : '') + '>California</a></li>',
         '<li><a href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Apply</a></li>',
         '<li><a href="https://idp.elliemae.com/authorize?client_id=srtrz0d2&site_id=9548862087&response_type=code&redirect_uri=https%3A%2F%2Fassurance.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3Flar%3Didiaz%26workFlowId%3D67079%26_gl%3D1*dl3shk*_ga*MTAxMDgxMjc1OC4xNzI5MTA1NjI3*_ga_1PDFYSY743*MTcyOTg3OTM2Mi42LjEuMTcyOTg3OTk5Ni40MC4wLjA.%26dest%3D%2Floan-app%2F%26siteId%3D9548862087&scope=ccbp%20cc&instance_id=be11130424&logo_url=https%3A%2F%2Fstore.asset.ellieservices.com%2F6a134995-5f29-4900-9172-ccf8d134940f&logo_alt_text=Logo&logo_is_disabled&bust=393&apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">Log In / Sign Documents</a></li>',
-        '<li><a href="#contact">Contact</a></li>'
+        '<li><a href="' + (isMortgageHome ? '#contact' : '/mortgage/#contact') + '">Contact</a></li>'
       ].join('');
     }
 
-    var intro = document.querySelector('.intro');
-    if (intro) {
-      var identityStyle = document.createElement('style');
-      identityStyle.textContent = [
-        '.mortgage-profile{margin-bottom:12px;text-align:center;flex:0 0 auto}',
-        '.mortgage-profile .mortgage-profile__title{font-family:var(--display);font-size:36px;font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--ink);margin:0 0 4px}',
-        '.mortgage-profile .mortgage-profile__nmls{font-family:var(--display);font-size:11.5px;font-weight:500;letter-spacing:.02em;color:var(--ink);opacity:.45;margin:0 0 10px}',
-        '.mortgage-profile__states{display:flex;justify-content:center;align-items:flex-start;gap:16px;margin:0 0 10px;flex-wrap:nowrap}',
-        '.mortgage-profile .state-badge{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:inherit;min-width:44px}',
-        '.mortgage-profile .state-svg{width:44px;height:44px;display:block;object-fit:contain;opacity:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,.15));transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1),filter .2s}',
-        '.mortgage-profile .state-svg.is-ready{opacity:1}',
-        '.mortgage-profile a.state-badge:hover .state-svg{transform:scale(1.15) translateY(-2px);filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}',
-        '.mortgage-profile .state-code{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--ink);opacity:.6}',
-        '.mortgage-profile__socials{display:flex;justify-content:center;align-items:center;gap:14px;margin:0}',
-        '.mortgage-profile .social-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.90);border:1px solid #DEE2E6;color:var(--ink);text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.07);transition:background .15s,transform .12s}',
-        '.mortgage-profile .social-btn:hover{background:#E9ECEF;transform:scale(1.06)}',
-        '.mortgage-profile .social-btn svg{width:17px;height:17px;fill:currentColor;display:block}',
-        '@media(max-width:720px){.mortgage-profile .mortgage-profile__title{font-size:32px}.mortgage-profile__states{gap:14px}.mortgage-profile .state-svg{width:42px;height:42px}}'
-      ].join('');
-      document.head.appendChild(identityStyle);
+    if (isMortgageHome) {
+      var intro = document.querySelector('.intro');
+      if (intro) {
+        var identityStyle = document.createElement('style');
+        identityStyle.textContent = [
+          '.mortgage-profile{margin-bottom:12px;text-align:center;flex:0 0 auto}',
+          '.mortgage-profile .mortgage-profile__title{font-family:var(--display);font-size:36px;font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--ink);margin:0 0 4px}',
+          '.mortgage-profile .mortgage-profile__nmls{font-family:var(--display);font-size:11.5px;font-weight:500;letter-spacing:.02em;color:var(--ink);opacity:.45;margin:0 0 10px}',
+          '.mortgage-profile__states{display:flex;justify-content:center;align-items:flex-start;gap:16px;margin:0 0 10px;flex-wrap:nowrap}',
+          '.mortgage-profile .state-badge{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:inherit;min-width:44px}',
+          '.mortgage-profile .state-svg{width:44px;height:44px;display:block;object-fit:contain;opacity:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,.15));transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1),filter .2s}',
+          '.mortgage-profile .state-svg.is-ready{opacity:1}',
+          '.mortgage-profile a.state-badge:hover .state-svg{transform:scale(1.15) translateY(-2px);filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}',
+          '.mortgage-profile .state-code{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--ink);opacity:.6}',
+          '.mortgage-profile__socials{display:flex;justify-content:center;align-items:center;gap:14px;margin:0}',
+          '.mortgage-profile .social-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.90);border:1px solid #DEE2E6;color:var(--ink);text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.07);transition:background .15s,transform .12s}',
+          '.mortgage-profile .social-btn:hover{background:#E9ECEF;transform:scale(1.06)}',
+          '.mortgage-profile .social-btn svg{width:17px;height:17px;fill:currentColor;display:block}',
+          '@media(max-width:720px){.mortgage-profile .mortgage-profile__title{font-size:32px}.mortgage-profile__states{gap:14px}.mortgage-profile .state-svg{width:42px;height:42px}}'
+        ].join('');
+        document.head.appendChild(identityStyle);
 
-      intro.classList.add('mortgage-profile');
-      intro.innerHTML = [
-        '<h1 class="mortgage-profile__title">Mortgage Advisor</h1>',
-        '<p class="mortgage-profile__nmls">NMLS #501968</p>',
-        '<div class="mortgage-profile__states" aria-label="State mortgage resources">',
-          '<a class="state-badge" href="/texas/" aria-label="Texas mortgage resources"><img class="state-svg" data-state-index="0" alt="Texas"><span class="state-code">TX</span></a>',
-          '<a class="state-badge" href="/california/" aria-label="California mortgage resources"><img class="state-svg" data-state-index="1" alt="California"><span class="state-code">CA</span></a>',
-          '<div class="state-badge" aria-label="Arkansas"><img class="state-svg" data-state-index="2" alt="Arkansas"><span class="state-code">AR</span></div>',
-          '<div class="state-badge" aria-label="New Mexico"><img class="state-svg" data-state-index="3" alt="New Mexico"><span class="state-code">NM</span></div>',
-        '</div>',
-        '<div class="mortgage-profile__socials" aria-label="Social media">',
-          '<a class="social-btn" href="https://www.linkedin.com/in/ivanadiaz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>',
-          '<a class="social-btn" href="https://www.instagram.com/ivandiazmortgage/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>',
-        '</div>'
-      ].join('');
+        intro.classList.add('mortgage-profile');
+        intro.innerHTML = [
+          '<h1 class="mortgage-profile__title">Mortgage Advisor</h1>',
+          '<p class="mortgage-profile__nmls">NMLS #501968</p>',
+          '<div class="mortgage-profile__states" aria-label="State mortgage resources">',
+            '<a class="state-badge" href="/mortgage/texas/" aria-label="Texas mortgage resources"><img class="state-svg" data-state-index="0" alt="Texas"><span class="state-code">TX</span></a>',
+            '<a class="state-badge" href="/mortgage/california/" aria-label="California mortgage resources"><img class="state-svg" data-state-index="1" alt="California"><span class="state-code">CA</span></a>',
+            '<div class="state-badge" aria-label="Arkansas"><img class="state-svg" data-state-index="2" alt="Arkansas"><span class="state-code">AR</span></div>',
+            '<div class="state-badge" aria-label="New Mexico"><img class="state-svg" data-state-index="3" alt="New Mexico"><span class="state-code">NM</span></div>',
+          '</div>',
+          '<div class="mortgage-profile__socials" aria-label="Social media">',
+            '<a class="social-btn" href="https://www.linkedin.com/in/ivanadiaz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>',
+            '<a class="social-btn" href="https://www.instagram.com/ivandiazmortgage/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>',
+          '</div>'
+        ].join('');
 
-      fetch('/', { cache: 'force-cache' })
-        .then(function (response) {
-          if (!response.ok) throw new Error('Unable to load homepage state assets');
-          return response.text();
-        })
-        .then(function (html) {
-          var source = new DOMParser().parseFromString(html, 'text/html');
-          var sourceStates = source.querySelectorAll('.state-svg');
-          intro.querySelectorAll('.state-svg[data-state-index]').forEach(function (targetState) {
-            var index = Number(targetState.getAttribute('data-state-index'));
-            var sourceState = sourceStates[index];
-            if (sourceState) {
-              targetState.src = sourceState.getAttribute('src');
-              targetState.classList.add('is-ready');
-            }
+        fetch('/', { cache: 'force-cache' })
+          .then(function (response) {
+            if (!response.ok) throw new Error('Unable to load homepage state assets');
+            return response.text();
+          })
+          .then(function (html) {
+            var source = new DOMParser().parseFromString(html, 'text/html');
+            var sourceStates = source.querySelectorAll('.state-svg');
+            intro.querySelectorAll('.state-svg[data-state-index]').forEach(function (targetState) {
+              var index = Number(targetState.getAttribute('data-state-index'));
+              var sourceState = sourceStates[index];
+              if (sourceState) {
+                targetState.src = sourceState.getAttribute('src');
+                targetState.classList.add('is-ready');
+              }
+            });
+          })
+          .catch(function () {
+            /* Keep the mortgage tools usable even if state assets fail to load. */
           });
-        })
-        .catch(function () {
-          /* Keep the mortgage tools usable even if state assets fail to load. */
-        });
+      }
     }
   }
 
