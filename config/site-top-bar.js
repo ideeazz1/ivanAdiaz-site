@@ -23,22 +23,56 @@
       ].join('');
     }
 
+    var mortgageStyle = document.createElement('style');
+    mortgageStyle.textContent = [
+      'body{background-color:#F8F9FA;background-image:radial-gradient(ellipse 100% 70% at 50% 8%,rgba(196,178,152,.12) 0%,transparent 52%),radial-gradient(ellipse 120% 80% at 15% 0%,rgba(72,120,95,.10) 0%,transparent 55%),radial-gradient(ellipse 90% 60% at 88% 12%,rgba(120,140,220,.13) 0%,transparent 50%),radial-gradient(ellipse 100% 90% at 50% 100%,rgba(72,98,128,.08) 0%,transparent 48%),radial-gradient(ellipse 80% 55% at 20% 78%,rgba(160,180,255,.11) 0%,transparent 45%),linear-gradient(165deg,#FAFBFC 0%,#EEF0F5 42%,#F8F9FA 72%,#DEE2E6 100%)}',
+      'body::before{background:radial-gradient(circle at 20% 30%,rgba(88,145,118,.09) 0%,transparent 42%),radial-gradient(circle at 82% 18%,rgba(130,150,230,.15) 0%,transparent 40%),radial-gradient(circle at 45% 60%,rgba(210,195,175,.09) 0%,transparent 36%),radial-gradient(circle at 55% 78%,rgba(180,190,255,.13) 0%,transparent 38%),radial-gradient(circle at 60% 85%,rgba(72,120,95,.10) 0%,transparent 40%)}',
+      '.page{width:min(1000px,calc(100% - 32px));margin:18px auto 12px}',
+      '.intro{position:relative;isolation:isolate;overflow:hidden;margin-bottom:18px;padding:24px 28px 20px;border:1px solid rgba(255,255,255,.78);border-radius:30px;background:rgba(255,255,255,.50);backdrop-filter:blur(18px) saturate(135%);-webkit-backdrop-filter:blur(18px) saturate(135%);box-shadow:0 16px 44px rgba(55,64,76,.08),inset 0 1px 0 rgba(255,255,255,.82)}',
+      '.intro::before{content:"";position:absolute;inset:-35%;z-index:-1;pointer-events:none;background:radial-gradient(circle at 22% 32%,rgba(102,170,139,.16) 0%,transparent 32%),radial-gradient(circle at 78% 24%,rgba(142,164,242,.22) 0%,transparent 34%),radial-gradient(circle at 52% 82%,rgba(213,195,168,.15) 0%,transparent 32%);filter:blur(24px)}',
+      '.intro h1{font-size:46px;line-height:1;letter-spacing:-.045em;text-wrap:balance}',
+      '.intro>p:not(.nmls){font-size:17px;margin-top:9px;opacity:.64}',
+      '.nmls{margin-top:8px;opacity:.42}',
+      '.mortgage-identity{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:13px;flex-wrap:wrap}',
+      '.mortgage-state-links,.mortgage-social-links{display:flex;align-items:center;gap:8px}',
+      '.mortgage-state-link{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:30px;padding:0 11px;border:1px solid rgba(52,58,64,.12);border-radius:999px;color:var(--ink);font-size:11px;font-weight:800;letter-spacing:.08em;text-decoration:none;background:rgba(255,255,255,.64);box-shadow:0 3px 10px rgba(52,58,64,.05);transition:transform .16s ease,background .16s ease,box-shadow .16s ease}',
+      '.mortgage-state-link:hover{transform:translateY(-2px);background:rgba(255,255,255,.92);box-shadow:0 6px 16px rgba(52,58,64,.09)}',
+      '.mortgage-social-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;color:var(--ink);opacity:.62;text-decoration:none;background:rgba(255,255,255,.42);transition:opacity .16s ease,transform .16s ease,background .16s ease}',
+      '.mortgage-social-link:hover{opacity:.95;transform:translateY(-2px);background:rgba(255,255,255,.86)}',
+      '.mortgage-social-link svg{width:17px;height:17px;display:block;fill:currentColor}',
+      '.carousel{gap:16px}',
+      '.carousel__rail{height:248px}',
+      '.carousel__stage{height:264px}',
+      '.carousel__track{gap:16px}',
+      '.carousel__mark{width:7px;height:7px;background:rgba(52,58,64,.18)}',
+      '.carousel__mark[aria-current="true"]{height:25px;background:rgba(52,58,64,.82)}',
+      '.split-card{height:248px;min-height:248px;border-radius:30px;background:rgba(255,255,255,.74);border:1px solid rgba(255,255,255,.78);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);box-shadow:0 14px 38px rgba(55,64,76,.09),0 2px 5px rgba(52,58,64,.05);transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s ease,--blob-x .3s ease-out,--blob-y .3s ease-out}',
+      '.split-card::before{opacity:.13}',
+      '.split-card:hover{transform:translateY(-3px) scale(1.008);box-shadow:0 22px 48px rgba(55,64,76,.14),0 3px 8px rgba(52,58,64,.06)}',
+      '.split-card:hover::before{opacity:.92}',
+      '.split-card__details{padding:34px 40px;gap:8px}',
+      '.split-card h2{font-size:30px;letter-spacing:-.04em}',
+      '.brand{font-size:14px;opacity:.64}',
+      '.site{opacity:.42}',
+      '.kicker{opacity:.48}',
+      '.cta-pill{margin-top:8px;padding:9px 15px;background:rgba(255,255,255,.72);border-color:rgba(52,58,64,.10);box-shadow:0 3px 10px rgba(52,58,64,.05)}',
+      '.split-card__media{height:248px;border-color:rgba(52,58,64,.08);background:rgba(244,246,248,.62)}',
+      '.split-card__media>img{transition:transform .38s cubic-bezier(.22,1,.36,1),filter .28s ease}',
+      '.split-card:hover .split-card__media>img{transform:scale(1.018);filter:saturate(1.03)}',
+      '.split-card:has(.is-inset) .split-card__media>img{transform:none}',
+      '.top-bar.is-compact .top-bar__pill{background:rgba(248,249,250,.90);backdrop-filter:blur(14px) saturate(130%);-webkit-backdrop-filter:blur(14px) saturate(130%)}',
+      '@media(max-width:720px){body{background-attachment:scroll}.page{width:min(960px,calc(100% - 24px));margin:14px auto 0}.intro{padding:23px 18px 20px;border-radius:24px;margin-bottom:18px}.intro h1{font-size:36px}.intro>p:not(.nmls){font-size:15px;line-height:1.4}.mortgage-identity{margin-top:12px;gap:10px}.mortgage-state-link{height:30px}.mortgage-social-link{width:30px;height:30px}.carousel__stage{height:auto}.split-card,.split-card.is-swap{height:auto;min-height:0;border-radius:26px}.split-card__details{padding:26px 22px}.split-card h2{font-size:24px}.split-card__media,.split-card.is-swap .split-card__media{height:auto;min-height:180px;max-height:220px}.split-card:hover{transform:none}}'
+    ].join('');
+    document.head.appendChild(mortgageStyle);
+
     var intro = document.querySelector('.intro');
     var nmls = intro && intro.querySelector('.nmls');
-    if (intro && nmls && !intro.querySelector('.mortgage-identity')) {
-      var style = document.createElement('style');
-      style.textContent = [
-        '.mortgage-identity{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}',
-        '.mortgage-state-links,.mortgage-social-links{display:flex;align-items:center;gap:8px}',
-        '.mortgage-state-link{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:28px;padding:0 10px;border:1px solid rgba(52,58,64,.14);border-radius:999px;color:var(--ink);font-size:11px;font-weight:800;letter-spacing:.08em;text-decoration:none;background:rgba(255,255,255,.42);transition:transform .16s ease,background .16s ease}',
-        '.mortgage-state-link:hover{transform:translateY(-1px);background:rgba(255,255,255,.75)}',
-        '.mortgage-social-link{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;color:var(--ink);opacity:.58;text-decoration:none;transition:opacity .16s ease,transform .16s ease}',
-        '.mortgage-social-link:hover{opacity:.92;transform:translateY(-1px)}',
-        '.mortgage-social-link svg{width:18px;height:18px;display:block;fill:currentColor}',
-        '@media (max-width:720px){.mortgage-identity{margin-top:12px;gap:10px}.mortgage-state-link{height:30px}.mortgage-social-link{width:30px;height:30px}}'
-      ].join('');
-      document.head.appendChild(style);
+    if (intro) {
+      var introCopy = intro.querySelector('p:not(.nmls)');
+      if (introCopy) introCopy.textContent = 'Guidance, client access, home search, and reviews — all in one place.';
+    }
 
+    if (intro && nmls && !intro.querySelector('.mortgage-identity')) {
       var identity = document.createElement('div');
       identity.className = 'mortgage-identity';
       identity.setAttribute('aria-label', 'Mortgage licenses and social links');
