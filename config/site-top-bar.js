@@ -28,9 +28,6 @@
       var identityStyle = document.createElement('style');
       identityStyle.textContent = [
         '.mortgage-profile{margin-bottom:12px;text-align:center;flex:0 0 auto}',
-        '.mortgage-profile__avatar{width:112px;height:112px;margin:0 auto 10px;border-radius:50%;overflow:hidden;border:3px solid #fff;box-shadow:0 0 0 4px rgba(52,58,64,.12),0 4px 18px rgba(0,0,0,.10)}',
-        '.mortgage-profile__avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;opacity:0;transition:opacity .18s ease}',
-        '.mortgage-profile__avatar img.is-ready{opacity:1}',
         '.mortgage-profile .mortgage-profile__name{font-family:var(--display);font-size:36px;font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--ink);margin:0 0 4px}',
         '.mortgage-profile .mortgage-profile__title{font-family:var(--display);font-size:15px;font-weight:500;line-height:1.35;color:var(--ink);opacity:.72;margin:0 auto 3px;max-width:720px}',
         '.mortgage-profile .mortgage-profile__nmls{font-family:var(--display);font-size:11.5px;font-weight:500;letter-spacing:.02em;color:var(--ink);opacity:.45;margin:0 0 10px}',
@@ -44,15 +41,14 @@
         '.mortgage-profile .social-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.90);border:1px solid #DEE2E6;color:var(--ink);text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.07);transition:background .15s,transform .12s}',
         '.mortgage-profile .social-btn:hover{background:#E9ECEF;transform:scale(1.06)}',
         '.mortgage-profile .social-btn svg{width:17px;height:17px;fill:currentColor;display:block}',
-        '@media(max-width:720px){.mortgage-profile__avatar{width:104px;height:104px}.mortgage-profile .mortgage-profile__name{font-size:32px}.mortgage-profile .mortgage-profile__title{font-size:14px;max-width:92%}.mortgage-profile__states{gap:14px}.mortgage-profile .state-svg{width:42px;height:42px}}'
+        '@media(max-width:720px){.mortgage-profile .mortgage-profile__name{font-size:32px}.mortgage-profile .mortgage-profile__title{font-size:14px;max-width:92%}.mortgage-profile__states{gap:14px}.mortgage-profile .state-svg{width:42px;height:42px}}'
       ].join('');
       document.head.appendChild(identityStyle);
 
       intro.classList.add('mortgage-profile');
       intro.innerHTML = [
-        '<div class="mortgage-profile__avatar"><img id="mortgage-profile-photo" alt="Ivan A. Diaz"></div>',
         '<h1 class="mortgage-profile__name">Ivan&nbsp;&nbsp;Diaz</h1>',
-        '<p class="mortgage-profile__title">Client Development Manager | Mortgage Advisor | Business Systems Engineer</p>',
+        '<p class="mortgage-profile__title">Mortgage Advisor</p>',
         '<p class="mortgage-profile__nmls">NMLS #501968</p>',
         '<div class="mortgage-profile__states" aria-label="State mortgage resources">',
           '<a class="state-badge" href="/texas/" aria-label="Texas mortgage resources"><img class="state-svg" data-state-index="0" alt="Texas"><span class="state-code">TX</span></a>',
@@ -68,18 +64,11 @@
 
       fetch('/', { cache: 'force-cache' })
         .then(function (response) {
-          if (!response.ok) throw new Error('Unable to load homepage identity assets');
+          if (!response.ok) throw new Error('Unable to load homepage state assets');
           return response.text();
         })
         .then(function (html) {
           var source = new DOMParser().parseFromString(html, 'text/html');
-          var sourcePhoto = source.querySelector('.avatar-wrap img');
-          var targetPhoto = document.getElementById('mortgage-profile-photo');
-          if (sourcePhoto && targetPhoto) {
-            targetPhoto.src = sourcePhoto.getAttribute('src');
-            targetPhoto.classList.add('is-ready');
-          }
-
           var sourceStates = source.querySelectorAll('.state-svg');
           intro.querySelectorAll('.state-svg[data-state-index]').forEach(function (targetState) {
             var index = Number(targetState.getAttribute('data-state-index'));
@@ -91,7 +80,7 @@
           });
         })
         .catch(function () {
-          /* Keep the mortgage tools usable even if identity assets fail to load. */
+          /* Keep the mortgage tools usable even if state assets fail to load. */
         });
     }
   }
