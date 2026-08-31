@@ -32,7 +32,7 @@
       if (intro) {
         var identityStyle = document.createElement('style');
         identityStyle.textContent = [
-          '.mortgage-profile{margin-bottom:12px;text-align:center;flex:0 0 auto}',
+          '.mortgage-profile{margin:28px 0 30px;text-align:center;flex:0 0 auto}',
           '.mortgage-profile .mortgage-profile__title{font-family:var(--display);font-size:36px;font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--ink);margin:0 0 4px}',
           '.mortgage-profile .mortgage-profile__nmls{font-family:var(--display);font-size:11.5px;font-weight:500;letter-spacing:.02em;color:var(--ink);opacity:.45;margin:0 0 10px}',
           '.mortgage-profile__states{display:flex;justify-content:center;align-items:flex-start;gap:16px;margin:0 0 10px;flex-wrap:nowrap}',
@@ -45,7 +45,7 @@
           '.mortgage-profile .social-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.90);border:1px solid #DEE2E6;color:var(--ink);text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.07);transition:background .15s,transform .12s}',
           '.mortgage-profile .social-btn:hover{background:#E9ECEF;transform:scale(1.06)}',
           '.mortgage-profile .social-btn svg{width:17px;height:17px;fill:currentColor;display:block}',
-          '@media(max-width:720px){.mortgage-profile .mortgage-profile__title{font-size:32px}.mortgage-profile__states{gap:14px}.mortgage-profile .state-svg{width:42px;height:42px}}'
+          '@media(max-width:720px){.mortgage-profile{margin:20px 0 24px}.mortgage-profile .mortgage-profile__title{font-size:32px}.mortgage-profile__states{gap:14px}.mortgage-profile .state-svg{width:42px;height:42px}}'
         ].join('');
         document.head.appendChild(identityStyle);
 
