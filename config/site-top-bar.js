@@ -13,7 +13,7 @@
   var isCalifornia = path === '/mortgage/california';
   var isMortgagePath = path === '/mortgage' || path.indexOf('/mortgage/') === 0;
   var pinWhileCollapse = !!(hold && hold.hasAttribute('data-header-pin-collapse'));
-  var heroHoldMs = 1500; // hero stays pinned longer than default ~0.22s header shrink
+  var heroHoldMs = 280; // match the longest header collapse transition
   var collapsing = false;
   var collapseTimer = null;
   var reduceMotion = false;
