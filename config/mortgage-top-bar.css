@@ -374,6 +374,7 @@ body.texas-guide .program-marquee__item::after {
     --tx-mobile-marquee: 50px;
     --tx-mobile-peek: 52px;
     --tx-mobile-header: 56px;
+    --tx-mobile-apply: 56px;
   }
 
   body.texas-guide .page-shell {
@@ -386,9 +387,9 @@ body.texas-guide .program-marquee__item::after {
   }
 
   body.texas-guide .hero {
-    min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek)) !important;
-    min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek)) !important;
-    padding: 80px 14px 8px !important;
+    min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply)) !important;
+    min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply)) !important;
+    padding: 80px 14px 4px !important;
     box-sizing: border-box !important;
     justify-content: flex-start !important;
   }

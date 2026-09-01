@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="/config/mortgage-state-page.css">
 <link rel="stylesheet" href="/config/mortgage-top-bar.css">
 <link rel="stylesheet" href="/config/site-top-bar-mobile.css">
+<link rel="stylesheet" href="/config/link-btn-mesh.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -207,6 +208,53 @@
     width: auto;
     max-width: 100%;
     margin-left: 0 !important;
+  }
+
+  .hero-apply {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 4px 24px 22px;
+    background: var(--tx-navy);
+  }
+
+  .hero-apply .link-btn.primary {
+    min-height: 48px;
+    padding: 0 30px;
+    border: 0;
+    background: linear-gradient(135deg, #6370ff 0%, #4f5de8 52%, #4652df 100%);
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow:
+      0 10px 28px rgba(79, 93, 232, .38),
+      0 0 0 1px rgba(255, 255, 255, .08) inset;
+  }
+
+  .hero-apply .link-btn.primary::before {
+    opacity: 0;
+  }
+
+  .hero-apply .link-btn.primary:hover {
+    transform: scale(1.04);
+    filter: brightness(1.05);
+    background: linear-gradient(135deg, #6b77ff 0%, #5563ea 52%, #4c58e0 100%);
+    backdrop-filter: blur(12px) saturate(1.35);
+    -webkit-backdrop-filter: blur(12px) saturate(1.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .22),
+      inset 0 -1px 0 rgba(8, 16, 40, .12),
+      inset 0 8px 24px rgba(180, 200, 255, .18),
+      0 0 0 1px rgba(160, 180, 255, .32),
+      0 14px 34px rgba(79, 93, 232, .46);
+  }
+
+  .hero-apply .link-btn.primary:hover::before {
+    opacity: 1;
   }
 
   .program-marquee {
@@ -522,15 +570,16 @@
       --tx-mobile-marquee: 50px;
       --tx-mobile-peek: 52px;
       --tx-mobile-header: 56px;
+      --tx-mobile-apply: 56px;
     }
 
     .texas-guide .page-shell { width: min(100% - 28px, 620px); }
 
     .hero {
-      min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek));
-      min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek));
+      min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply));
+      min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply));
       display: block;
-      padding: 80px 0 8px;
+      padding: 80px 0 4px;
       position: relative;
       overflow: visible;
       box-sizing: border-box;
@@ -593,6 +642,16 @@
       margin-left: 0 !important;
     }
 
+    .hero-apply {
+      padding: 2px 20px 14px;
+    }
+
+    .hero-apply .link-btn.primary {
+      min-height: 46px;
+      padding: 0 26px;
+      font-size: .92rem;
+    }
+
     .program-marquee {
       -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
@@ -635,8 +694,19 @@
     .texas-guide .top-bar__links a,
     .texas-guide .top-bar__menu-toggle,
     .program-section,
-    .decide-strip {
+    .decide-strip,
+    .hero-apply .link-btn.primary {
       transition: none !important;
+    }
+
+    .hero-apply .link-btn.primary:hover {
+      transform: none;
+      filter: none;
+    }
+
+    .hero-apply .link-btn.primary:hover::before {
+      animation: none;
+      opacity: 1;
     }
     .program-marquee__track { animation: none; }
     .program-marquee__group[aria-hidden="true"] { display: none; }
@@ -686,6 +756,10 @@
       <span>Choose the path that fits.</span>
     </div>
   </section>
+
+  <div class="hero-apply">
+    <a class="link-btn primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer"><span class="btn-label">Apply Today</span></a>
+  </div>
 
   <section class="program-marquee" aria-label="Texas mortgage programs">
     <div class="program-marquee__track">
@@ -849,5 +923,6 @@
   cards.forEach(function (card) { revealObserver.observe(card); });
 })();
 </script>
+<script defer src="/config/link-btn-blob.js"></script>
 </body>
 </html>
