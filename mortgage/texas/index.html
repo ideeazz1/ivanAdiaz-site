@@ -286,12 +286,12 @@
   }
 
   .program-section {
-    min-height: clamp(430px, 62vh, 650px);
-    padding: clamp(42px, 6vw, 78px);
+    min-height: 0;
+    padding: clamp(42px, 6vw, 72px);
     display: grid;
-    grid-template-columns: minmax(170px, .62fr) minmax(0, 1.38fr);
-    align-items: end;
-    gap: clamp(30px, 5vw, 76px);
+    grid-template-columns: minmax(150px, .48fr) minmax(0, 1.52fr);
+    align-items: start;
+    gap: clamp(28px, 4.5vw, 64px);
     border-radius: clamp(24px, 3vw, 38px);
     background: var(--tx-paper-soft);
     border: 1px solid rgba(16,24,42,.07);
@@ -323,22 +323,186 @@
   }
 
   .program-copy h2 {
-    margin: 0 0 18px;
+    margin: 0 0 16px;
     font-family: Outfit, Inter, system-ui, sans-serif;
-    font-size: clamp(2.8rem, 6vw, 5.8rem);
+    font-size: clamp(2.6rem, 5.4vw, 4.8rem);
     font-weight: 700;
     line-height: .94;
     letter-spacing: -.055em;
     color: var(--tx-ink);
   }
 
-  .program-copy p {
-    width: min(680px, 100%);
-    margin: 0;
+  .program-lead {
+    width: min(720px, 100%);
+    margin: 0 0 28px;
     font-family: Outfit, Inter, system-ui, sans-serif;
-    font-size: clamp(1.02rem, 1.6vw, 1.26rem);
+    font-size: clamp(1.02rem, 1.55vw, 1.22rem);
     line-height: 1.5;
     color: var(--tx-muted);
+  }
+
+  .program-points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .program-point {
+    padding: 18px 18px 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(16,24,42,.06);
+  }
+
+  .program-point strong {
+    display: block;
+    margin-bottom: 8px;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(16,24,42,.55);
+  }
+
+  .program-point p {
+    margin: 0;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .95rem;
+    line-height: 1.45;
+    color: var(--tx-ink);
+  }
+
+  .program-decide {
+    width: min(760px, 100%);
+    margin: 0 0 24px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(16,24,42,.035);
+    border: 1px solid rgba(16,24,42,.06);
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .98rem;
+    line-height: 1.5;
+    color: var(--tx-muted);
+  }
+
+  .program-decide strong {
+    color: var(--tx-ink);
+    font-weight: 700;
+  }
+
+  .program-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .program-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .92rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+  }
+
+  .program-actions a:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(16,24,42,.1);
+  }
+
+  .program-actions a.primary {
+    color: #fff;
+    background: var(--tx-ink);
+  }
+
+  .program-actions a.secondary {
+    color: var(--tx-ink);
+    background: rgba(255,255,255,.82);
+    border: 1px solid rgba(16,24,42,.1);
+  }
+
+  .decide-strip {
+    padding: clamp(36px, 5vw, 56px);
+    border-radius: clamp(24px, 3vw, 38px);
+    background: #fff;
+    border: 1px solid rgba(16,24,42,.07);
+    box-shadow: 0 22px 70px rgba(16,24,42,.06);
+    opacity: 0;
+    transform: translate3d(0, 72px, 0);
+    transition: opacity .72s ease, transform .82s cubic-bezier(.18,.78,.18,1);
+  }
+
+  .decide-strip.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .decide-strip h2 {
+    margin: 0 0 12px;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -.04em;
+    color: var(--tx-ink);
+  }
+
+  .decide-strip > p {
+    width: min(720px, 100%);
+    margin: 0 0 28px;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--tx-muted);
+  }
+
+  .decide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .decide-grid li {
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--tx-paper-soft);
+    border: 1px solid rgba(16,24,42,.05);
+  }
+
+  .decide-grid strong {
+    display: block;
+    margin-bottom: 8px;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: 1.05rem;
+    color: var(--tx-ink);
+  }
+
+  .decide-grid p {
+    margin: 0;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .94rem;
+    line-height: 1.45;
+    color: var(--tx-muted);
+  }
+
+  .programs-note {
+    margin: 8px 0 0;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .82rem;
+    line-height: 1.45;
+    color: rgba(16,24,42,.48);
   }
 
   @media (max-width: 900px) {
@@ -349,6 +513,8 @@
     .hero-title-flag { font-size: clamp(50px, 7.3vw, 64px); }
     .program-section { grid-template-columns: 1fr; align-items: start; }
     .program-index { margin-bottom: 24px; }
+    .program-points,
+    .decide-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 720px) {
@@ -421,14 +587,15 @@
     .programs-inner { gap: 28px; }
 
     .program-section {
-      min-height: 520px;
+      min-height: 0;
       padding: 34px 28px;
       border-radius: 26px;
       transform: translate3d(0, 72px, 0) scale(.99);
     }
 
-    .program-copy h2 { font-size: clamp(2.8rem, 16vw, 4.4rem); }
-    .program-copy p { font-size: 1rem; }
+    .program-copy h2 { font-size: clamp(2.6rem, 14vw, 4rem); }
+    .program-lead { font-size: 1rem; margin-bottom: 22px; }
+    .decide-strip { padding: 28px 24px; }
   }
 
   @media (max-width: 430px) {
@@ -444,12 +611,14 @@
     .texas-guide .top-bar__brand,
     .texas-guide .top-bar__links a,
     .texas-guide .top-bar__menu-toggle,
-    .program-section {
+    .program-section,
+    .decide-strip {
       transition: none !important;
     }
     .program-marquee__track { animation: none; }
     .program-marquee__group[aria-hidden="true"] { display: none; }
-    .program-section { opacity: 1; transform: none; filter: none; }
+    .program-section,
+    .decide-strip { opacity: 1; transform: none; filter: none; }
   }
 </style>
 </head>
@@ -516,7 +685,26 @@
         <div class="program-index">01 / Texas option</div>
         <div class="program-copy">
           <h2>SETH</h2>
-          <p>Texas-focused down payment assistance options. Compare the current program structure, eligibility, and the total monthly payment before choosing a path.</p>
+          <p class="program-lead">Southeast Texas Housing Finance Corporation programs pair a 30-year first mortgage with down-payment and closing-cost assistance — often up to 5% of the loan amount — so you can buy with less cash at closing.</p>
+          <ul class="program-points">
+            <li class="program-point">
+              <strong>Who it fits</strong>
+              <p>Primary-residence buyers across much of Texas. No first-time buyer requirement on the common SETH paths.</p>
+            </li>
+            <li class="program-point">
+              <strong>How the help works</strong>
+              <p>Assistance is usually a second lien: short-term forgivable options, or longer deferred options with no monthly payment on the second.</p>
+            </li>
+            <li class="program-point">
+              <strong>Geography check</strong>
+              <p>Not available in Travis County, or inside El Paso, Grand Prairie, and McKinney city limits. Austin buyers often start with TSAHC or Chenoa instead.</p>
+            </li>
+          </ul>
+          <p class="program-decide"><strong>Decide with:</strong> county income limits, minimum credit score for the chosen path, homebuyer education, and the full monthly payment after the assistance structure — not the down-payment number alone.</p>
+          <div class="program-actions">
+            <a class="primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Compare your numbers</a>
+            <a class="secondary" href="https://sethfc.com/programs/" target="_blank" rel="noopener noreferrer">SETH program overview</a>
+          </div>
         </div>
       </article>
 
@@ -524,7 +712,26 @@
         <div class="program-index">02 / Texas option</div>
         <div class="program-copy">
           <h2>TSAHC</h2>
-          <p>Texas homebuyer assistance programs with different eligibility paths. Compare the available assistance, first-mortgage terms, and long-term cost side by side.</p>
+          <p class="program-lead">Texas State Affordable Housing Corporation programs cover the whole state — including Travis County — with fixed-rate first mortgages and selectable down-payment assistance levels.</p>
+          <ul class="program-points">
+            <li class="program-point">
+              <strong>Who it fits</strong>
+              <p>Texas buyers who need statewide coverage, including Austin-area purchases, and want to choose how much assistance to take.</p>
+            </li>
+            <li class="program-point">
+              <strong>How the help works</strong>
+              <p>Commonly 2%, 3%, 4%, or 5% of the loan amount as a grant or a short deferred forgivable second, depending on the current product.</p>
+            </li>
+            <li class="program-point">
+              <strong>Path choice</strong>
+              <p>Standard income-limited tracks and profession-focused paths (such as Heroes) can change which package is available.</p>
+            </li>
+          </ul>
+          <p class="program-decide"><strong>Decide with:</strong> your county income limit, whether a grant or forgivable second is on the table, first-mortgage rate for that assistance level, and whether a Mortgage Credit Certificate (MCC) should sit beside the loan.</p>
+          <div class="program-actions">
+            <a class="primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Compare your numbers</a>
+            <a class="secondary" href="https://www.tsahc.org/homebuyers-renters" target="_blank" rel="noopener noreferrer">TSAHC homebuyer hub</a>
+          </div>
         </div>
       </article>
 
@@ -532,9 +739,52 @@
         <div class="program-index">03 / Assistance option</div>
         <div class="program-copy">
           <h2>Chenoa</h2>
-          <p>Down payment assistance that can pair with eligible mortgage options. Review the current structure, repayment terms, and overall fit for the purchase.</p>
+          <p class="program-lead">Chenoa Fund pairs with eligible FHA first mortgages and can cover the full FHA down payment — typically 3.5% or 5% of the purchase price — so cash-to-close is the decision, not whether you can form a down payment.</p>
+          <ul class="program-points">
+            <li class="program-point">
+              <strong>Who it fits</strong>
+              <p>Buyers using FHA who need the down payment covered and want a clear choice between a forgivable second and a repayable second.</p>
+            </li>
+            <li class="program-point">
+              <strong>How the help works</strong>
+              <p>Forgivable seconds usually carry 0% interest and no monthly payment if on-time first-mortgage payments meet the forgiveness clock. Repayable seconds add a monthly payment over a shorter term.</p>
+            </li>
+            <li class="program-point">
+              <strong>Tradeoff</strong>
+              <p>More assistance can raise the first-mortgage payment or add a second payment. The “lowest cash at closing” option is not always the lowest monthly cost.</p>
+            </li>
+          </ul>
+          <p class="program-decide"><strong>Decide with:</strong> 3.5% vs 5% assistance, forgivable vs repayable structure, credit/income overlays for the current product, and the combined monthly payment you can hold comfortably.</p>
+          <div class="program-actions">
+            <a class="primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Compare your numbers</a>
+            <a class="secondary" href="https://chenoafund.org/homebuyer/programs/" target="_blank" rel="noopener noreferrer">Chenoa program details</a>
+          </div>
         </div>
       </article>
+
+      <section class="decide-strip reveal-program" aria-labelledby="decide-heading">
+        <h2 id="decide-heading">Choose the path that fits — not the loudest offer.</h2>
+        <p>Use the programs above as a shortlist. The right answer is the one that clears your purchase with a payment, timeline, and risk profile you understand.</p>
+        <ul class="decide-grid">
+          <li>
+            <strong>Start with location</strong>
+            <p>Travis County or excluded SETH cities? Lead with TSAHC or Chenoa. Elsewhere in Texas, keep SETH in the comparison.</p>
+          </li>
+          <li>
+            <strong>Then cash vs payment</strong>
+            <p>More assistance can mean less cash today and a higher monthly payment. Put both numbers on one page before you choose.</p>
+          </li>
+          <li>
+            <strong>Then structure</strong>
+            <p>Grant, forgivable second, or repayable second changes what you owe if you sell, refinance, or miss payments.</p>
+          </li>
+        </ul>
+        <div class="program-actions">
+          <a class="primary" href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Apply with Ivan</a>
+          <a class="secondary" href="tel:+14152717740">Call (415) 271-7740</a>
+        </div>
+        <p class="programs-note">Educational overview only. Program rules, income limits, rates, fees, and availability change. Nothing here is a commitment to lend, a rate lock, or a guarantee of approval.</p>
+      </section>
     </div>
   </section>
 </main>
