@@ -265,68 +265,6 @@ body.texas-guide .top-bar__menu-toggle:hover {
   text-shadow: 0 0 18px rgba(255,255,255,.22);
 }
 
-body.texas-guide .hero {
-  min-height: 450px !important;
-  padding: 62px 24px 38px !important;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch !important;
-  justify-content: flex-start;
-  background: transparent !important;
-}
-
-body.texas-guide .hero-title-flag {
-  width: 100%;
-  max-width: 1040px;
-  margin: 0;
-  font-family: Outfit, Inter, system-ui, sans-serif;
-  font-size: 60px !important;
-  font-weight: 800;
-  line-height: .98 !important;
-  letter-spacing: -.055em;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
-  background: none !important;
-  animation: none !important;
-  filter: none !important;
-  text-shadow:
-    0 0 10px rgba(255,255,255,.24),
-    0 0 28px rgba(110,155,255,.24),
-    0 0 52px rgba(64,110,220,.16);
-}
-
-body.texas-guide .hero-title-flag .hero-line {
-  display: block;
-  width: max-content;
-  max-width: 100%;
-  white-space: nowrap;
-  padding-bottom: .07em;
-}
-
-body.texas-guide .hero-title-flag .hero-line:nth-child(2) { margin-left: 9% !important; }
-body.texas-guide .hero-title-flag .hero-line:nth-child(3) { margin-left: 18% !important; }
-body.texas-guide .hero-title-flag .hero-line + .hero-line { margin-top: .02em !important; }
-
-body.texas-guide .hero-guidance {
-  width: min(620px, 92%);
-  margin-top: 0 !important;
-  padding-left: 0;
-  color: rgba(255,255,255,.68) !important;
-  font-family: Outfit, Inter, system-ui, sans-serif;
-  font-size: 1rem !important;
-  font-weight: 500;
-  line-height: 1.55;
-  letter-spacing: -.01em;
-  text-align: left;
-}
-
-body.texas-guide .hero-guidance span {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  margin-left: 0 !important;
-}
-
 body.texas-guide .program-marquee {
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -384,46 +322,6 @@ body.texas-guide .program-marquee__item::after {
 
   body.texas-guide .top-bar {
     background: transparent !important;
-  }
-
-  body.texas-guide .hero {
-    min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply)) !important;
-    min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply)) !important;
-    padding: 80px 14px 4px !important;
-    box-sizing: border-box !important;
-    justify-content: flex-start !important;
-  }
-
-  body.texas-guide .texas-outline-wrap {
-    top: auto;
-    right: -8%;
-    width: 54%;
-  }
-
-  body.texas-guide .hero-title-flag .hero-line:nth-child(3) {
-    position: relative;
-    z-index: 2;
-  }
-
-  body.texas-guide .hero-title-flag {
-    font-size: clamp(2.6rem, 11vw, 3.75rem) !important;
-  }
-
-  body.texas-guide .hero-title-flag .hero-line:nth-child(2) { margin-left: 6% !important; }
-  body.texas-guide .hero-title-flag .hero-line:nth-child(3) { margin-left: 12% !important; }
-
-  body.texas-guide .hero-guidance {
-    width: 100%;
-    margin-top: 0 !important;
-    padding-left: 0;
-    font-size: .98rem !important;
-    line-height: 1.6 !important;
-    position: relative;
-    z-index: 2;
-  }
-
-  body.texas-guide .hero-guidance span {
-    margin-left: 0 !important;
   }
 
   body.texas-guide .program-marquee {
