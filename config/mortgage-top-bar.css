@@ -281,3 +281,36 @@
     margin-left: 12% !important;
   }
 }
+
+/* Texas dark-blue hero treatment. Keep the program divider the same color as the page. */
+.texas-guide {
+  background: #002868 !important;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.texas-guide .top-bar {
+  background: #F8F9FA;
+}
+
+.texas-guide .page-shell {
+  background: #002868;
+}
+
+.texas-guide .hero-title-flag {
+  background: none !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  filter: none !important;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, .72),
+    0 0 18px rgba(164, 199, 255, .52),
+    0 0 38px rgba(94, 153, 235, .32);
+}
+
+.texas-guide .program-marquee {
+  background: #002868 !important;
+  border: 0 !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
