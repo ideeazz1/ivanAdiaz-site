@@ -158,19 +158,20 @@
   transition: padding 0.22s ease, font-size 0.22s ease;
 }
 
-/* Collapsed width matches the page content column (--site-content-width).
-   Expanded (default) stays full-bleed wide. */
+/* Sticky bar stays full-bleed so the hero can tuck underneath.
+   The pill (menu) shrinks to the content column. */
 .top-bar.is-compact {
-  width: var(--site-content-width, min(920px, 100%));
+  width: 100%;
   max-width: none;
-  margin-inline: auto;
-  padding-inline: 0;
-  align-self: center;
+  margin-inline: 0;
+  padding-inline: 24px;
+  align-self: stretch;
 }
 
 .top-bar.is-compact .top-bar__pill {
-  width: 100%;
+  width: var(--site-content-width, min(920px, 100%));
   max-width: none;
+  margin-inline: auto;
   padding: 8px 16px 8px 18px;
   background: #f8f9fa;
   border-color: rgba(52, 58, 64, 0.14);
@@ -213,6 +214,14 @@
     top: 4px;
   }
 
+  .top-bar.is-compact {
+    padding-inline: 12px;
+  }
+
+  .top-bar.is-compact .top-bar__pill {
+    width: 100%;
+  }
+
   .top-bar__pill {
     padding: 12px 14px 12px 16px;
     gap: 10px;
@@ -229,6 +238,7 @@
     height: 36px;
   }
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   .top-bar__pill,

@@ -5,12 +5,18 @@
   var nav = document.getElementById('top-bar-nav');
   var brand = document.querySelector('.top-bar__brand');
   var mark = document.querySelector('.top-bar__mark');
+  var hold = document.querySelector('[data-header-hold]');
   var compactAt = 40;
   var path = window.location.pathname.replace(/\/+$/, '') || '/';
   var isMortgageHome = path === '/mortgage';
   var isTexas = path === '/mortgage/texas';
   var isCalifornia = path === '/mortgage/california';
   var isMortgagePath = path === '/mortgage' || path.indexOf('/mortgage/') === 0;
+  var pinWhileCollapse = !!(hold && hold.hasAttribute('data-header-pin-collapse'));
+  var heroHoldMs = 1500; // hero stays pinned longer than default ~0.22s header shrink
+  var collapsing = false;
+  var collapseTimer = null;
+  var reduceMotion = false;
 
   if (!bar) return;
 
@@ -187,9 +193,88 @@
     }
   }
 
+  try {
+    reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (err) {
+    reduceMotion = false;
+  }
+
+  function heroTuckingUnder() {
+    if (!hold) return window.scrollY > compactAt;
+    var barBox = bar.getBoundingClientRect();
+    return hold.getBoundingClientRect().top < barBox.bottom - 4;
+  }
+
   function onScroll() {
     var pinned = document.documentElement.classList.contains('header-compact');
-    bar.classList.toggle('is-compact', pinned || window.scrollY > compactAt);
+    bar.classList.toggle('is-compact', pinned || heroTuckingUnder());
+  }
+
+  function pinHero() {
+    if (!hold || hold.hasAttribute('data-header-pinned')) return;
+    var rect = hold.getBoundingClientRect();
+    var spacer = document.createElement('div');
+    spacer.setAttribute('data-header-pin-spacer', '');
+    spacer.style.height = rect.height + 'px';
+    spacer.style.width = '100%';
+    hold.parentNode.insertBefore(spacer, hold);
+    hold.style.position = 'fixed';
+    hold.style.top = rect.top + 'px';
+    hold.style.left = rect.left + 'px';
+    hold.style.width = rect.width + 'px';
+    hold.style.margin = '0';
+    hold.style.zIndex = '5';
+    hold.setAttribute('data-header-pinned', '');
+  }
+
+  function unpinHero() {
+    if (!hold) return;
+    var spacer = document.querySelector('[data-header-pin-spacer]');
+    if (spacer && spacer.parentNode) spacer.parentNode.removeChild(spacer);
+    hold.style.position = '';
+    hold.style.top = '';
+    hold.style.left = '';
+    hold.style.width = '';
+    hold.style.margin = '';
+    hold.style.zIndex = '';
+    hold.removeAttribute('data-header-pinned');
+  }
+
+  function finishCollapse() {
+    if (!collapsing) return;
+    collapsing = false;
+    if (collapseTimer) {
+      clearTimeout(collapseTimer);
+      collapseTimer = null;
+    }
+    unpinHero();
+  }
+
+  function startCollapse() {
+    if (collapsing || bar.classList.contains('is-compact')) return;
+    collapsing = true;
+    pinHero();
+    bar.classList.add('is-compact');
+    if (reduceMotion) {
+      finishCollapse();
+    } else {
+      collapseTimer = setTimeout(finishCollapse, heroHoldMs);
+    }
+  }
+
+  function expandAtTop() {
+    if (collapsing) return;
+    if (window.scrollY <= 8 && bar.classList.contains('is-compact')) {
+      bar.classList.remove('is-compact');
+    }
+  }
+
+  function shouldInterceptFirstScroll() {
+    if (!pinWhileCollapse) return false;
+    if (window.scrollY > 1) return false;
+    if (collapsing) return true;
+    if (!bar.classList.contains('is-compact')) return true;
+    return false;
   }
 
   function setMenuOpen(open) {
@@ -205,8 +290,55 @@
     setMenuOpen(false);
   }
 
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  if (pinWhileCollapse) {
+    window.addEventListener(
+      'wheel',
+      function (e) {
+        if (!shouldInterceptFirstScroll()) return;
+        if (e.deltaY <= 0 && !collapsing) return;
+        e.preventDefault();
+        if (!collapsing) startCollapse();
+      },
+      { passive: false }
+    );
+
+    var touchStartY = null;
+    window.addEventListener(
+      'touchstart',
+      function (e) {
+        if (e.touches.length === 1) touchStartY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      'touchmove',
+      function (e) {
+        if (touchStartY == null || !shouldInterceptFirstScroll()) return;
+        var dy = touchStartY - e.touches[0].clientY;
+        if (collapsing || dy > 8) {
+          e.preventDefault();
+          if (!collapsing && dy > 8) startCollapse();
+        }
+      },
+      { passive: false }
+    );
+
+    window.addEventListener('keydown', function (e) {
+      if (!shouldInterceptFirstScroll()) return;
+      if (e.key !== 'PageDown' && e.key !== 'ArrowDown' && e.key !== ' ' && e.key !== 'Spacebar') {
+        return;
+      }
+      e.preventDefault();
+      if (!collapsing) startCollapse();
+    });
+
+    window.addEventListener('scroll', expandAtTop, { passive: true });
+    expandAtTop();
+  } else {
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
 
   if (toggle && nav) {
     toggle.addEventListener('click', function () {
