@@ -260,3 +260,47 @@ body.texas-guide .hero-apply {
 body.texas-guide.is-light-phase .hero-apply {
   background: #eceeea !important;
 }
+
+/* Texas header collapse: preserve the homepage motion properties while the page
+ * independently cross-fades between its dark and light phases. */
+body.texas-guide .top-bar__pill,
+body.texas-guide .top-bar.is-compact .top-bar__pill {
+  transition:
+    width 0.28s ease,
+    max-width 0.28s ease,
+    padding 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color .6s cubic-bezier(.2,.72,.2,1),
+    border-color 0.22s ease !important;
+}
+
+body.texas-guide .top-bar__brand {
+  transition:
+    font-size 0.22s ease,
+    gap 0.22s ease,
+    color 0.22s ease,
+    background-color 0.22s ease,
+    text-shadow 0.22s ease !important;
+}
+
+body.texas-guide .top-bar__mark {
+  transition: width 0.22s ease, height 0.22s ease !important;
+}
+
+body.texas-guide .top-bar__links a {
+  transition:
+    padding 0.22s ease,
+    font-size 0.22s ease,
+    color 0.22s ease,
+    background-color 0.22s ease,
+    text-shadow 0.22s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.texas-guide .top-bar__pill,
+  body.texas-guide .top-bar__brand,
+  body.texas-guide .top-bar__mark,
+  body.texas-guide .top-bar__links a {
+    transition: none !important;
+  }
+}
