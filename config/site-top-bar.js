@@ -4,17 +4,45 @@
   var toggle = document.querySelector('.top-bar__menu-toggle');
   var nav = document.getElementById('top-bar-nav');
   var brand = document.querySelector('.top-bar__brand');
+  var mark = document.querySelector('.top-bar__mark');
   var compactAt = 40;
   var path = window.location.pathname.replace(/\/+$/, '') || '/';
   var isMortgageHome = path === '/mortgage';
   var isTexas = path === '/mortgage/texas';
   var isCalifornia = path === '/mortgage/california';
-  var isMortgagePath = isMortgageHome || isTexas || isCalifornia;
+  var isMortgagePath = path === '/mortgage' || path.indexOf('/mortgage/') === 0;
 
   if (!bar) return;
 
   if (isMortgagePath) {
     if (brand) brand.setAttribute('href', '/');
+
+    if (mark) {
+      fetch('/', { cache: 'force-cache' })
+        .then(function (response) {
+          if (!response.ok) throw new Error('Unable to load homepage portrait');
+          return response.text();
+        })
+        .then(function (html) {
+          var source = new DOMParser().parseFromString(html, 'text/html');
+          var avatar = source.querySelector('.avatar-wrap img');
+          var avatarSrc = avatar && avatar.getAttribute('src');
+          if (!avatarSrc) return;
+
+          mark.src = avatarSrc;
+          mark.alt = 'Ivan Diaz';
+          mark.classList.add('top-bar__mark--portrait');
+          mark.style.borderRadius = '50%';
+          mark.style.objectFit = 'cover';
+          mark.style.objectPosition = 'top center';
+          mark.style.filter = 'none';
+          mark.style.opacity = '1';
+          mark.style.background = '#fff';
+        })
+        .catch(function () {
+          /* Keep the existing ID logo as a safe fallback. */
+        });
+    }
 
     if (nav) {
       nav.innerHTML = [
