@@ -319,7 +319,7 @@ h3 { font-size: 1.25rem; }
    place the guidance below it, and pull the CTA upward without a blue halo. */
 @media (max-width: 720px) {
   .texas-guide .hero-copy {
-    transform: translateY(88px) !important;
+    transform: translateY(36px) !important;
   }
 
   .texas-guide .hero-guidance {
