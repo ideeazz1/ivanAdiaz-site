@@ -45,14 +45,25 @@
     }
 
     if (nav) {
-      nav.innerHTML = [
+      var navItems = [
         '<li><a href="/mortgage/"' + (isMortgageHome ? ' aria-current="page"' : '') + '>Mortgage Home</a></li>',
-        '<li><a href="/mortgage/texas/"' + (isTexas ? ' aria-current="page"' : '') + '>Texas</a></li>',
-        '<li><a href="/mortgage/california/"' + (isCalifornia ? ' aria-current="page"' : '') + '>California</a></li>',
+        '<li><a href="/mortgage/texas/"' + (isTexas ? ' aria-current="page"' : '') + '>Texas</a></li>'
+      ];
+
+      if (!isTexas) {
+        navItems.push('<li><a href="/mortgage/california/"' + (isCalifornia ? ' aria-current="page"' : '') + '>California</a></li>');
+      }
+
+      navItems.push(
         '<li><a href="https://assurancemortgage.com/assurance_officers/ivan-diaz/" target="_blank" rel="noopener noreferrer">Apply</a></li>',
-        '<li><a href="https://idp.elliemae.com/authorize?client_id=srtrz0d2&site_id=9548862087&response_type=code&redirect_uri=https%3A%2F%2Fassurance.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3Flar%3Didiaz%26workFlowId%3D67079%26_gl%3D1*dl3shk*_ga*MTAxMDgxMjc1OC4xNzI5MTA1NjI3*_ga_1PDFYSY743*MTcyOTg3OTM2Mi42LjEuMTcyOTg3OTk5Ni40MC4wLjA.%26dest%3D%2Floan-app%2F%26siteId%3D9548862087&scope=ccbp%20cc&instance_id=be11130424&logo_url=https%3A%2F%2Fstore.asset.ellieservices.com%2F6a134995-5f29-4900-9172-ccf8d134940f&logo_alt_text=Logo&logo_is_disabled&bust=393&apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">Log In / Sign Documents</a></li>',
-        '<li><a href="' + (isMortgageHome ? '#contact' : '/mortgage/#contact') + '">Contact</a></li>'
-      ].join('');
+        '<li><a href="https://idp.elliemae.com/authorize?client_id=srtrz0d2&site_id=9548862087&response_type=code&redirect_uri=https%3A%2F%2Fassurance.mymortgage-online.com%2Fborrower-app%2Flogin%2F%3Flar%3Didiaz%26workFlowId%3D67079%26_gl%3D1*dl3shk*_ga*MTAxMDgxMjc1OC4xNzI5MTA1NjI3*_ga_1PDFYSY743*MTcyOTg3OTM2Mi42LjEuMTcyOTg3OTk5Ni40MC4wLjA.%26dest%3D%2Floan-app%2F%26siteId%3D9548862087&scope=ccbp%20cc&instance_id=be11130424&logo_url=https%3A%2F%2Fstore.asset.ellieservices.com%2F6a134995-5f29-4900-9172-ccf8d134940f&logo_alt_text=Logo&logo_is_disabled&bust=393&apiBaseUrl=https://api.elliemae.com" target="_blank" rel="noopener noreferrer">Log In / Sign Documents</a></li>'
+      );
+
+      if (!isTexas) {
+        navItems.push('<li><a href="' + (isMortgageHome ? '#contact' : '/mortgage/#contact') + '">Contact</a></li>');
+      }
+
+      nav.innerHTML = navItems.join('');
     }
 
     if (isTexas) {
