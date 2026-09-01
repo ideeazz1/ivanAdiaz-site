@@ -204,16 +204,16 @@ body.texas-guide.is-light-phase .top-bar.is-compact {
   background-color: #eceeea !important;
 }
 
-/* Texas mobile hero spacing: lower only the headline; keep outline, guidance, CTA, and marquee anchored. */
+/* Texas mobile hero spacing: lower the headline, open the subhead gap, and pull the CTA upward. */
 @media (max-width: 720px) {
   body.texas-guide .hero-title-flag {
     position: relative;
-    top: 68px;
+    top: 16px;
   }
 
-  /* site-top-bar.js follows the title when positioning the outline; fully counter the title offset so Texas does not move. */
+  /* site-top-bar.js follows the title when positioning the outline; offset that movement so Texas stays anchored. */
   body.texas-guide .texas-outline-wrap {
-    transform: translateY(-68px);
+    transform: translateY(-16px);
   }
 
   body.texas-guide .hero-guidance {
