@@ -203,3 +203,24 @@ body.texas-guide.is-light-phase .top-bar,
 body.texas-guide.is-light-phase .top-bar.is-compact {
   background-color: #eceeea !important;
 }
+
+/* Texas mobile hero spacing: lower the headline, open the subhead gap, and pull the CTA upward. */
+@media (max-width: 720px) {
+  body.texas-guide .hero-title-flag {
+    position: relative;
+    top: 16px;
+  }
+
+  /* site-top-bar.js follows the title when positioning the outline; offset that movement so Texas stays anchored. */
+  body.texas-guide .texas-outline-wrap {
+    transform: translateY(-16px);
+  }
+
+  body.texas-guide .hero-guidance {
+    margin-top: 42px !important;
+  }
+
+  body.texas-guide .hero-apply {
+    margin-top: -32px;
+  }
+}
