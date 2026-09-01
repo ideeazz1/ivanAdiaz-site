@@ -191,3 +191,15 @@
     transition: none;
   }
 }
+
+/* Texas sticky header: visually blend with the current page phase without being transparent. */
+body.texas-guide .top-bar,
+body.texas-guide .top-bar.is-compact {
+  background-color: #081028 !important;
+  transition: background-color .6s cubic-bezier(.2,.72,.2,1);
+}
+
+body.texas-guide.is-light-phase .top-bar,
+body.texas-guide.is-light-phase .top-bar.is-compact {
+  background-color: #eceeea !important;
+}
