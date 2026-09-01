@@ -34,6 +34,7 @@
     --card: rgba(255, 255, 255, 0.88);
     --line: rgba(52, 58, 64, 0.12);
     --site-content-width: min(960px, calc(100% - 32px));
+    --header-motion: 280ms cubic-bezier(.2, .72, .2, 1);
   }
   html { height: 100%; }
   body {
@@ -89,6 +90,7 @@
     width: 100%;
     align-self: stretch;
     padding: 2px 24px 0;
+    transition: width var(--header-motion), padding var(--header-motion);
   }
   .top-bar__pill {
     pointer-events: auto;
@@ -110,7 +112,7 @@
     isolation: isolate;
     --blob-x: 50%;
     --blob-y: 50%;
-    transition: width 0.28s ease, max-width 0.28s ease, padding 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, --blob-x 0.3s ease-out, --blob-y 0.3s ease-out;
+    transition: width var(--header-motion), max-width var(--header-motion), padding var(--header-motion), box-shadow var(--header-motion), background-color var(--header-motion), border-color var(--header-motion), --blob-x 0.3s ease-out, --blob-y 0.3s ease-out;
   }
   .top-bar__pill::before {
     content: "";
@@ -149,6 +151,7 @@
     font-size: 26px;
     line-height: 1.15;
     min-width: 0;
+    transition: font-size var(--header-motion), gap var(--header-motion);
   }
   .top-bar__brand span {
     white-space: nowrap;
@@ -161,6 +164,7 @@
     object-fit: contain;
     display: block;
     flex-shrink: 0;
+    transition: width var(--header-motion), height var(--header-motion);
   }
   .top-bar__links {
     display: flex;
@@ -179,6 +183,7 @@
     font-weight: 600;
     color: var(--soft);
     text-decoration: none;
+    transition: padding var(--header-motion), font-size var(--header-motion), color var(--header-motion);
   }
   .top-bar__links a[aria-current="page"] {
     color: var(--ink);
@@ -474,6 +479,11 @@
     body::before { animation: none; }
     .top-bar__pill:hover::before,
     .split-card:hover::before { animation: none; }
+    .top-bar,
+    .top-bar__pill,
+    .top-bar__brand,
+    .top-bar__mark,
+    .top-bar__links a,
     .carousel__track { transition: none; }
   }
 </style>
@@ -655,9 +665,8 @@
       var last = cards.length - 1;
       index = Math.max(0, Math.min(last, next));
       track.style.transform = 'translateY(' + (-index * STEP) + 'px)';
-      document.documentElement.classList.toggle('header-compact', index > 0);
       var bar = document.querySelector('.top-bar');
-      if (bar) bar.classList.toggle('is-compact', index > 0 || window.scrollY > 40);
+      if (bar) bar.classList.toggle('is-compact', index > 0);
       marks.forEach(function (btn, i) {
         if (i === index) btn.setAttribute('aria-current', 'true');
         else btn.removeAttribute('aria-current');
