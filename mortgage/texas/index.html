@@ -36,20 +36,37 @@
 }
 </script>
 <style>
-  :root { color-scheme: dark; }
+  :root {
+    color-scheme: dark;
+    --tx-navy: #081028;
+    --tx-paper: #eceeea;
+    --tx-paper-soft: #f4f5f2;
+    --tx-ink: #10182a;
+    --tx-muted: #596172;
+  }
+
   * { box-sizing: border-box; }
-  html, body { margin: 0; min-height: 100%; background: #081028; }
+  html, body { margin: 0; min-height: 100%; background: var(--tx-navy); }
+
   body.texas-guide {
     min-height: 100vh;
     overflow-x: hidden;
     color: #fff;
-    background: #081028 !important;
+    background: var(--tx-navy) !important;
+    transition: background-color .6s cubic-bezier(.2,.72,.2,1), color .45s ease;
   }
+
+  body.texas-guide.is-light-phase {
+    color: var(--tx-ink);
+    background: var(--tx-paper) !important;
+  }
+
   .texas-guide .page-shell {
     width: min(1180px, calc(100% - 48px));
     margin: 0 auto;
     background: transparent !important;
   }
+
   .texas-guide .top-bar,
   .texas-guide .top-bar.is-compact,
   .texas-guide .top-bar__pill,
@@ -60,17 +77,20 @@
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
+
   .texas-guide .top-bar__brand,
-  .texas-guide .top-bar__links a {
+  .texas-guide .top-bar__links a,
+  .texas-guide .top-bar__menu-toggle {
     color: rgba(255,255,255,.72) !important;
-    transition: color .22s ease, background-color .22s ease, text-shadow .22s ease;
+    transition: color .35s ease, background-color .22s ease, text-shadow .22s ease;
   }
+
   .texas-guide .top-bar__brand { color: rgba(255,255,255,.92) !important; }
   .texas-guide .top-bar__links a[aria-current="page"] {
     color: rgba(255,255,255,.96) !important;
     background: transparent !important;
   }
-  .texas-guide .top-bar__menu-toggle { color: rgba(255,255,255,.9) !important; }
+
   .texas-guide .top-bar__brand:hover,
   .texas-guide .top-bar__links a:hover,
   .texas-guide .top-bar__menu-toggle:hover {
@@ -78,9 +98,35 @@
     background: rgba(255,255,255,.07) !important;
     text-shadow: 0 0 18px rgba(255,255,255,.22);
   }
+
   .texas-guide .top-bar__mark--portrait {
     border: 1px solid rgba(255,255,255,.32);
     box-shadow: 0 0 0 2px rgba(255,255,255,.06), 0 0 18px rgba(255,255,255,.1);
+    transition: border-color .35s ease, box-shadow .35s ease;
+  }
+
+  .texas-guide.is-light-phase .top-bar__brand,
+  .texas-guide.is-light-phase .top-bar__links a,
+  .texas-guide.is-light-phase .top-bar__menu-toggle {
+    color: rgba(16,24,42,.70) !important;
+    text-shadow: none;
+  }
+
+  .texas-guide.is-light-phase .top-bar__brand,
+  .texas-guide.is-light-phase .top-bar__links a[aria-current="page"] {
+    color: rgba(16,24,42,.95) !important;
+  }
+
+  .texas-guide.is-light-phase .top-bar__brand:hover,
+  .texas-guide.is-light-phase .top-bar__links a:hover,
+  .texas-guide.is-light-phase .top-bar__menu-toggle:hover {
+    color: var(--tx-ink) !important;
+    background: rgba(16,24,42,.06) !important;
+  }
+
+  .texas-guide.is-light-phase .top-bar__mark--portrait {
+    border-color: rgba(16,24,42,.18);
+    box-shadow: 0 0 0 2px rgba(16,24,42,.03), 0 8px 22px rgba(16,24,42,.10);
   }
 
   .hero {
@@ -94,7 +140,9 @@
     padding: clamp(86px, 9vw, 126px) 0 clamp(58px, 7vw, 92px);
     position: relative;
   }
+
   .hero-copy { min-width: 0; z-index: 2; }
+
   .hero-title-flag {
     margin: 0;
     font-family: Outfit, Inter, system-ui, sans-serif;
@@ -108,12 +156,14 @@
       0 0 26px rgba(138,176,255,.24),
       0 0 52px rgba(77,126,231,.14);
   }
+
   .hero-title-flag .hero-line {
     display: block;
     width: max-content;
     max-width: 100%;
     white-space: nowrap;
   }
+
   .hero-title-flag .hero-line:nth-child(2) { margin-left: 9%; }
   .hero-title-flag .hero-line:nth-child(3) { margin-left: 18%; }
   .hero-title-flag .hero-line + .hero-line { margin-top: .035em; }
@@ -125,6 +175,7 @@
     min-width: 0;
     z-index: 1;
   }
+
   .texas-outline {
     width: min(100%, 490px);
     height: auto;
@@ -135,45 +186,54 @@
       drop-shadow(0 0 11px rgba(255,255,255,.62))
       drop-shadow(0 0 24px rgba(107,154,255,.46));
   }
+
   .hero-guidance {
     grid-column: 1 / 2;
     width: min(640px, 94%);
-    margin-top: 2px;
-    padding-left: 3%;
+    margin: 2px 0 0;
+    padding: 0;
     color: rgba(255,255,255,.62);
     font-family: Outfit, Inter, system-ui, sans-serif;
     font-size: clamp(1rem, 1.45vw, 1.15rem);
     font-weight: 500;
     line-height: 1.48;
     letter-spacing: -.01em;
+    text-align: left;
     z-index: 2;
   }
-  .hero-guidance span { display: block; width: max-content; max-width: 100%; }
-  .hero-guidance span:nth-child(2) { margin-left: 7%; }
-  .hero-guidance span:nth-child(3) { margin-left: 14%; }
+
+  .hero-guidance span {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    margin-left: 0 !important;
+  }
 
   .program-marquee {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     overflow: hidden;
-    background: #081028;
+    background: var(--tx-navy);
     color: rgba(255,255,255,.78);
     border: 0;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%);
   }
+
   .program-marquee__track {
     display: flex;
     width: max-content;
     animation: program-scroll 28s linear infinite;
     will-change: transform;
   }
+
   .program-marquee__group {
     display: flex;
     align-items: center;
     flex-shrink: 0;
     min-height: 58px;
   }
+
   .program-marquee__item {
     display: inline-flex;
     align-items: center;
@@ -185,13 +245,101 @@
     letter-spacing: .1em;
     text-transform: uppercase;
   }
+
   .program-marquee__item::after {
     content: "•";
     margin-left: 3.8rem;
     opacity: .55;
   }
+
   .program-marquee:hover .program-marquee__track { animation-play-state: paused; }
   @keyframes program-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .programs-stage {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: 0;
+    padding: clamp(72px, 8vw, 118px) clamp(24px, 5vw, 72px) clamp(90px, 10vw, 150px);
+    background: var(--tx-paper);
+    color: var(--tx-ink);
+    border-radius: clamp(26px, 3vw, 44px) clamp(26px, 3vw, 44px) 0 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .programs-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 170px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255,255,255,.34), transparent 78%);
+    opacity: .65;
+  }
+
+  .programs-inner {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(38px, 6vw, 78px);
+  }
+
+  .program-section {
+    min-height: clamp(430px, 62vh, 650px);
+    padding: clamp(42px, 6vw, 78px);
+    display: grid;
+    grid-template-columns: minmax(170px, .62fr) minmax(0, 1.38fr);
+    align-items: end;
+    gap: clamp(30px, 5vw, 76px);
+    border-radius: clamp(24px, 3vw, 38px);
+    background: var(--tx-paper-soft);
+    border: 1px solid rgba(16,24,42,.07);
+    box-shadow: 0 22px 70px rgba(16,24,42,.07);
+    opacity: 0;
+    transform: translate3d(0, 92px, 0) scale(.985);
+    filter: blur(2px);
+    transition:
+      opacity .72s ease,
+      transform .82s cubic-bezier(.18,.78,.18,1),
+      filter .72s ease;
+    will-change: opacity, transform;
+  }
+
+  .program-section.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+
+  .program-index {
+    align-self: start;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(16,24,42,.42);
+  }
+
+  .program-copy h2 {
+    margin: 0 0 18px;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5.8rem);
+    font-weight: 700;
+    line-height: .94;
+    letter-spacing: -.055em;
+    color: var(--tx-ink);
+  }
+
+  .program-copy p {
+    width: min(680px, 100%);
+    margin: 0;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: clamp(1.02rem, 1.6vw, 1.26rem);
+    line-height: 1.5;
+    color: var(--tx-muted);
+  }
 
   @media (max-width: 900px) {
     .hero {
@@ -199,10 +347,13 @@
       column-gap: 18px;
     }
     .hero-title-flag { font-size: clamp(50px, 7.3vw, 64px); }
+    .program-section { grid-template-columns: 1fr; align-items: start; }
+    .program-index { margin-bottom: 24px; }
   }
 
   @media (max-width: 720px) {
     .texas-guide .page-shell { width: min(100% - 28px, 620px); }
+
     .hero {
       min-height: min(820px, calc(100svh - 26px));
       display: block;
@@ -210,17 +361,21 @@
       position: relative;
       overflow: visible;
     }
+
     .hero-copy {
       position: relative;
       z-index: 3;
       width: 88%;
     }
+
     .hero-title-flag {
       font-size: clamp(44px, 12.7vw, 61px);
       line-height: .96;
     }
+
     .hero-title-flag .hero-line:nth-child(2) { margin-left: 8%; }
     .hero-title-flag .hero-line:nth-child(3) { margin-left: 15%; }
+
     .texas-outline-wrap {
       position: absolute;
       z-index: 1;
@@ -229,6 +384,7 @@
       width: 56%;
       pointer-events: none;
     }
+
     .texas-outline {
       width: 100%;
       opacity: .88;
@@ -237,6 +393,7 @@
         drop-shadow(0 0 8px rgba(255,255,255,.58))
         drop-shadow(0 0 18px rgba(107,154,255,.40));
     }
+
     .hero-guidance {
       position: absolute;
       left: 0;
@@ -246,15 +403,32 @@
       font-size: .98rem;
       color: rgba(255,255,255,.60);
     }
-    .hero-guidance span:nth-child(2) { margin-left: 6%; }
-    .hero-guidance span:nth-child(3) { margin-left: 12%; }
+
     .program-marquee {
       -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
     }
+
     .program-marquee__group { min-height: 52px; }
     .program-marquee__item { font-size: .78rem; padding: 0 1.25rem; }
     .program-marquee__item::after { margin-left: 3rem; }
+
+    .programs-stage {
+      padding: 58px 18px 88px;
+      border-radius: 28px 28px 0 0;
+    }
+
+    .programs-inner { gap: 28px; }
+
+    .program-section {
+      min-height: 520px;
+      padding: 34px 28px;
+      border-radius: 26px;
+      transform: translate3d(0, 72px, 0) scale(.99);
+    }
+
+    .program-copy h2 { font-size: clamp(2.8rem, 16vw, 4.4rem); }
+    .program-copy p { font-size: 1rem; }
   }
 
   @media (max-width: 430px) {
@@ -266,8 +440,16 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    body.texas-guide,
+    .texas-guide .top-bar__brand,
+    .texas-guide .top-bar__links a,
+    .texas-guide .top-bar__menu-toggle,
+    .program-section {
+      transition: none !important;
+    }
     .program-marquee__track { animation: none; }
     .program-marquee__group[aria-hidden="true"] { display: none; }
+    .program-section { opacity: 1; transform: none; filter: none; }
   }
 </style>
 </head>
@@ -301,9 +483,11 @@
         <span class="hero-line">Financing</span>
       </h1>
     </div>
+
     <div class="texas-outline-wrap" aria-hidden="true">
       <img class="texas-outline" src="/assets/texas-outline-glow.svg" alt="">
     </div>
+
     <div class="hero-guidance" aria-label="Texas financing approach">
       <span>Start with the programs.</span>
       <span>Compare the numbers.</span>
@@ -325,6 +509,72 @@
       </div>
     </div>
   </section>
+
+  <section class="programs-stage" aria-label="Texas down payment assistance options">
+    <div class="programs-inner">
+      <article class="program-section reveal-program" id="seth-programs">
+        <div class="program-index">01 / Texas option</div>
+        <div class="program-copy">
+          <h2>SETH</h2>
+          <p>Texas-focused down payment assistance options. Compare the current program structure, eligibility, and the total monthly payment before choosing a path.</p>
+        </div>
+      </article>
+
+      <article class="program-section reveal-program" id="tsahc-programs">
+        <div class="program-index">02 / Texas option</div>
+        <div class="program-copy">
+          <h2>TSAHC</h2>
+          <p>Texas homebuyer assistance programs with different eligibility paths. Compare the available assistance, first-mortgage terms, and long-term cost side by side.</p>
+        </div>
+      </article>
+
+      <article class="program-section reveal-program" id="chenoa-programs">
+        <div class="program-index">03 / Assistance option</div>
+        <div class="program-copy">
+          <h2>Chenoa</h2>
+          <p>Down payment assistance that can pair with eligible mortgage options. Review the current structure, repayment terms, and overall fit for the purchase.</p>
+        </div>
+      </article>
+    </div>
+  </section>
 </main>
+
+<script>
+(function () {
+  var body = document.body;
+  var stage = document.querySelector('.programs-stage');
+  var cards = document.querySelectorAll('.reveal-program');
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function syncPagePhase() {
+    if (!stage) return;
+    var stageTop = stage.getBoundingClientRect().top;
+    body.classList.toggle('is-light-phase', stageTop <= window.innerHeight * 0.42);
+  }
+
+  syncPagePhase();
+  window.addEventListener('scroll', syncPagePhase, { passive: true });
+  window.addEventListener('resize', syncPagePhase);
+
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    cards.forEach(function (card) { card.classList.add('is-visible'); });
+    return;
+  }
+
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.18,
+    rootMargin: '0px 0px -12% 0px'
+  });
+
+  cards.forEach(function (card) { revealObserver.observe(card); });
+})();
+</script>
 </body>
 </html>
