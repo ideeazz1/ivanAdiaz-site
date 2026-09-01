@@ -71,11 +71,11 @@
       var texasHeroStyle = document.createElement('style');
       texasHeroStyle.textContent = [
         '.texas-guide .hero{grid-template-rows:auto!important;align-items:center!important}',
-        '.texas-guide .hero-copy{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:clamp(20px,2.2vw,28px)!important;width:min(680px,100%)!important}',
-        '.texas-guide .hero-title-flag .hero-line{margin-left:0!important}',
-        '.texas-guide .hero-guidance{position:static!important;left:auto!important;bottom:auto!important;grid-column:auto!important;width:min(620px,100%)!important;margin:0!important;padding:0!important}',
-        '@media(max-width:720px){.texas-guide .hero{min-height:min(760px,calc(100svh - 26px))!important;padding:92px 0 54px!important}.texas-guide .hero-copy{width:88%!important;gap:20px!important}.texas-guide .hero-title-flag{font-size:clamp(42px,11.5vw,54px)!important;line-height:.98!important}.texas-guide .texas-outline-wrap{top:36%!important;right:-9%!important;width:56%!important}.texas-guide .hero-guidance{font-size:.96rem!important;line-height:1.5!important}}',
-        '@media(max-width:430px){.texas-guide .hero{min-height:min(720px,calc(100svh - 14px))!important;padding-top:86px!important}.texas-guide .hero-copy{width:92%!important}.texas-guide .hero-title-flag{font-size:clamp(40px,12vw,50px)!important}.texas-guide .texas-outline-wrap{top:38%!important;right:-11%!important;width:58%!important}}'
+        '.texas-guide .hero-copy{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:clamp(22px,2.4vw,32px)!important;width:min(680px,100%)!important}',
+        '.texas-guide .hero-guidance{position:static!important;left:auto!important;bottom:auto!important;grid-column:auto!important;width:min(620px,100%)!important;margin:0!important;padding:0!important;text-align:left!important}',
+        '.texas-guide .hero-guidance span{display:block!important;margin-left:0!important;width:auto!important;max-width:100%!important}',
+        '@media(max-width:720px){.texas-guide .hero{min-height:calc(100svh - 52px)!important;min-height:calc(100dvh - 52px)!important;padding:96px 0 56px!important;box-sizing:border-box!important}.texas-guide .hero-copy{width:88%!important;gap:28px!important}.texas-guide .hero-title-flag{font-size:clamp(42px,11.5vw,54px)!important;line-height:.98!important}.texas-guide .texas-outline-wrap{top:34%!important;right:-9%!important;width:56%!important}.texas-guide .hero-guidance{font-size:1rem!important;line-height:1.6!important}}',
+        '@media(max-width:430px){.texas-guide .hero{min-height:calc(100svh - 52px)!important;min-height:calc(100dvh - 52px)!important;padding:90px 0 52px!important}.texas-guide .hero-copy{width:92%!important;gap:26px!important}.texas-guide .hero-title-flag{font-size:clamp(40px,12vw,50px)!important}.texas-guide .texas-outline-wrap{top:36%!important;right:-11%!important;width:58%!important}}'
       ].join('');
       document.head.appendChild(texasHeroStyle);
     }

@@ -521,16 +521,22 @@
     .texas-guide .page-shell { width: min(100% - 28px, 620px); }
 
     .hero {
-      min-height: min(820px, calc(100svh - 26px));
+      min-height: calc(100svh - 52px);
+      min-height: calc(100dvh - 52px);
       display: block;
-      padding: 96px 0 58px;
+      padding: 96px 0 56px;
       position: relative;
       overflow: visible;
+      box-sizing: border-box;
     }
 
     .hero-copy {
       position: relative;
       z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
       width: 88%;
     }
 
@@ -545,7 +551,7 @@
     .texas-outline-wrap {
       position: absolute;
       z-index: 1;
-      top: 31%;
+      top: 34%;
       right: -7%;
       width: 56%;
       pointer-events: none;
@@ -561,13 +567,19 @@
     }
 
     .hero-guidance {
-      position: absolute;
-      left: 0;
-      bottom: 74px;
-      width: 88%;
-      padding-left: 0;
-      font-size: .98rem;
-      color: rgba(255,255,255,.60);
+      position: static;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,.66);
+      text-align: left;
+    }
+
+    .hero-guidance span {
+      display: block;
+      margin-left: 0 !important;
     }
 
     .program-marquee {
@@ -599,11 +611,11 @@
   }
 
   @media (max-width: 430px) {
-    .hero { min-height: min(780px, calc(100svh - 14px)); padding-top: 88px; }
-    .hero-copy { width: 94%; }
+    .hero { min-height: calc(100svh - 52px); min-height: calc(100dvh - 52px); padding: 90px 0 52px; }
+    .hero-copy { width: 94%; gap: 26px; }
     .hero-title-flag { font-size: clamp(42px, 13.4vw, 56px); }
-    .texas-outline-wrap { top: 34%; right: -10%; width: 59%; }
-    .hero-guidance { bottom: 66px; width: 94%; font-size: .94rem; }
+    .texas-outline-wrap { top: 36%; right: -10%; width: 59%; }
+    .hero-guidance { font-size: .98rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

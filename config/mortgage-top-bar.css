@@ -308,25 +308,24 @@ body.texas-guide .hero-title-flag .hero-line:nth-child(3) { margin-left: 18% !im
 body.texas-guide .hero-title-flag .hero-line + .hero-line { margin-top: .02em !important; }
 
 body.texas-guide .hero-guidance {
-  width: min(620px, 78%);
-  margin-top: 22px !important;
-  padding-left: 3%;
+  width: min(620px, 92%);
+  margin-top: 0 !important;
+  padding-left: 0;
   color: rgba(255,255,255,.68) !important;
   font-family: Outfit, Inter, system-ui, sans-serif;
   font-size: 1rem !important;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.55;
   letter-spacing: -.01em;
+  text-align: left;
 }
 
 body.texas-guide .hero-guidance span {
   display: block;
-  width: max-content;
+  width: auto;
   max-width: 100%;
+  margin-left: 0 !important;
 }
-
-body.texas-guide .hero-guidance span:nth-child(2) { margin-left: 7% !important; }
-body.texas-guide .hero-guidance span:nth-child(3) { margin-left: 14% !important; }
 
 body.texas-guide .program-marquee {
   width: 100vw;
@@ -381,8 +380,10 @@ body.texas-guide .program-marquee__item::after {
   }
 
   body.texas-guide .hero {
-    min-height: 390px !important;
-    padding: 48px 14px 30px !important;
+    min-height: calc(100svh - 52px) !important;
+    min-height: calc(100dvh - 52px) !important;
+    padding: 96px 14px 56px !important;
+    box-sizing: border-box !important;
   }
 
   body.texas-guide .hero-title-flag {
@@ -394,13 +395,15 @@ body.texas-guide .program-marquee__item::after {
 
   body.texas-guide .hero-guidance {
     width: 100%;
-    margin-top: 20px !important;
-    padding-left: 2%;
-    font-size: .94rem !important;
+    margin-top: 0 !important;
+    padding-left: 0;
+    font-size: .98rem !important;
+    line-height: 1.6 !important;
   }
 
-  body.texas-guide .hero-guidance span:nth-child(2) { margin-left: 5% !important; }
-  body.texas-guide .hero-guidance span:nth-child(3) { margin-left: 10% !important; }
+  body.texas-guide .hero-guidance span {
+    margin-left: 0 !important;
+  }
 
   body.texas-guide .program-marquee {
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%) !important;
