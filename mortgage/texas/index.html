@@ -220,19 +220,19 @@
   }
 
   .hero-apply .link-btn.primary {
-    min-height: 48px;
-    padding: 0 30px;
-    border: 0;
-    background: linear-gradient(135deg, #6370ff 0%, #4f5de8 52%, #4652df 100%);
+    padding: 14px 36px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    border: 1px solid rgba(255, 255, 255, .14);
+    background: linear-gradient(135deg, #5b68f5 0%, #4f5de8 55%, #4652df 100%);
     color: #fff;
-    font-size: .95rem;
-    font-weight: 700;
-    letter-spacing: -.01em;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     box-shadow:
-      0 10px 28px rgba(79, 93, 232, .38),
-      0 0 0 1px rgba(255, 255, 255, .08) inset;
+      0 0 28px rgba(100, 150, 230, .24),
+      0 8px 22px rgba(79, 93, 232, .32),
+      inset 0 1px 0 rgba(255, 255, 255, .12);
   }
 
   .hero-apply .link-btn.primary::before {
@@ -241,8 +241,7 @@
 
   .hero-apply .link-btn.primary:hover {
     transform: scale(1.04);
-    filter: brightness(1.05);
-    background: linear-gradient(135deg, #6b77ff 0%, #5563ea 52%, #4c58e0 100%);
+    background: linear-gradient(135deg, #6370ff 0%, #5563ea 55%, #4c58e0 100%);
     backdrop-filter: blur(12px) saturate(1.35);
     -webkit-backdrop-filter: blur(12px) saturate(1.35);
     box-shadow:
@@ -250,7 +249,8 @@
       inset 0 -1px 0 rgba(8, 16, 40, .12),
       inset 0 8px 24px rgba(180, 200, 255, .18),
       0 0 0 1px rgba(160, 180, 255, .32),
-      0 14px 34px rgba(79, 93, 232, .46);
+      0 0 32px rgba(100, 150, 230, .28),
+      0 12px 28px rgba(79, 93, 232, .4);
   }
 
   .hero-apply .link-btn.primary:hover::before {
@@ -647,9 +647,8 @@
     }
 
     .hero-apply .link-btn.primary {
-      min-height: 46px;
-      padding: 0 26px;
-      font-size: .92rem;
+      min-height: 48px;
+      padding: 14px 32px;
     }
 
     .program-marquee {
