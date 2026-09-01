@@ -74,31 +74,43 @@
         '.texas-guide .hero-copy{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:clamp(18px,2vw,28px)!important;width:min(680px,100%)!important}',
         '.texas-guide .hero-guidance{position:static!important;left:auto!important;bottom:auto!important;grid-column:auto!important;width:min(620px,100%)!important;margin:0!important;padding:0!important;text-align:left!important}',
         '.texas-guide .hero-guidance span{display:block!important;margin-left:0!important;width:auto!important;max-width:100%!important}',
-        '@media(max-width:720px){.texas-guide .hero{min-height:calc(100dvh - 158px)!important;min-height:calc(100svh - 158px)!important;padding:64px 0 8px!important;box-sizing:border-box!important}.texas-guide .hero-copy{width:88%!important;gap:18px!important}.texas-guide .hero-title-flag{font-size:clamp(42px,11.5vw,54px)!important;line-height:.98!important}.texas-guide .texas-outline-wrap{right:-8%!important;width:54%!important}.texas-guide .hero-guidance{font-size:.98rem!important;line-height:1.55!important}}',
-        '@media(max-width:430px){.texas-guide .hero{padding:60px 0 8px!important}.texas-guide .hero-copy{width:92%!important;gap:16px!important}.texas-guide .hero-title-flag{font-size:clamp(40px,12vw,50px)!important}.texas-guide .texas-outline-wrap{right:-10%!important;width:56%!important}}'
+        '@media(max-width:720px){.texas-guide .hero{min-height:calc(100dvh - 158px)!important;min-height:calc(100svh - 158px)!important;padding:80px 0 8px!important;box-sizing:border-box!important}.texas-guide .hero-copy{width:88%!important;gap:0!important}.texas-guide .hero-title-flag{font-size:clamp(42px,11.5vw,54px)!important;line-height:.98!important;margin-bottom:0!important}.texas-guide .texas-outline-wrap{right:-8%!important;width:54%!important}.texas-guide .hero-guidance{font-size:.98rem!important;line-height:1.55!important;position:relative!important;z-index:2!important}}',
+        '@media(max-width:430px){.texas-guide .hero{padding:76px 0 8px!important}.texas-guide .hero-copy{width:92%!important}.texas-guide .hero-title-flag{font-size:clamp(40px,12vw,50px)!important}.texas-guide .texas-outline-wrap{right:-10%!important;width:56%!important}}'
       ].join('');
       document.head.appendChild(texasHeroStyle);
 
-      function syncTexasMobileOutline() {
+      function syncTexasMobileHeroLayout() {
         var mobile = window.matchMedia('(max-width: 720px)').matches;
         var line3 = document.querySelector('.hero-title-flag .hero-line:nth-child(3)');
+        var title = document.querySelector('.hero-title-flag');
         var wrap = document.querySelector('.texas-outline-wrap');
+        var guidance = document.querySelector('.hero-guidance');
         var hero = document.querySelector('.hero');
         if (!wrap || !hero) return;
-        if (!mobile || !line3) {
+
+        if (!mobile || !line3 || !title || !guidance) {
           wrap.style.top = '';
+          guidance.style.marginTop = '';
           return;
         }
-        var gap = 10;
-        var top = line3.getBoundingClientRect().bottom - hero.getBoundingClientRect().top + gap;
-        wrap.style.top = Math.max(top, 108) + 'px';
+
+        var financingGap = 10;
+        var subheadGap = 16;
+        var heroTop = hero.getBoundingClientRect().top;
+        var lineBottom = line3.getBoundingClientRect().bottom;
+        var outlineTop = lineBottom - heroTop + financingGap;
+        wrap.style.top = Math.max(outlineTop, 120) + 'px';
+
+        var guidanceTop = lineBottom + financingGap + subheadGap;
+        var titleBottom = title.getBoundingClientRect().bottom;
+        guidance.style.marginTop = Math.max(guidanceTop - titleBottom, subheadGap) + 'px';
       }
 
-      syncTexasMobileOutline();
-      window.addEventListener('resize', syncTexasMobileOutline);
-      window.addEventListener('load', syncTexasMobileOutline);
+      syncTexasMobileHeroLayout();
+      window.addEventListener('resize', syncTexasMobileHeroLayout);
+      window.addEventListener('load', syncTexasMobileHeroLayout);
       if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(syncTexasMobileOutline);
+        document.fonts.ready.then(syncTexasMobileHeroLayout);
       }
     }
 

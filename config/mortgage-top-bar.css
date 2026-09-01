@@ -388,7 +388,7 @@ body.texas-guide .program-marquee__item::after {
   body.texas-guide .hero {
     min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek)) !important;
     min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek)) !important;
-    padding: 64px 14px 8px !important;
+    padding: 80px 14px 8px !important;
     box-sizing: border-box !important;
     justify-content: flex-start !important;
   }
@@ -417,6 +417,8 @@ body.texas-guide .program-marquee__item::after {
     padding-left: 0;
     font-size: .98rem !important;
     line-height: 1.6 !important;
+    position: relative;
+    z-index: 2;
   }
 
   body.texas-guide .hero-guidance span {
