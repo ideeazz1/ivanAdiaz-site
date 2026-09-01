@@ -271,7 +271,7 @@ body.texas-guide .hero {
   display: flex;
   flex-direction: column;
   align-items: stretch !important;
-  justify-content: center;
+  justify-content: flex-start;
   background: transparent !important;
 }
 
@@ -370,6 +370,12 @@ body.texas-guide .program-marquee__item::after {
 }
 
 @media (max-width: 720px) {
+  body.texas-guide {
+    --tx-mobile-marquee: 50px;
+    --tx-mobile-peek: 52px;
+    --tx-mobile-header: 56px;
+  }
+
   body.texas-guide .page-shell {
     width: min(100% - 24px, 1120px);
     background: transparent !important;
@@ -380,10 +386,22 @@ body.texas-guide .program-marquee__item::after {
   }
 
   body.texas-guide .hero {
-    min-height: calc(100svh - 52px) !important;
-    min-height: calc(100dvh - 52px) !important;
-    padding: 96px 14px 56px !important;
+    min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek)) !important;
+    min-height: calc(100svh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek)) !important;
+    padding: 64px 14px 8px !important;
     box-sizing: border-box !important;
+    justify-content: flex-start !important;
+  }
+
+  body.texas-guide .texas-outline-wrap {
+    top: auto;
+    right: -8%;
+    width: 54%;
+  }
+
+  body.texas-guide .hero-title-flag .hero-line:nth-child(3) {
+    position: relative;
+    z-index: 2;
   }
 
   body.texas-guide .hero-title-flag {
