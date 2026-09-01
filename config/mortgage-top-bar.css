@@ -234,3 +234,50 @@
     padding-inline: 1.25rem !important;
   }
 }
+
+/* Texas hero correction: tighter composition and static smooth color transition. */
+.texas-guide .hero {
+  min-height: 390px !important;
+  padding: 52px 24px 46px !important;
+  align-items: center;
+}
+
+.texas-guide .hero-title-flag {
+  line-height: .98 !important;
+  background-image: linear-gradient(105deg, #164f9f 0%, #4f78d1 34%, #8c63c6 66%, #bf2f56 100%) !important;
+  background-size: 100% 100% !important;
+  background-position: center !important;
+  animation: none !important;
+}
+
+.texas-guide .hero-title-flag .hero-line {
+  max-width: none !important;
+  padding-bottom: .07em;
+}
+
+.texas-guide .hero-title-flag .hero-line:nth-child(2) {
+  margin-left: 9% !important;
+}
+
+.texas-guide .hero-title-flag .hero-line:nth-child(3) {
+  margin-left: 18% !important;
+}
+
+.texas-guide .hero-title-flag .hero-line + .hero-line {
+  margin-top: .02em !important;
+}
+
+@media (max-width: 720px) {
+  .texas-guide .hero {
+    min-height: 330px !important;
+    padding: 42px 0 38px !important;
+  }
+
+  .texas-guide .hero-title-flag .hero-line:nth-child(2) {
+    margin-left: 6% !important;
+  }
+
+  .texas-guide .hero-title-flag .hero-line:nth-child(3) {
+    margin-left: 12% !important;
+  }
+}
