@@ -46,7 +46,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 16px 22px 16px 24px;
-  border-radius: 999px;
+  border-radius: 8px;
   background: transparent;
   border: 1px solid rgba(52, 58, 64, 0.14);
   box-shadow: none;
