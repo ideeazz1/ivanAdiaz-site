@@ -234,6 +234,14 @@ body.texas-guide .program-marquee {
   mask-image: none !important;
 }
 
+/* The Apply wrapper belongs to the hero phase, not the marquee. Keep it navy at
+ * the top, then let it follow the page into the light phase so it never becomes
+ * a standalone navy slab while scrolling. */
 body.texas-guide .hero-apply {
   background: #081028 !important;
+  transition: background-color .6s cubic-bezier(.2,.72,.2,1);
+}
+
+body.texas-guide.is-light-phase .hero-apply {
+  background: #eceeea !important;
 }
