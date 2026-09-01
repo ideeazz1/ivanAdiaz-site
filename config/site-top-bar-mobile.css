@@ -224,3 +224,16 @@ body.texas-guide.is-light-phase .top-bar.is-compact {
     margin-top: -32px;
   }
 }
+
+/* Texas marquee: keep the dark strip opaque edge-to-edge. The inline mask fades
+ * the entire container to transparency, which exposes the light section as white side bars. */
+body.texas-guide .program-marquee {
+  position: relative;
+  background: #081028 !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+body.texas-guide .hero-apply {
+  background: #081028 !important;
+}
