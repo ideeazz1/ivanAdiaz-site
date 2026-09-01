@@ -220,6 +220,13 @@ body.texas-guide.is-light-phase .top-bar.is-compact .top-bar__pill {
   background-color: #eceeea !important;
 }
 
+@media (max-width: 720px) {
+  body.texas-guide .top-bar__pill,
+  body.texas-guide .top-bar.is-compact .top-bar__pill {
+    border-radius: 20px !important;
+  }
+}
+
 /* Texas mobile hero spacing: lower the headline, open the subhead gap, and pull the CTA upward. */
 @media (max-width: 720px) {
   body.texas-guide .hero-title-flag {
