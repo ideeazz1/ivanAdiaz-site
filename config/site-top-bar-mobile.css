@@ -1,8 +1,62 @@
-/* Mobile hamburger menu — supplements inline top-bar styles on index + mortgage */
+/* Shared top-bar contract + mobile behavior.
+ * Canonical geometry and collapse motion mirror the homepage.
+ * Page-specific themes may change colors through variables, but must not replace
+ * the header geometry or transition shorthand. */
+:root {
+  --top-bar-bg-duration: 0.22s;
+  --top-bar-bg-easing: ease;
+}
 
-/* Match the shared header shell to the Experience card radius, including pages with inline legacy radius values. */
 .top-bar__pill {
   border-radius: var(--radius, 8px) !important;
+  transition:
+    width 0.28s ease,
+    max-width 0.28s ease,
+    padding 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color var(--top-bar-bg-duration) var(--top-bar-bg-easing),
+    border-color 0.22s ease,
+    --blob-x 0.3s ease-out,
+    --blob-y 0.3s ease-out !important;
+}
+
+.top-bar__brand {
+  transition:
+    font-size 0.22s ease,
+    gap 0.22s ease,
+    color 0.22s ease,
+    background-color 0.22s ease,
+    text-shadow 0.22s ease !important;
+}
+
+.top-bar__mark {
+  transition: width 0.22s ease, height 0.22s ease !important;
+}
+
+.top-bar__links a {
+  transition:
+    padding 0.22s ease,
+    font-size 0.22s ease,
+    color 0.22s ease,
+    background-color 0.22s ease,
+    text-shadow 0.22s ease !important;
+}
+
+/* Homepage compact contract: the outer bar stays full-width and the inner pill
+ * becomes the content-width surface. This is intentionally different from the
+ * old mortgage behavior that shrank the outer bar itself. */
+.top-bar.is-compact {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  padding-inline: 24px !important;
+  align-self: stretch !important;
+}
+
+.top-bar.is-compact .top-bar__pill {
+  width: var(--site-content-width) !important;
+  max-width: none !important;
+  margin-inline: auto !important;
 }
 
 /* Mortgage carousel cards use the same 8px corner language as Experience cards. */
@@ -115,6 +169,14 @@
 }
 
 @media (max-width: 720px) {
+  .top-bar.is-compact {
+    padding-inline: 12px !important;
+  }
+
+  .top-bar.is-compact .top-bar__pill {
+    width: 100% !important;
+  }
+
   .top-bar__pill {
     flex-wrap: wrap;
     align-items: center;
@@ -185,15 +247,24 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .top-bar__pill,
+  .top-bar__brand,
+  .top-bar__mark,
+  .top-bar__links a,
   .top-bar__menu-icon,
   .top-bar__menu-icon::before,
   .top-bar__menu-icon::after {
-    transition: none;
+    transition: none !important;
   }
 }
 
 /* Texas phase surfaces: the centered shell follows the page transition, while
  * the header fill stays on the existing rounded pill instead of its square wrapper. */
+body.texas-guide {
+  --top-bar-bg-duration: .6s;
+  --top-bar-bg-easing: cubic-bezier(.2,.72,.2,1);
+}
+
 body.texas-guide .page-shell {
   background-color: #081028 !important;
   transition: background-color .6s cubic-bezier(.2,.72,.2,1);
@@ -211,7 +282,6 @@ body.texas-guide .top-bar.is-compact {
 body.texas-guide .top-bar__pill,
 body.texas-guide .top-bar.is-compact .top-bar__pill {
   background-color: #081028 !important;
-  transition: background-color .6s cubic-bezier(.2,.72,.2,1);
 }
 
 body.texas-guide.is-light-phase .top-bar__pill,
@@ -259,48 +329,4 @@ body.texas-guide .hero-apply {
 
 body.texas-guide.is-light-phase .hero-apply {
   background: #eceeea !important;
-}
-
-/* Texas header collapse: preserve the homepage motion properties while the page
- * independently cross-fades between its dark and light phases. */
-body.texas-guide .top-bar__pill,
-body.texas-guide .top-bar.is-compact .top-bar__pill {
-  transition:
-    width 0.28s ease,
-    max-width 0.28s ease,
-    padding 0.22s ease,
-    box-shadow 0.22s ease,
-    background-color .6s cubic-bezier(.2,.72,.2,1),
-    border-color 0.22s ease !important;
-}
-
-body.texas-guide .top-bar__brand {
-  transition:
-    font-size 0.22s ease,
-    gap 0.22s ease,
-    color 0.22s ease,
-    background-color 0.22s ease,
-    text-shadow 0.22s ease !important;
-}
-
-body.texas-guide .top-bar__mark {
-  transition: width 0.22s ease, height 0.22s ease !important;
-}
-
-body.texas-guide .top-bar__links a {
-  transition:
-    padding 0.22s ease,
-    font-size 0.22s ease,
-    color 0.22s ease,
-    background-color 0.22s ease,
-    text-shadow 0.22s ease !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body.texas-guide .top-bar__pill,
-  body.texas-guide .top-bar__brand,
-  body.texas-guide .top-bar__mark,
-  body.texas-guide .top-bar__links a {
-    transition: none !important;
-  }
 }
