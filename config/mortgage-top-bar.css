@@ -202,7 +202,7 @@
   background: transparent;
 }
 
-/* Texas page: one authoritative dark surface from header through ticker. */
+/* Texas page: one authoritative dark surface from hero through ticker. */
 body.texas-guide {
   min-height: 100vh;
   color: #fff;
@@ -210,10 +210,14 @@ body.texas-guide {
 }
 
 body.texas-guide .page-shell,
-body.texas-guide .top-bar,
-body.texas-guide .top-bar.is-compact,
 body.texas-guide .program-marquee {
   background: #081028 !important;
+}
+
+/* Header has no independent fill: it inherits/blends with whatever is behind it. */
+body.texas-guide .top-bar,
+body.texas-guide .top-bar.is-compact {
+  background: transparent !important;
 }
 
 body.texas-guide .page-shell {
@@ -373,7 +377,7 @@ body.texas-guide .program-marquee__item::after {
   }
 
   body.texas-guide .top-bar {
-    background: #081028 !important;
+    background: transparent !important;
   }
 
   body.texas-guide .hero {
