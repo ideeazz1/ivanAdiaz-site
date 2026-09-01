@@ -202,7 +202,7 @@ h3 { font-size: 1.25rem; }
   min-height: 100%;
   padding: 30px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 14px 42px rgba(52, 58, 64, 0.06);
 }
@@ -239,7 +239,7 @@ h3 { font-size: 1.25rem; }
   gap: 20px;
   padding: 18px 20px;
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.72);
   font-weight: 700;
   text-decoration: none;
@@ -253,7 +253,7 @@ h3 { font-size: 1.25rem; }
   gap: 30px;
   align-items: center;
   padding: clamp(34px, 6vw, 62px);
-  border-radius: 16px;
+  border-radius: 8px;
   color: #f7faf8;
   background: linear-gradient(135deg, #345644, #507562);
 }
