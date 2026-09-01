@@ -35,192 +35,23 @@
   "areaServed": {"@type": "State", "name": "Texas"}
 }
 </script>
-
 <style>
-  .texas-guide {
-    overflow-x: hidden;
-  }
-
-  .texas-guide .page-shell {
-    width: min(1120px, calc(100% - 40px));
-  }
-
-  .texas-guide .hero {
-    min-height: clamp(560px, 72vh, 760px);
-    display: flex;
-    align-items: center;
-    padding: clamp(78px, 9vw, 124px) clamp(8px, 2vw, 24px) clamp(64px, 8vw, 96px);
-    background: transparent;
-    overflow: visible;
-  }
-
-  .hero-title-flag {
-    width: 100%;
-    max-width: 1040px;
-    margin: 0;
-    font-family: Outfit, Inter, system-ui, sans-serif;
-    font-size: clamp(4rem, 8.4vw, 7.25rem);
-    font-weight: 800;
-    line-height: 0.88;
-    letter-spacing: -0.055em;
-    background-image: linear-gradient(
-      105deg,
-      #002868 0%,
-      #1e4a9a 14%,
-      #e8eef8 28%,
-      #bf0a30 44%,
-      #f4f7fb 58%,
-      #002868 74%,
-      #c62828 88%,
-      #e8eef8 100%
-    );
-    background-size: 240% 160%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: flag-wave-text 11s ease-in-out infinite;
-    filter: drop-shadow(0 1px 0 rgba(52, 58, 64, 0.12));
-  }
-
-  .hero-title-flag .hero-line {
-    display: block;
-    width: max-content;
-    max-width: 100%;
-    white-space: nowrap;
-  }
-
-  .hero-title-flag .hero-line:nth-child(2) {
-    margin-left: 12%;
-  }
-
-  .hero-title-flag .hero-line:nth-child(3) {
-    margin-left: 29%;
-  }
-
-  .hero-title-flag .hero-line + .hero-line {
-    margin-top: 0.08em;
-  }
-
-  .program-marquee {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    overflow: hidden;
-    background: #002868;
-    color: #fff;
-    border-top: 1px solid rgba(255,255,255,.16);
-    border-bottom: 1px solid rgba(255,255,255,.16);
-  }
-
-  .program-marquee__track {
-    display: flex;
-    width: max-content;
-    animation: program-scroll 22s linear infinite;
-    will-change: transform;
-  }
-
-  .program-marquee__group {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    min-height: 72px;
-  }
-
-  .program-marquee__item {
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    padding: 0 2.25rem;
-    font-family: Outfit, Inter, system-ui, sans-serif;
-    font-size: clamp(.9rem, 1.35vw, 1.08rem);
-    font-weight: 700;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  .program-marquee__item::after {
-    content: "•";
-    margin-left: 4.5rem;
-    opacity: .55;
-  }
-
-  .program-marquee:hover .program-marquee__track {
-    animation-play-state: paused;
-  }
-
-  @keyframes flag-wave-text {
-    0%, 100% { background-position: 0% 42%; }
-    25% { background-position: 32% 58%; }
-    50% { background-position: 100% 48%; }
-    75% { background-position: 58% 35%; }
-  }
-
-  @keyframes program-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  @media (max-width: 720px) {
-    .texas-guide .page-shell {
-      width: min(100% - 24px, 1120px);
-    }
-
-    .texas-guide .hero {
-      min-height: 520px;
-      padding: 70px 0 58px;
-    }
-
-    .hero-title-flag {
-      font-size: clamp(3rem, 14vw, 4.8rem);
-      line-height: .9;
-    }
-
-    .hero-title-flag .hero-line:nth-child(2) {
-      margin-left: 8%;
-    }
-
-    .hero-title-flag .hero-line:nth-child(3) {
-      margin-left: 16%;
-    }
-
-    .program-marquee__group {
-      min-height: 62px;
-    }
-
-    .program-marquee__item {
-      padding: 0 1.5rem;
-      letter-spacing: .1em;
-    }
-
-    .program-marquee__item::after {
-      margin-left: 3rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-title-flag {
-      animation: none;
-      background-position: 28% 50%;
-    }
-
-    .program-marquee__track {
-      width: 100%;
-      animation: none;
-      justify-content: center;
-    }
-
-    .program-marquee__group[aria-hidden="true"] {
-      display: none;
-    }
-  }
-
-  /* Mercury-inspired Texas treatment: one continuous navy field. */
-  .texas-guide {
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: #081028; }
+  body.texas-guide {
     min-height: 100vh;
+    overflow-x: hidden;
     color: #fff;
     background: #081028 !important;
   }
-
+  .texas-guide .page-shell {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    background: transparent !important;
+  }
+  .texas-guide .top-bar,
+  .texas-guide .top-bar.is-compact,
   .texas-guide .top-bar__pill,
   .texas-guide .top-bar.is-compact .top-bar__pill {
     background: transparent !important;
@@ -229,112 +60,214 @@
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
-
   .texas-guide .top-bar__brand,
   .texas-guide .top-bar__links a {
     color: rgba(255,255,255,.72) !important;
     transition: color .22s ease, background-color .22s ease, text-shadow .22s ease;
   }
-
-  .texas-guide .top-bar__brand {
-    color: rgba(255,255,255,.9) !important;
-  }
-
-  .texas-guide .top-bar__mark {
-    filter: brightness(0) invert(1);
-    opacity: .92;
-  }
-
+  .texas-guide .top-bar__brand { color: rgba(255,255,255,.92) !important; }
   .texas-guide .top-bar__links a[aria-current="page"] {
-    color: rgba(255,255,255,.94) !important;
+    color: rgba(255,255,255,.96) !important;
     background: transparent !important;
   }
-
+  .texas-guide .top-bar__menu-toggle { color: rgba(255,255,255,.9) !important; }
   .texas-guide .top-bar__brand:hover,
-  .texas-guide .top-bar__links a:hover {
+  .texas-guide .top-bar__links a:hover,
+  .texas-guide .top-bar__menu-toggle:hover {
     color: #fff !important;
     background: rgba(255,255,255,.07) !important;
     text-shadow: 0 0 18px rgba(255,255,255,.22);
   }
-
-  .texas-guide .hero {
-    min-height: 470px !important;
-    padding: 70px 24px 58px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch !important;
-    justify-content: center;
-    background: transparent !important;
+  .texas-guide .top-bar__mark--portrait {
+    border: 1px solid rgba(255,255,255,.32);
+    box-shadow: 0 0 0 2px rgba(255,255,255,.06), 0 0 18px rgba(255,255,255,.1);
   }
 
-  .texas-guide .hero-title-flag {
-    color: #fff !important;
-    -webkit-text-fill-color: #fff !important;
-    background: none !important;
-    filter: none !important;
-    text-shadow:
-      0 0 10px rgba(255,255,255,.24),
-      0 0 28px rgba(110,155,255,.24),
-      0 0 52px rgba(64,110,220,.16);
+  .hero {
+    min-height: clamp(620px, 76vh, 840px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(300px, .94fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: clamp(24px, 4vw, 68px);
+    row-gap: 22px;
+    padding: clamp(86px, 9vw, 126px) 0 clamp(58px, 7vw, 92px);
+    position: relative;
   }
-
-  .hero-guidance {
-    width: min(660px, 82%);
-    margin-top: 34px;
-    color: rgba(255,255,255,.58);
+  .hero-copy { min-width: 0; z-index: 2; }
+  .hero-title-flag {
+    margin: 0;
     font-family: Outfit, Inter, system-ui, sans-serif;
-    font-size: clamp(.98rem, 1.7vw, 1.18rem);
-    font-weight: 500;
-    line-height: 1.45;
-    letter-spacing: -.01em;
+    font-size: clamp(54px, 6.2vw, 76px);
+    font-weight: 800;
+    line-height: .95;
+    letter-spacing: -.055em;
+    color: #fff;
+    text-shadow:
+      0 0 9px rgba(255,255,255,.28),
+      0 0 26px rgba(138,176,255,.24),
+      0 0 52px rgba(77,126,231,.14);
   }
-
-  .hero-guidance span {
+  .hero-title-flag .hero-line {
     display: block;
     width: max-content;
     max-width: 100%;
+    white-space: nowrap;
   }
+  .hero-title-flag .hero-line:nth-child(2) { margin-left: 9%; }
+  .hero-title-flag .hero-line:nth-child(3) { margin-left: 18%; }
+  .hero-title-flag .hero-line + .hero-line { margin-top: .035em; }
 
-  .hero-guidance span:nth-child(2) { margin-left: 8%; }
-  .hero-guidance span:nth-child(3) { margin-left: 16%; }
-
-  .texas-guide .program-marquee {
-    background: #081028 !important;
-    border: 0 !important;
-    color: rgba(255,255,255,.76);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  .texas-outline-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    z-index: 1;
   }
-
-  .texas-guide .program-marquee__track {
-    animation-duration: 28s !important;
-    animation-timing-function: linear !important;
+  .texas-outline {
+    width: min(100%, 490px);
+    height: auto;
+    display: block;
+    opacity: .96;
+    filter:
+      drop-shadow(0 0 4px rgba(255,255,255,.92))
+      drop-shadow(0 0 11px rgba(255,255,255,.62))
+      drop-shadow(0 0 24px rgba(107,154,255,.46));
   }
+  .hero-guidance {
+    grid-column: 1 / 2;
+    width: min(640px, 94%);
+    margin-top: 2px;
+    padding-left: 3%;
+    color: rgba(255,255,255,.62);
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: clamp(1rem, 1.45vw, 1.15rem);
+    font-weight: 500;
+    line-height: 1.48;
+    letter-spacing: -.01em;
+    z-index: 2;
+  }
+  .hero-guidance span { display: block; width: max-content; max-width: 100%; }
+  .hero-guidance span:nth-child(2) { margin-left: 7%; }
+  .hero-guidance span:nth-child(3) { margin-left: 14%; }
 
-  .texas-guide .program-marquee__item {
+  .program-marquee {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    background: #081028;
+    color: rgba(255,255,255,.78);
+    border: 0;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  }
+  .program-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: program-scroll 28s linear infinite;
+    will-change: transform;
+  }
+  .program-marquee__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: 58px;
+  }
+  .program-marquee__item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0 1.9rem;
+    font-family: Outfit, Inter, system-ui, sans-serif;
+    font-size: .84rem;
     font-weight: 600;
     letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .program-marquee__item::after {
+    content: "•";
+    margin-left: 3.8rem;
+    opacity: .55;
+  }
+  .program-marquee:hover .program-marquee__track { animation-play-state: paused; }
+  @keyframes program-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(250px, .72fr);
+      column-gap: 18px;
+    }
+    .hero-title-flag { font-size: clamp(50px, 7.3vw, 64px); }
   }
 
   @media (max-width: 720px) {
-    .texas-guide .hero {
-      min-height: 430px !important;
-      padding: 56px 0 48px !important;
+    .texas-guide .page-shell { width: min(100% - 28px, 620px); }
+    .hero {
+      min-height: min(820px, calc(100svh - 26px));
+      display: block;
+      padding: 96px 0 58px;
+      position: relative;
+      overflow: visible;
     }
-
+    .hero-copy {
+      position: relative;
+      z-index: 3;
+      width: 88%;
+    }
+    .hero-title-flag {
+      font-size: clamp(44px, 12.7vw, 61px);
+      line-height: .96;
+    }
+    .hero-title-flag .hero-line:nth-child(2) { margin-left: 8%; }
+    .hero-title-flag .hero-line:nth-child(3) { margin-left: 15%; }
+    .texas-outline-wrap {
+      position: absolute;
+      z-index: 1;
+      top: 31%;
+      right: -7%;
+      width: 56%;
+      pointer-events: none;
+    }
+    .texas-outline {
+      width: 100%;
+      opacity: .88;
+      filter:
+        drop-shadow(0 0 3px rgba(255,255,255,.95))
+        drop-shadow(0 0 8px rgba(255,255,255,.58))
+        drop-shadow(0 0 18px rgba(107,154,255,.40));
+    }
     .hero-guidance {
-      width: 94%;
-      margin-top: 26px;
-      font-size: .96rem;
+      position: absolute;
+      left: 0;
+      bottom: 74px;
+      width: 88%;
+      padding-left: 0;
+      font-size: .98rem;
+      color: rgba(255,255,255,.60);
     }
-
-    .hero-guidance span:nth-child(2) { margin-left: 5%; }
-    .hero-guidance span:nth-child(3) { margin-left: 10%; }
-
-    .texas-guide .program-marquee {
+    .hero-guidance span:nth-child(2) { margin-left: 6%; }
+    .hero-guidance span:nth-child(3) { margin-left: 12%; }
+    .program-marquee {
       -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
     }
+    .program-marquee__group { min-height: 52px; }
+    .program-marquee__item { font-size: .78rem; padding: 0 1.25rem; }
+    .program-marquee__item::after { margin-left: 3rem; }
+  }
+
+  @media (max-width: 430px) {
+    .hero { min-height: min(780px, calc(100svh - 14px)); padding-top: 88px; }
+    .hero-copy { width: 94%; }
+    .hero-title-flag { font-size: clamp(42px, 13.4vw, 56px); }
+    .texas-outline-wrap { top: 34%; right: -10%; width: 59%; }
+    .hero-guidance { bottom: 66px; width: 94%; font-size: .94rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .program-marquee__track { animation: none; }
+    .program-marquee__group[aria-hidden="true"] { display: none; }
   }
 </style>
 </head>
@@ -361,11 +294,16 @@
 
 <main class="page-shell">
   <section class="hero" aria-labelledby="texas-guide-title">
-    <h1 class="hero-title-flag" id="texas-guide-title">
-      <span class="hero-line">Texan&apos;s Guide</span>
-      <span class="hero-line">to 100%</span>
-      <span class="hero-line">Financing</span>
-    </h1>
+    <div class="hero-copy">
+      <h1 class="hero-title-flag" id="texas-guide-title">
+        <span class="hero-line">Texan&apos;s Guide</span>
+        <span class="hero-line">to 100%</span>
+        <span class="hero-line">Financing</span>
+      </h1>
+    </div>
+    <div class="texas-outline-wrap" aria-hidden="true">
+      <img class="texas-outline" src="/assets/texas-outline-glow.svg" alt="">
+    </div>
     <div class="hero-guidance" aria-label="Texas financing approach">
       <span>Start with the programs.</span>
       <span>Compare the numbers.</span>
