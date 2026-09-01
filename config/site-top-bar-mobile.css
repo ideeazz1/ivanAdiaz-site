@@ -211,20 +211,12 @@ body.texas-guide .top-bar.is-compact {
 body.texas-guide .top-bar__pill,
 body.texas-guide .top-bar.is-compact .top-bar__pill {
   background-color: #081028 !important;
-  border-radius: 999px !important;
   transition: background-color .6s cubic-bezier(.2,.72,.2,1);
 }
 
 body.texas-guide.is-light-phase .top-bar__pill,
 body.texas-guide.is-light-phase .top-bar.is-compact .top-bar__pill {
   background-color: #eceeea !important;
-}
-
-@media (max-width: 720px) {
-  body.texas-guide .top-bar__pill,
-  body.texas-guide .top-bar.is-compact .top-bar__pill {
-    border-radius: 20px !important;
-  }
 }
 
 /* Texas mobile hero spacing: lower the headline, open the subhead gap, and pull the CTA upward. */
