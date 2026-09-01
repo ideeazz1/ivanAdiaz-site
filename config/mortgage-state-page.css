@@ -314,3 +314,26 @@ h3 { font-size: 1.25rem; }
   .button { width: 100%; }
   .resource-list a { align-items: flex-start; }
 }
+
+/* Texas guide mobile composition: keep the title close to the West Texas line,
+   place the guidance below it, and pull the CTA upward without a blue halo. */
+@media (max-width: 720px) {
+  .texas-guide .hero-copy {
+    transform: translateY(36px) !important;
+  }
+
+  .texas-guide .hero-guidance {
+    transform: translateY(82px) !important;
+  }
+
+  .texas-guide .hero-apply {
+    margin-top: -28px !important;
+    background: var(--tx-navy) !important;
+  }
+}
+
+.texas-guide .hero-apply .link-btn.primary {
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, .16),
+    inset 0 1px 0 rgba(255, 255, 255, .12) !important;
+}
