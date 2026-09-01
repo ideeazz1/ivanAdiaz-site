@@ -192,15 +192,31 @@
   }
 }
 
-/* Texas sticky header: visually blend with the current page phase without being transparent. */
-body.texas-guide .top-bar,
-body.texas-guide .top-bar.is-compact {
+/* Texas phase surfaces: the centered shell follows the page transition, while
+ * the header fill stays on the existing rounded pill instead of its square wrapper. */
+body.texas-guide .page-shell {
   background-color: #081028 !important;
   transition: background-color .6s cubic-bezier(.2,.72,.2,1);
 }
 
-body.texas-guide.is-light-phase .top-bar,
-body.texas-guide.is-light-phase .top-bar.is-compact {
+body.texas-guide.is-light-phase .page-shell {
+  background-color: #eceeea !important;
+}
+
+body.texas-guide .top-bar,
+body.texas-guide .top-bar.is-compact {
+  background: transparent !important;
+}
+
+body.texas-guide .top-bar__pill,
+body.texas-guide .top-bar.is-compact .top-bar__pill {
+  background-color: #081028 !important;
+  border-radius: 999px !important;
+  transition: background-color .6s cubic-bezier(.2,.72,.2,1);
+}
+
+body.texas-guide.is-light-phase .top-bar__pill,
+body.texas-guide.is-light-phase .top-bar.is-compact .top-bar__pill {
   background-color: #eceeea !important;
 }
 
