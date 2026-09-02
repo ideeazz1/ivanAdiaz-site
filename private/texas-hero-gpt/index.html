@@ -6,12 +6,10 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#081028">
   <title>Texas Visual Preview</title>
-  <script src="/private/site-gate.js"></script>
   <style>
     :root { --navy: #081028; }
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; min-height: 100%; background: var(--navy); }
-    html.site-gate-pending body { visibility: hidden; }
     body { overflow: hidden; }
 
     .stage {
@@ -80,10 +78,8 @@
       .art video { display: none; }
       .art {
         background: url('/assets/texas/texas-hero-poster.jpg') center / cover no-repeat;
-        -webkit-mask-image:
-          linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
-        mask-image:
-          linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
       }
     }
   </style>
