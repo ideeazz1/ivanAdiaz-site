@@ -648,11 +648,14 @@
       width: 88%;
     }
 
+    /* Width is what holds the hero to its designed height: the visual is square
+       and in flow, so anything wider pushes the marquee peek off the first
+       screen. This lands it at roughly the footprint the outline had. */
     .texas-hero__visual {
       position: relative;
       z-index: 1;
-      width: 100%;
-      margin-top: 18px;
+      width: 58%;
+      margin: 16px auto 0;
       pointer-events: none;
     }
 
@@ -719,7 +722,7 @@
     .texas-hero { padding: 76px 0 8px; }
     .texas-hero__copy { width: 94%; }
     .hero-title-flag { font-size: clamp(42px, 13.4vw, 56px); }
-    .texas-hero__visual { margin-top: 14px; }
+    .texas-hero__visual { width: 56%; margin-top: 12px; }
     .hero-guidance { font-size: .98rem; }
   }
 
