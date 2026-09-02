@@ -1,1 +1,107 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#081028"><title>Texas Hero Preview</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"><style>:root{--n:#081028}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--n)}body{color:#fff;font-family:Inter,system-ui,sans-serif}.shell{width:min(1180px,calc(100% - 48px));margin:auto}.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);align-items:center;gap:clamp(24px,4vw,68px);min-height:100svh;padding:clamp(72px,8vw,116px) 0}.copy{display:flex;flex-direction:column;align-items:flex-start;gap:22px;z-index:2}.title{margin:0;font-family:Outfit,Inter,sans-serif;font-size:clamp(54px,6.2vw,76px);font-weight:800;line-height:.95;letter-spacing:-.055em;text-shadow:0 0 9px rgba(255,255,255,.28),0 0 26px rgba(138,176,255,.24),0 0 52px rgba(77,126,231,.14)}.title span{display:block;width:max-content;max-width:100%;white-space:nowrap}.title span:nth-child(2){margin-left:9%}.title span:nth-child(3){margin-left:18%}.guidance{color:rgba(255,255,255,.64);font-family:Outfit,Inter,sans-serif;font-size:clamp(1rem,1.45vw,1.15rem);font-weight:500;line-height:1.5}.guidance span{display:block}.cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 36px;border-radius:999px;background:linear-gradient(135deg,#5b68f5,#4652df);font-size:14px;font-weight:600;box-shadow:0 0 28px rgba(100,150,230,.24),0 8px 22px rgba(79,93,232,.32)}.visual{position:relative;width:100%;line-height:0}.visual video{display:block;width:100%;height:auto;background:var(--n)}.visual:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:0 0 0 2px var(--n);background:radial-gradient(ellipse farthest-side at 50% 50%,rgba(8,16,40,0) 52%,rgba(8,16,40,.06) 61.6%,rgba(8,16,40,.18) 70.2%,rgba(8,16,40,.36) 78.4%,rgba(8,16,40,.58) 86.6%,rgba(8,16,40,.8) 93.8%,#081028 100%),linear-gradient(to top,#081028 0%,rgba(8,16,40,0) 14%),linear-gradient(to bottom,#081028 0%,rgba(8,16,40,0) 14%),linear-gradient(to left,#081028 0%,rgba(8,16,40,0) 14%),linear-gradient(to right,#081028 0%,rgba(8,16,40,0) 14%)}@media(max-width:720px){.shell{width:min(100% - 28px,640px)}.hero{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;min-height:100svh;padding:76px 0 16px}.copy{gap:14px;width:94%}.title{font-size:clamp(42px,13.4vw,56px)}.title span:nth-child(2){margin-left:8%}.title span:nth-child(3){margin-left:15%}.guidance{font-size:.98rem;line-height:1.6}.visual{width:56%;margin:12px auto 0}}</style></head><body><main class="shell"><section class="hero"><div class="copy"><h1 class="title"><span>Texan&apos;s Guide</span><span>to 100%</span><span>Financing</span></h1><div class="guidance"><span>Start with the programs.</span><span>Compare the numbers.</span><span>Choose the path that fits.</span></div><div class="cta">Apply Today</div></div><div class="visual"><video src="/assets/texas/texas-hero-web.mp4" poster="/assets/texas/texas-hero-poster.jpg" autoplay loop muted playsinline preload="auto"></video></div></section></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#081028">
+  <title>Texas Visual Preview</title>
+  <script src="/private/site-gate.js"></script>
+  <style>
+    :root { --navy: #081028; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; min-height: 100%; background: var(--navy); }
+    html.site-gate-pending body { visibility: hidden; }
+    body { overflow: hidden; }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      height: 100svh;
+      overflow: hidden;
+      background: linear-gradient(180deg, #09122c 0%, var(--navy) 47%, #071027 100%);
+      isolation: isolate;
+    }
+
+    .art {
+      position: absolute;
+      left: 50%;
+      top: 49%;
+      width: min(82vw, 118vh, 1240px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      line-height: 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+    }
+
+    .art video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: var(--navy);
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+
+    @media (max-width: 900px) {
+      .art {
+        top: 49%;
+        width: min(112vw, 94svh);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+      }
+      .art video {
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+        mask-image: linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+      }
+    }
+
+    @media (max-width: 560px) and (orientation: portrait) {
+      .art {
+        top: 48%;
+        width: min(138vw, 76svh);
+      }
+    }
+
+    @media (max-height: 560px) and (orientation: landscape) {
+      .art {
+        top: 50%;
+        width: min(86vw, 140svh);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .art video { display: none; }
+      .art {
+        background: url('/assets/texas/texas-hero-poster.jpg') center / cover no-repeat;
+        -webkit-mask-image:
+          linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+        mask-image:
+          linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Texas visual preview">
+    <div class="art" aria-hidden="true">
+      <video
+        src="/assets/texas/texas-hero-web.mp4"
+        poster="/assets/texas/texas-hero-poster.jpg"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        disablepictureinpicture
+      ></video>
+    </div>
+  </main>
+</body>
+</html>

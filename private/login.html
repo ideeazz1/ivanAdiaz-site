@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer src="/config/plausible.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/preview-card.png">
+<meta name="theme-color" content="#343A40">
+<meta name="robots" content="noindex, nofollow">
+<title>Private sites — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/mockups/proposal-ivanadiaz.css">
+<style>
+  html.site-gate-pending body { visibility: hidden; }
+</style>
+</head>
+<body class="login-page">
+
+<div class="login-wrap">
+  <div class="login-card">
+    <p class="login-kicker">ivanadiaz.com · Private</p>
+    <h1 class="login-title">Sign in</h1>
+    <p class="login-deck">
+      Hierarchy, Peregrine decks, and other internal pages. Separate from the proposal editor login.
+    </p>
+
+    <form id="login-form" class="login-form" autocomplete="on">
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" name="email" required autocomplete="username" placeholder="you@ivanadiaz.com">
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <p class="login-error hidden" id="login-error" role="alert"></p>
+      <button type="submit" class="login-submit" id="login-submit">Continue</button>
+    </form>
+
+    <p class="login-foot"><a href="/" style="color:inherit;opacity:.75">← Public home</a></p>
+    <p class="login-foot hidden" id="login-local-hint" style="margin-top:12px;font-size:13px;line-height:1.45"></p>
+  </div>
+</div>
+
+<script src="/config/proposal-api-config.js"></script>
+<script src="/private/site-gate.js"></script>
+<script>
+(async function () {
+  try {
+    await window.IVAN_PROPOSAL_API_BASE_READY;
+  } catch (err) {
+    console.warn('[site-gate-login]', err.message || err);
+  }
+
+  const API_BASE = window.IVAN_PROPOSAL_API_BASE;
+  const form = document.getElementById('login-form');
+  const errEl = document.getElementById('login-error');
+  const submitBtn = document.getElementById('login-submit');
+  const localHint = document.getElementById('login-local-hint');
+
+  if (
+    localHint &&
+    (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ) {
+    localHint.classList.remove('hidden');
+    localHint.innerHTML =
+      'Local dev: open <a href="/hierarchy/">/hierarchy/</a> or ' +
+      '<a href="/hierarchy/agent-role-map.html">Agent role map</a> without sign-in. ' +
+      'Full site-gate login needs hub vault <code>BRIDGE_SHARED_SECRET</code>.';
+  }
+
+  function showError(msg) {
+    errEl.textContent = msg;
+    errEl.classList.remove('hidden');
+  }
+
+  function safeNext(raw) {
+    const next = String(raw || '').trim();
+    if (!next || !next.startsWith('/') || next.startsWith('//')) return '/sites/';
+    if (/^\/private\/login\.html/i.test(next)) return '/sites/';
+    return next;
+  }
+
+  if (SiteGate.getToken()) {
+    const params = new URLSearchParams(window.location.search);
+    window.location.replace(safeNext(params.get('next')));
+    return;
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    submitBtn.disabled = true;
+
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    try {
+      if (!API_BASE) throw new Error('API not configured');
+      const res = await fetch(API_BASE + '/site-gate/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json().catch(function () { return {}; });
+      if (!res.ok || data.status !== 'ok' || !data.token) {
+        throw new Error(data.message || 'Sign-in failed');
+      }
+      SiteGate.setToken(data.token);
+      const params = new URLSearchParams(window.location.search);
+      window.location.replace(safeNext(params.get('next')));
+    } catch (err) {
+      showError(err.message || 'Sign-in failed');
+      submitBtn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
