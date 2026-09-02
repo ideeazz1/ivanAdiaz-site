@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#081028">
+  <title>Texas Visual Preview</title>
+  <script src="/private/site-gate.js"></script>
+  <style>
+    :root { --navy: #081028; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; min-height: 100%; background: var(--navy); }
+    html.site-gate-pending body { visibility: hidden; }
+    body { overflow: hidden; }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      height: 100svh;
+      overflow: hidden;
+      background: linear-gradient(180deg, #09122c 0%, var(--navy) 47%, #071027 100%);
+      isolation: isolate;
+    }
+
+    .art {
+      position: absolute;
+      left: 50%;
+      top: 49%;
+      width: min(82vw, 118vh, 1240px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      line-height: 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+    }
+
+    .art video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: var(--navy);
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+
+    @media (max-width: 900px) {
+      .art {
+        top: 49%;
+        width: min(112vw, 94svh);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+      }
+      .art video {
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+        mask-image: linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+      }
+    }
+
+    @media (max-width: 560px) and (orientation: portrait) {
+      .art {
+        top: 48%;
+        width: min(138vw, 76svh);
+      }
+    }
+
+    @media (max-height: 560px) and (orientation: landscape) {
+      .art {
+        top: 50%;
+        width: min(86vw, 140svh);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .art video { display: none; }
+      .art {
+        background: url('/assets/texas/texas-hero-poster.jpg') center / cover no-repeat;
+        -webkit-mask-image:
+          linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+        mask-image:
+          linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Texas visual preview">
+    <div class="art" aria-hidden="true">
+      <video
+        src="/assets/texas/texas-hero-web.mp4"
+        poster="/assets/texas/texas-hero-poster.jpg"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        disablepictureinpicture
+      ></video>
+    </div>
+  </main>
+</body>
+</html>
