@@ -40,6 +40,8 @@
   :root {
     color-scheme: dark;
     --tx-navy: #081028;
+    /* Channel form of --tx-navy, for gradient stops that need partial alpha. */
+    --tx-navy-rgb: 8, 16, 40;
     --tx-paper: #eceeea;
     --tx-paper-soft: #f4f5f2;
     --tx-ink: #10182a;
@@ -130,9 +132,9 @@
     box-shadow: 0 0 0 2px rgba(16,24,42,.03), 0 8px 22px rgba(16,24,42,.10);
   }
 
-  /* Static hero foundation (Pass 1). .texas-hero owns the two-column
-     composition; .texas-hero__copy and .texas-hero__visual are the future
-     slots for the Pass 2 video layer — no JS geometry, no positioning hacks. */
+  /* Static hero foundation. .texas-hero owns the two-column composition;
+     .texas-hero__copy and .texas-hero__visual are the copy and video layers
+     — no JS geometry, no positioning hacks. */
   .texas-hero {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
@@ -152,13 +154,57 @@
     z-index: 2;
   }
 
+  /* The visual box is sized by the video's own intrinsic ratio, so the element
+     edge and the painted media edge are the same rectangle. That is what lets a
+     single ::after perimeter fade line up with the video without cropping it. */
   .texas-hero__visual {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     width: 100%;
     min-width: 0;
     z-index: 1;
+    line-height: 0;
+    --tx-fade-ramp:
+      rgba(var(--tx-navy-rgb), 1)    0%,
+      rgba(var(--tx-navy-rgb), 1)    2.2%,
+      rgba(var(--tx-navy-rgb), .97)  4%,
+      rgba(var(--tx-navy-rgb), .90)  5.7%,
+      rgba(var(--tx-navy-rgb), .78)  7.5%,
+      rgba(var(--tx-navy-rgb), .62)  9.2%,
+      rgba(var(--tx-navy-rgb), .45)  11.4%,
+      rgba(var(--tx-navy-rgb), .29)  13.6%,
+      rgba(var(--tx-navy-rgb), .16)  15.8%,
+      rgba(var(--tx-navy-rgb), .07)  18%,
+      rgba(var(--tx-navy-rgb), .02)  19.8%,
+      rgba(var(--tx-navy-rgb), 0)    22%;
+  }
+
+  .texas-hero__video {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background-color: var(--tx-navy);
+  }
+
+  /* Page-color perimeter fade. Four edge ramps composite over each other, so the
+     corners — where two ramps overlap — resolve to page color first. The outer
+     stop is opaque --tx-navy, so the boundary is the background, not an edge. */
+  .texas-hero__visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Covers the sub-pixel sliver at a fractional box edge without adding to
+       layout width the way a negative inset would. */
+    box-shadow: 0 0 0 2px var(--tx-navy);
+    background:
+      linear-gradient(to top,    var(--tx-fade-ramp)),
+      linear-gradient(to bottom, var(--tx-fade-ramp)),
+      linear-gradient(to left,   var(--tx-fade-ramp)),
+      linear-gradient(to right,  var(--tx-fade-ramp));
   }
 
   .hero-title-flag {
@@ -185,24 +231,6 @@
   .hero-title-flag .hero-line:nth-child(2) { margin-left: 9%; }
   .hero-title-flag .hero-line:nth-child(3) { margin-left: 18%; }
   .hero-title-flag .hero-line + .hero-line { margin-top: .035em; }
-
-  .texas-outline-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .texas-outline {
-    width: min(100%, 490px);
-    height: auto;
-    display: block;
-    opacity: .96;
-    filter:
-      drop-shadow(0 0 4px rgba(255,255,255,.92))
-      drop-shadow(0 0 11px rgba(255,255,255,.62))
-      drop-shadow(0 0 24px rgba(107,154,255,.46));
-  }
 
   .hero-guidance {
     width: min(640px, 94%);
@@ -584,9 +612,9 @@
 
     .texas-guide .page-shell { width: min(100% - 28px, 620px); }
 
-    /* One-column mobile composition. The Texas outline is a decorative,
-       absolutely-positioned layer behind the copy — a fixed CSS offset,
-       not a JS-measured one. */
+    /* One-column mobile composition: copy first, then the video in normal flow
+       inside the shell. Keeping it in flow is what prevents the video from
+       being clipped by the viewport edge or sitting under the headline. */
     .texas-hero {
       display: block;
       min-height: calc(100dvh - var(--tx-mobile-header) - var(--tx-mobile-marquee) - var(--tx-mobile-peek) - var(--tx-mobile-apply));
@@ -605,11 +633,10 @@
     }
 
     .texas-hero__visual {
-      position: absolute;
+      position: relative;
       z-index: 1;
-      top: 150px;
-      right: -8%;
-      width: 54%;
+      width: 100%;
+      margin-top: 18px;
       pointer-events: none;
     }
 
@@ -623,15 +650,6 @@
       margin-left: 15%;
       position: relative;
       z-index: 2;
-    }
-
-    .texas-outline {
-      width: 100%;
-      opacity: .88;
-      filter:
-        drop-shadow(0 0 3px rgba(255,255,255,.95))
-        drop-shadow(0 0 8px rgba(255,255,255,.58))
-        drop-shadow(0 0 18px rgba(107,154,255,.40));
     }
 
     .hero-guidance {
@@ -685,7 +703,7 @@
     .texas-hero { padding: 76px 0 8px; }
     .texas-hero__copy { width: 94%; }
     .hero-title-flag { font-size: clamp(42px, 13.4vw, 56px); }
-    .texas-hero__visual { top: 130px; right: -10%; width: 56%; }
+    .texas-hero__visual { margin-top: 14px; }
     .hero-guidance { font-size: .98rem; }
   }
 
@@ -758,9 +776,11 @@
     </div>
 
     <div class="texas-hero__visual" aria-hidden="true">
-      <div class="texas-outline-wrap">
-        <img class="texas-outline" src="/assets/texas-outline-glow.svg" alt="">
-      </div>
+      <video class="texas-hero__video"
+             src="/assets/texas/texas-hero-web.mp4"
+             poster="/assets/texas/texas-hero-poster.jpg"
+             autoplay loop muted playsinline preload="auto"
+             disablepictureinpicture tabindex="-1"></video>
     </div>
   </section>
 
