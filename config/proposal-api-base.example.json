@@ -1,0 +1,8 @@
+{
+  "cloudRunService": "homebotintel",
+  "region": "us-south1",
+  "apiBase": "https://homebotintel-114691787160.us-south1.run.app/api/database2",
+  "cloudRunUrl": "https://homebotintel-114691787160.us-south1.run.app",
+  "gcpProject": "gold-ai-document-agent",
+  "note": "GitHub Pages (ivanadiaz.com) — client hub + proposal auth. Income/parser automations use database2-api."
+}
