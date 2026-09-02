@@ -166,19 +166,19 @@
     min-width: 0;
     z-index: 1;
     line-height: 0;
-    --tx-fade-ramp:
+    /* Edge ramp: guarantees every boundary pixel is exactly the page colour. */
+    --tx-fade-edge:
       rgba(var(--tx-navy-rgb), 1)    0%,
-      rgba(var(--tx-navy-rgb), 1)    2.2%,
-      rgba(var(--tx-navy-rgb), .97)  4%,
-      rgba(var(--tx-navy-rgb), .90)  5.7%,
-      rgba(var(--tx-navy-rgb), .78)  7.5%,
-      rgba(var(--tx-navy-rgb), .62)  9.2%,
-      rgba(var(--tx-navy-rgb), .45)  11.4%,
-      rgba(var(--tx-navy-rgb), .29)  13.6%,
-      rgba(var(--tx-navy-rgb), .16)  15.8%,
-      rgba(var(--tx-navy-rgb), .07)  18%,
-      rgba(var(--tx-navy-rgb), .02)  19.8%,
-      rgba(var(--tx-navy-rgb), 0)    22%;
+      rgba(var(--tx-navy-rgb), 1)    1.4%,
+      rgba(var(--tx-navy-rgb), .96)  2.8%,
+      rgba(var(--tx-navy-rgb), .87)  4.2%,
+      rgba(var(--tx-navy-rgb), .74)  5.6%,
+      rgba(var(--tx-navy-rgb), .58)  7%,
+      rgba(var(--tx-navy-rgb), .42)  8.7%,
+      rgba(var(--tx-navy-rgb), .26)  10.4%,
+      rgba(var(--tx-navy-rgb), .13)  11.9%,
+      rgba(var(--tx-navy-rgb), .04)  13.2%,
+      rgba(var(--tx-navy-rgb), 0)    14%;
   }
 
   .texas-hero__video {
@@ -189,9 +189,17 @@
     background-color: var(--tx-navy);
   }
 
-  /* Page-color perimeter fade. Four edge ramps composite over each other, so the
-     corners — where two ramps overlap — resolve to page color first. The outer
-     stop is opaque --tx-navy, so the boundary is the background, not an edge. */
+  /* Page-color perimeter fade, in two parts.
+
+     The radial ellipse is what actually kills the square: four edge ramps alone
+     only soften a rectangle, they never stop it reading as one, because their
+     falloff envelope is itself rectangular. Sizing it farthest-side means it
+     reaches full page colour at each edge midpoint and is already past full at
+     the corners, so what survives has no straight side to latch onto.
+
+     The edge ramps then guarantee that every boundary pixel is exactly
+     --tx-navy, which the ellipse cannot promise on its own. Both layers must
+     end at alpha 1 — an outer stop of .96 leaves a faint corner rectangle. */
   .texas-hero__visual::after {
     content: "";
     position: absolute;
@@ -201,10 +209,18 @@
        layout width the way a negative inset would. */
     box-shadow: 0 0 0 2px var(--tx-navy);
     background:
-      linear-gradient(to top,    var(--tx-fade-ramp)),
-      linear-gradient(to bottom, var(--tx-fade-ramp)),
-      linear-gradient(to left,   var(--tx-fade-ramp)),
-      linear-gradient(to right,  var(--tx-fade-ramp));
+      radial-gradient(ellipse farthest-side at 50% 50%,
+        rgba(var(--tx-navy-rgb), 0)    52%,
+        rgba(var(--tx-navy-rgb), .06)  61.6%,
+        rgba(var(--tx-navy-rgb), .18)  70.2%,
+        rgba(var(--tx-navy-rgb), .36)  78.4%,
+        rgba(var(--tx-navy-rgb), .58)  86.6%,
+        rgba(var(--tx-navy-rgb), .80)  93.8%,
+        rgba(var(--tx-navy-rgb), 1)    100%),
+      linear-gradient(to top,    var(--tx-fade-edge)),
+      linear-gradient(to bottom, var(--tx-fade-edge)),
+      linear-gradient(to left,   var(--tx-fade-edge)),
+      linear-gradient(to right,  var(--tx-fade-edge));
   }
 
   .hero-title-flag {
