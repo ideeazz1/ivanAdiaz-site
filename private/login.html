@@ -11,25 +11,22 @@
 <title>Private sites — Sign in</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/mockups/proposal-ivanadiaz.css">
-<style>
-  html.site-gate-pending body { visibility: hidden; }
-</style>
+<link rel="stylesheet" href="/private/login.css">
 </head>
 <body class="login-page">
 
 <div class="login-wrap">
   <div class="login-card">
-    <p class="login-kicker">ivanadiaz.com · Private</p>
+    <p class="login-kicker">Private portal · Secure access</p>
     <h1 class="login-title">Sign in</h1>
     <p class="login-deck">
-      Hierarchy, Peregrine decks, and other internal pages. Separate from the proposal editor login.
+      Enter your approved email and password to continue.
     </p>
 
     <form id="login-form" class="login-form" autocomplete="on">
       <div class="field">
         <label for="login-email">Email</label>
-        <input type="email" id="login-email" name="email" required autocomplete="username" placeholder="you@ivanadiaz.com">
+        <input type="email" id="login-email" name="email" required autocomplete="username" placeholder="you@example.com">
       </div>
       <div class="field">
         <label for="login-password">Password</label>
@@ -39,7 +36,7 @@
       <button type="submit" class="login-submit" id="login-submit">Continue</button>
     </form>
 
-    <p class="login-foot"><a href="/" style="color:inherit;opacity:.75">← Public home</a></p>
+    <p class="login-foot"><a href="/">← Public home</a></p>
     <p class="login-foot hidden" id="login-local-hint" style="margin-top:12px;font-size:13px;line-height:1.45"></p>
   </div>
 </div>
@@ -65,10 +62,7 @@
     (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
   ) {
     localHint.classList.remove('hidden');
-    localHint.innerHTML =
-      'Local dev: open <a href="/hierarchy/">/hierarchy/</a> or ' +
-      '<a href="/hierarchy/agent-role-map.html">Agent role map</a> without sign-in. ' +
-      'Full site-gate login needs hub vault <code>BRIDGE_SHARED_SECRET</code>.';
+    localHint.textContent = 'Local development uses the configured API service.';
   }
 
   function showError(msg) {
@@ -78,8 +72,8 @@
 
   function safeNext(raw) {
     const next = String(raw || '').trim();
-    if (!next || !next.startsWith('/') || next.startsWith('//')) return '/sites/';
-    if (/^\/private\/login\.html/i.test(next)) return '/sites/';
+    if (!next || !next.startsWith('/') || next.startsWith('//')) return '/';
+    if (/^\/private\/login\.html/i.test(next)) return '/';
     return next;
   }
 
