@@ -1,13 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<meta http-equiv="refresh" content="0; url=/OS-console/">
-<title>Opening OS Console — Ivan Diaz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#18211d">
+  <title>Ivan OS — Automation Registry</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/console-os/console.css">
+  <script src="/private/site-gate.js"></script>
+  <script defer src="/console-os/console.js"></script>
 </head>
 <body>
-  <p><a href="/OS-console/">Open OS Console</a></p>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/console-os/" aria-label="Ivan OS home">
+        <span class="brand-mark" aria-hidden="true">IO</span>
+        <span>
+          <strong>Ivan OS</strong>
+          <small>Private console</small>
+        </span>
+      </a>
+      <button class="logout" id="logout-button" type="button">Log out</button>
+    </header>
+
+    <main>
+      <section class="page-heading" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Automation registry</p>
+          <h1 id="page-title">One clear view of every worker.</h1>
+        </div>
+        <p class="as-of" id="as-of">Today</p>
+      </section>
+
+      <section class="source-strip" aria-label="Registry source">
+        <div>
+          <span class="source-label">Source of truth</span>
+          <strong>ivan-cos / registry / automations.json</strong>
+        </div>
+        <span class="source-state">Connection comes next</span>
+      </section>
+
+      <section class="registry-section" aria-labelledby="ivan-os-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Section 01</p>
+            <h2 id="ivan-os-title">Ivan OS</h2>
+          </div>
+          <span class="section-count">Registry rows pending</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Automation</th>
+                <th scope="col">Role</th>
+                <th scope="col">Platform</th>
+                <th scope="col">Purpose</th>
+                <th scope="col">Schedule</th>
+                <th scope="col">Enabled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="empty-row">
+                <td colspan="6">
+                  <strong>The shell is ready.</strong>
+                  <span>The next controlled section will connect this table to the canonical registry.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
