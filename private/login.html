@@ -41,17 +41,11 @@
   </div>
 </div>
 
-<script src="/config/proposal-api-config.js"></script>
+<script src="/config/private-api-config.js"></script>
 <script src="/private/site-gate.js"></script>
 <script>
-(async function () {
-  try {
-    await window.IVAN_PROPOSAL_API_BASE_READY;
-  } catch (err) {
-    console.warn('[site-gate-login]', err.message || err);
-  }
-
-  const API_BASE = window.IVAN_PROPOSAL_API_BASE;
+(function () {
+  const API_BASE = window.IVAN_PRIVATE_API_BASE;
   const form = document.getElementById('login-form');
   const errEl = document.getElementById('login-error');
   const submitBtn = document.getElementById('login-submit');
