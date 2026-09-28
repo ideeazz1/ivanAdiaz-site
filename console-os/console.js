@@ -1,15 +1,10 @@
 (function () {
   'use strict';
 
-  // Architecture contract:
-  // ideeazz1/ivan-cos:docs/CONSOLE-ARCHITECTURE.md
-  // Phase 1 is read-only registry intent only. The browser never receives the
-  // private GitHub credential and never reads the private repo directly.
   var API_BASE = String(window.IVAN_PRIVATE_API_BASE || '').replace(/\/$/, '');
 
   var asOf = document.getElementById('as-of');
   var logoutButton = document.getElementById('logout-button');
-  var sourceState = document.getElementById('source-state');
   var sectionCount = document.getElementById('section-count');
   var registryBody = document.getElementById('registry-body');
 
@@ -36,66 +31,63 @@
     return API_BASE + '/api/database2' + suffix;
   }
 
-  function expectedState(item) {
-    if (item.provider_state === 'active') return 'Expected active';
-    if (item.provider_state === 'paused') return 'Expected paused';
-    return item.provider_state ? 'Expected ' + item.provider_state : 'UNPROVEN';
+  function formatReceiptTime(value) {
+    if (!value) return 'No';
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'UNPROVEN';
+    return 'Yes · ' + new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chicago',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    }).format(date);
   }
 
-  function renderRows(items) {
-    var shared = items.filter(function (item) {
-      return item && item.lane === 'Shared Ivan OS';
-    });
-
-    if (sectionCount) {
-      sectionCount.textContent = shared.length + (shared.length === 1 ? ' registry row' : ' registry rows');
-    }
-
+  function renderRows(rows) {
+    if (sectionCount) sectionCount.textContent = rows.length + ' automations';
     if (!registryBody) return;
 
-    if (!shared.length) {
-      registryBody.innerHTML =
-        '<tr class="empty-row"><td colspan="6">' +
-        '<strong>No Shared Ivan OS rows found.</strong>' +
-        '<span>The console does not invent missing registry records.</span>' +
-        '</td></tr>';
-      return;
-    }
-
-    registryBody.innerHTML = shared.map(function (item) {
+    registryBody.innerHTML = rows.map(function (item) {
+      var receipt = item.receipt || {};
       return '<tr>' +
-        '<td><strong>' + escapeHtml(item.name || 'Unnamed automation') + '</strong></td>' +
+        '<td><strong>' + escapeHtml(item.name || 'UNPROVEN') + '</strong></td>' +
         '<td>' + escapeHtml(item.role || 'UNPROVEN') + '</td>' +
         '<td>' + escapeHtml(item.provider || 'UNPROVEN') + '</td>' +
         '<td>' + escapeHtml(item.purpose || 'UNPROVEN') + '</td>' +
         '<td>' + escapeHtml(item.schedule || 'UNPROVEN') + '</td>' +
-        '<td>' + escapeHtml(expectedState(item)) + '</td>' +
+        '<td>' + escapeHtml(
+          receipt.status === 'MISSING RECEIPT CONTRACT'
+            ? 'No receipt contract'
+            : formatReceiptTime(receipt.completed_at)
+        ) + '</td>' +
+        '<td><strong>' + escapeHtml(receipt.status || 'UNPROVEN') + '</strong></td>' +
+        '<td>' + escapeHtml(receipt.what_changed || '—') + '</td>' +
+        '<td>' + escapeHtml(receipt.ivan_action || 'No') + '</td>' +
         '</tr>';
     }).join('');
   }
 
-  function showRegistryError(message) {
-    if (sourceState) sourceState.textContent = 'Registry unavailable';
+  function showError(message) {
     if (sectionCount) sectionCount.textContent = 'UNAVAILABLE';
     if (registryBody) {
       registryBody.innerHTML =
-        '<tr class="empty-row"><td colspan="6">' +
-        '<strong>Registry unavailable.</strong>' +
-        '<span>' + escapeHtml(message) + '</span>' +
-        '</td></tr>';
+        '<tr class="empty-row"><td colspan="9"><strong>UNAVAILABLE</strong><span>' +
+        escapeHtml(message) +
+        '</span></td></tr>';
     }
   }
 
-  async function loadRegistry() {
+  async function loadRows() {
     try {
-      var response = await fetch(osConsoleUrl('/canonical-registry'), {
+      var response = await fetch(osConsoleUrl('/shared-os-starter'), {
         method: 'GET',
         cache: 'no-store',
         headers: authHeaders()
       });
 
       var payload = await response.json().catch(function () {
-        return { status: 'failed', message: 'Registry API returned invalid JSON.' };
+        return { status: 'failed', message: 'Invalid API response.' };
       });
 
       if (response.status === 401) {
@@ -105,30 +97,21 @@
       }
 
       if (!response.ok || payload.status !== 'ok') {
-        throw new Error(payload.message || 'Canonical registry API request failed.');
+        throw new Error(payload.message || 'Shared OS data unavailable.');
       }
 
-      var registry = payload.registry || {};
-      if (!Array.isArray(registry.automations)) {
-        throw new Error('Canonical registry API did not return an automations array.');
-      }
-
-      renderRows(registry.automations);
-      if (sourceState) {
-        sourceState.textContent =
-          'Connected · read-only' +
-          (registry.sha ? ' · ' + String(registry.sha).slice(0, 7) : '');
-      }
+      var rows = payload.sharedOs && payload.sharedOs.rows;
+      if (!Array.isArray(rows)) throw new Error('Shared OS rows unavailable.');
+      renderRows(rows);
     } catch (error) {
-      showRegistryError(error && error.message ? error.message : 'Unable to read canonical registry.');
+      showError(error && error.message ? error.message : 'Shared OS data unavailable.');
     }
   }
 
   if (asOf) {
     asOf.textContent = new Intl.DateTimeFormat('en-US', {
       timeZone: 'America/Chicago',
-      weekday: 'long',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
       year: 'numeric',
     }).format(new Date());
@@ -141,5 +124,5 @@
     });
   }
 
-  loadRegistry();
+  loadRows();
 })();
