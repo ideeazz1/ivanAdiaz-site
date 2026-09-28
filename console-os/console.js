@@ -31,19 +31,6 @@
     return API_BASE + '/api/database2' + suffix;
   }
 
-  function formatReceiptTime(value) {
-    if (!value) return 'No';
-    var date = new Date(value);
-    if (Number.isNaN(date.getTime())) return 'UNPROVEN';
-    return 'Yes · ' + new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/Chicago',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-    }).format(date);
-  }
-
   function renderRows(rows) {
     if (sectionCount) sectionCount.textContent = rows.length + ' automations';
     if (!registryBody) return;
@@ -56,14 +43,10 @@
         '<td>' + escapeHtml(item.provider || 'UNPROVEN') + '</td>' +
         '<td>' + escapeHtml(item.purpose || 'UNPROVEN') + '</td>' +
         '<td>' + escapeHtml(item.schedule || 'UNPROVEN') + '</td>' +
-        '<td>' + escapeHtml(
-          receipt.status === 'MISSING RECEIPT CONTRACT'
-            ? 'No receipt contract'
-            : formatReceiptTime(receipt.completed_at)
-        ) + '</td>' +
+        '<td>' + escapeHtml(receipt.ran || 'UNPROVEN') + '</td>' +
         '<td><strong>' + escapeHtml(receipt.status || 'UNPROVEN') + '</strong></td>' +
         '<td>' + escapeHtml(receipt.what_changed || '—') + '</td>' +
-        '<td>' + escapeHtml(receipt.ivan_action || 'No') + '</td>' +
+        '<td>' + escapeHtml(receipt.ivan || 'No') + '</td>' +
         '</tr>';
     }).join('');
   }
