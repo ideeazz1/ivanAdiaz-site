@@ -38,7 +38,7 @@
           <span class="source-label">Source of truth</span>
           <strong>ivan-cos / registry / automations.json</strong>
         </div>
-        <span class="source-state">Connection comes next</span>
+        <span class="source-state" id="source-state">Connecting…</span>
       </section>
 
       <section class="registry-section" aria-labelledby="ivan-os-title">
@@ -47,7 +47,7 @@
             <p class="section-kicker">Section 01</p>
             <h2 id="ivan-os-title">Ivan OS</h2>
           </div>
-          <span class="section-count">Registry rows pending</span>
+          <span class="section-count" id="section-count">Loading registry…</span>
         </div>
 
         <div class="table-wrap">
@@ -59,14 +59,14 @@
                 <th scope="col">Platform</th>
                 <th scope="col">Purpose</th>
                 <th scope="col">Schedule</th>
-                <th scope="col">Enabled</th>
+                <th scope="col">Expected state</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="registry-body">
               <tr class="empty-row">
                 <td colspan="6">
-                  <strong>The shell is ready.</strong>
-                  <span>The next controlled section will connect this table to the canonical registry.</span>
+                  <strong>Loading canonical registry…</strong>
+                  <span>No automation rows are stored in this page.</span>
                 </td>
               </tr>
             </tbody>
