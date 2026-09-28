@@ -5,7 +5,7 @@
   // ideeazz1/ivan-cos:docs/CONSOLE-ARCHITECTURE.md
   // Phase 1 is read-only registry intent only. The browser never receives the
   // private GitHub credential and never reads the private repo directly.
-  var API_BASE = '';
+  var API_BASE = String(window.IVAN_PRIVATE_API_BASE || '').replace(/\/$/, '');
 
   var asOf = document.getElementById('as-of');
   var logoutButton = document.getElementById('logout-button');
@@ -27,15 +27,6 @@
     var token = window.SiteGate && window.SiteGate.getToken();
     if (token) headers.Authorization = 'Bearer ' + token;
     return headers;
-  }
-
-  async function ready() {
-    try {
-      if (window.IVAN_PROPOSAL_API_BASE_READY) {
-        await window.IVAN_PROPOSAL_API_BASE_READY;
-      }
-    } catch (_) {}
-    API_BASE = String(window.IVAN_PROPOSAL_API_BASE || '').replace(/\/$/, '');
   }
 
   function osConsoleUrl(path) {
@@ -97,7 +88,6 @@
 
   async function loadRegistry() {
     try {
-      await ready();
       var response = await fetch(osConsoleUrl('/canonical-registry'), {
         method: 'GET',
         cache: 'no-store',
