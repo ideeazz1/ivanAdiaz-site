@@ -3,9 +3,9 @@
 
   // Architecture contract:
   // ideeazz1/ivan-cos:docs/CONSOLE-ARCHITECTURE.md
-  // Phase 1 is read-only: registry intent only. No provider state, receipts,
-  // health scoring, or control actions belong in this slice.
-  var REGISTRY_URL = 'https://raw.githubusercontent.com/ideeazz1/ivan-cos/main/registry/automations.json';
+  // Phase 1 is read-only registry intent only. The browser never receives the
+  // private GitHub credential and never reads the private repo directly.
+  var API_BASE = '';
 
   var asOf = document.getElementById('as-of');
   var logoutButton = document.getElementById('logout-button');
@@ -20,6 +20,29 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  function authHeaders() {
+    var headers = { Accept: 'application/json' };
+    var token = window.SiteGate && window.SiteGate.getToken();
+    if (token) headers.Authorization = 'Bearer ' + token;
+    return headers;
+  }
+
+  async function ready() {
+    try {
+      if (window.IVAN_PROPOSAL_API_BASE_READY) {
+        await window.IVAN_PROPOSAL_API_BASE_READY;
+      }
+    } catch (_) {}
+    API_BASE = String(window.IVAN_PROPOSAL_API_BASE || '').replace(/\/$/, '');
+  }
+
+  function osConsoleUrl(path) {
+    var suffix = '/os-console' + path;
+    if (!API_BASE) return '/api/database2' + suffix;
+    if (/\/api\/database2$/i.test(API_BASE)) return API_BASE + suffix;
+    return API_BASE + '/api/database2' + suffix;
   }
 
   function expectedState(item) {
@@ -74,24 +97,38 @@
 
   async function loadRegistry() {
     try {
-      var response = await fetch(REGISTRY_URL + '?ts=' + Date.now(), {
+      await ready();
+      var response = await fetch(osConsoleUrl('/canonical-registry'), {
+        method: 'GET',
         cache: 'no-store',
-        headers: { 'Accept': 'application/json' }
+        headers: authHeaders()
       });
 
-      if (!response.ok) {
-        throw new Error('Canonical registry returned HTTP ' + response.status + '.');
+      var payload = await response.json().catch(function () {
+        return { status: 'failed', message: 'Registry API returned invalid JSON.' };
+      });
+
+      if (response.status === 401) {
+        if (window.SiteGate) window.SiteGate.clearToken();
+        window.location.replace('/private/login.html?next=' + encodeURIComponent(window.location.pathname));
+        return;
       }
 
-      var payload = await response.json();
-      var items = Array.isArray(payload) ? payload : payload.automations;
-
-      if (!Array.isArray(items)) {
-        throw new Error('Canonical registry did not return an automations array.');
+      if (!response.ok || payload.status !== 'ok') {
+        throw new Error(payload.message || 'Canonical registry API request failed.');
       }
 
-      renderRows(items);
-      if (sourceState) sourceState.textContent = 'Connected · read-only';
+      var registry = payload.registry || {};
+      if (!Array.isArray(registry.automations)) {
+        throw new Error('Canonical registry API did not return an automations array.');
+      }
+
+      renderRows(registry.automations);
+      if (sourceState) {
+        sourceState.textContent =
+          'Connected · read-only' +
+          (registry.sha ? ' · ' + String(registry.sha).slice(0, 7) : '');
+      }
     } catch (error) {
       showRegistryError(error && error.message ? error.message : 'Unable to read canonical registry.');
     }
