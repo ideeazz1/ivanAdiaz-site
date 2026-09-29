@@ -5,7 +5,6 @@
 
   var asOf = document.getElementById('as-of');
   var logoutButton = document.getElementById('logout-button');
-  var sectionCount = document.getElementById('section-count');
   var registryBody = document.getElementById('registry-body');
 
   function escapeHtml(value) {
@@ -32,30 +31,27 @@
   }
 
   function renderRows(rows) {
-    if (sectionCount) sectionCount.textContent = rows.length + ' automations';
     if (!registryBody) return;
 
     registryBody.innerHTML = rows.map(function (item) {
       var receipt = item.receipt || {};
       return '<tr>' +
-        '<td><strong>' + escapeHtml(item.name || 'UNPROVEN') + '</strong></td>' +
-        '<td>' + escapeHtml(item.role || 'UNPROVEN') + '</td>' +
-        '<td>' + escapeHtml(item.provider || 'UNPROVEN') + '</td>' +
-        '<td>' + escapeHtml(item.purpose || 'UNPROVEN') + '</td>' +
-        '<td>' + escapeHtml(item.schedule || 'UNPROVEN') + '</td>' +
-        '<td>' + escapeHtml(receipt.ran || 'UNPROVEN') + '</td>' +
-        '<td><strong>' + escapeHtml(receipt.status || 'UNPROVEN') + '</strong></td>' +
-        '<td>' + escapeHtml(receipt.what_changed || '—') + '</td>' +
+        '<td><strong>' + escapeHtml(item.name || '') + '</strong></td>' +
+        '<td>' + escapeHtml(item.role || '') + '</td>' +
+        '<td>' + escapeHtml(item.provider || '') + '</td>' +
+        '<td>' + escapeHtml(item.schedule || '') + '</td>' +
+        '<td>' + escapeHtml(receipt.ran || 'No') + '</td>' +
+        '<td><strong>' + escapeHtml(receipt.result || 'No receipt') + '</strong></td>' +
+        '<td>' + escapeHtml(receipt.what_happened || '—') + '</td>' +
         '<td>' + escapeHtml(receipt.ivan || 'No') + '</td>' +
         '</tr>';
     }).join('');
   }
 
   function showError(message) {
-    if (sectionCount) sectionCount.textContent = 'UNAVAILABLE';
     if (registryBody) {
       registryBody.innerHTML =
-        '<tr class="empty-row"><td colspan="9"><strong>UNAVAILABLE</strong><span>' +
+        '<tr class="empty-row"><td colspan="8"><strong>Unavailable</strong><span>' +
         escapeHtml(message) +
         '</span></td></tr>';
     }
