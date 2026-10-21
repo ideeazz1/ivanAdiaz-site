@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+<title id="title">Assurance Financial — Ivan Diaz</title>
+<desc id="desc">Ivan Diaz, Austin Texas loan officer, NMLS 501968. Apply with Ivan.</desc>
+<rect width="1200" height="750" fill="#0863bf"/>
+<path d="M0 656Q570 706 1200 606V750H0Z" fill="#0756a5" opacity=".54"/>
+<g fill="#fff">
+<path d="M104 126 162 77 216 119 205 130 162 95 114 137Z"/>
+<path d="M126 125V176H151V145H173V176H197V125L162 97Z"/>
+<text x="88" y="220" font-size="54" font-family="Arial,Helvetica,sans-serif" letter-spacing="-2">Assurance</text>
+<text x="102" y="254" font-size="23" font-family="Arial,Helvetica,sans-serif" letter-spacing="8" fill="#59e8a1">FINANCIAL</text>
+</g>
+<circle cx="340" cy="452" r="228" fill="#2c648b"/>
+<g fill="#fff"><path d="M171 421 335 290 510 420 482 448 338 338 197 449Z"/><path d="M229 421V559H292V468H377V559H448V421L335 341Z"/></g>
+<path d="M190 575Q324 540 486 583" stroke="#48dc8a" stroke-width="13" fill="none"/>
+<path d="M193 591Q320 560 478 600" stroke="#2bb2a8" stroke-width="9" fill="none"/>
+<g font-family="Arial,Helvetica,sans-serif" fill="#fff">
+<text x="630" y="265" font-size="28" font-weight="700" letter-spacing="3">AUSTIN, TX</text>
+<text x="625" y="355" font-size="76" font-weight="700">Ivan Diaz</text>
+<text x="629" y="413" font-size="27" font-weight="700">LOAN OFFICER  |  NMLS #: 501968</text>
+<text x="630" y="490" font-size="27" font-weight="700">415-271-7740  |  512-277-3480</text>
+<text x="630" y="545" font-size="25">idiaz@assurancemortgage.com</text>
+</g>
+<rect x="626" y="585" width="420" height="90" rx="45" fill="#ff756a"/>
+<text x="836" y="639" fill="#fff" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700">APPLY WITH IVAN</text>
+</svg>
