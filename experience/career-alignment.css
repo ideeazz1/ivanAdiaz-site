@@ -20,17 +20,17 @@
 .career-experience .experience-hero { padding-top: clamp(32px, 6vw, 64px); }
 .career-experience :is(.experience-eyebrow--optimus, .experience-hero__title, .experience-hero__grid) { opacity: 1; transform: none; }
 .career-experience .experience-hero__title {
-  font-size: clamp(1.8rem, 4.4vw, 3.25rem);
-  line-height: 1.12;
+  font-size: clamp(3.15rem, 8vw, 7.25rem);
+  line-height: .99;
   margin-bottom: 24px;
 }
-.career-focus { color: #17677c; }
+.career-experience .experience-hero__word,
+.career-experience .experience-hero__char { color: #22d3ee; }
+.career-experience .experience-hero__rotate { white-space: nowrap; }
 .career-experience .experience-hero__grid { grid-template-columns: 1fr; gap: 22px; }
 .career-experience .experience-lede--optimus { max-width: 52em; font-size: 1.08rem; }
 .career-experience .experience-cta-row { flex-direction: row; align-items: center; }
 .career-experience .experience-cta-row .link-btn { padding: 12px 22px; }
-.career-hero-note { margin-top: 20px; font-size: .82rem; color: #52525b; }
-.career-hero-note [data-hero-word] { color: #17677c; font-weight: 600; }
 .career-experience .experience-hub h2 { text-align: left; }
 .career-projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .career-projects .hub-card p { flex: initial; }
@@ -83,7 +83,7 @@
   .career-projects, .career-recent-grid, .career-pill-groups { grid-template-columns: 1fr; }
   .career-section-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
   .career-proof-date > span:last-child { margin-left: 0; }
-  .career-experience .experience-hero__title { font-size: clamp(1.75rem, 6.2vw, 2.5rem); }
+  .career-experience .experience-hero__title { font-size: clamp(2.6rem, 10.5vw, 4.4rem); }
   .career-experience .experience-lede--optimus { font-size: 1rem; }
   .career-experience .experience-cta-row { gap: 8px; }
   .career-experience .experience-cta-row .link-btn { padding: 10px 14px; font-size: .85rem; }
