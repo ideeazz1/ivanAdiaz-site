@@ -97,3 +97,16 @@
   .career-table td::before { content: attr(data-label); font-size: 11px; font-weight: 600; color: #52525b; }
   .career-role-map .rhythm-stack-row { grid-template-columns: 1fr; gap: 8px; }
 }
+
+.career-contribution-card { margin: 14px 0 20px; }
+.career-contribution-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
+.career-contribution-heading h3 { margin: 0 0 4px; font-size: 1rem; }
+.career-contribution-heading p { margin: 0; color: var(--ink-soft); font-size: .82rem; }
+.career-contribution-heading a { flex: 0 0 auto; }
+.career-contribution-chart { display: block; width: min(100%, 470px); height: auto; margin: 12px 0 0; }
+.career-contribution-card figcaption { margin-top: 9px; }
+.career-pill-groups .xp-chip__mark img { display: block; width: 14px; height: 14px; object-fit: contain; }
+@media (max-width: 640px) {
+  .career-contribution-heading { flex-direction: column; gap: 8px; }
+  .career-contribution-chart { width: 100%; }
+}
