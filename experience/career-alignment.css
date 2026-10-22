@@ -102,11 +102,19 @@
 .career-contribution-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
 .career-contribution-heading h3 { margin: 0 0 4px; font-size: 1rem; }
 .career-contribution-heading p { margin: 0; color: var(--ink-soft); font-size: .82rem; }
-.career-contribution-heading a { flex: 0 0 auto; }
 .career-contribution-chart { display: block; width: min(100%, 470px); height: auto; margin: 12px 0 0; }
 .career-contribution-card figcaption { margin-top: 9px; }
 .career-pill-groups .xp-chip__mark img { display: block; width: 14px; height: 14px; object-fit: contain; }
 @media (max-width: 640px) {
   .career-contribution-heading { flex-direction: column; gap: 8px; }
   .career-contribution-chart { width: 100%; }
+}
+
+/* A restrained highlight keeps the GitHub grid lively without changing its data. */
+.career-contribution-sheen { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .career-contribution-sheen { display: block; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .career-contribution-sheen { display: none; }
 }
