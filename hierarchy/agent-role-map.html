@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agent &amp; Automation Role Map — Ivan Diaz</title>
-<meta name="description" content="Proof of work: how Ivan Diaz separates agentic judgment, deterministic automation, enrichment workers, outputs, and human approval gates inside one operating system.">
+<meta name="description" content="A practical view of business requirements, agent and collaborator implementation, deterministic workflows, testing, verification and human decision rights.">
 <link rel="canonical" href="https://ivanadiaz.com/hierarchy/agent-role-map.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Agent &amp; Automation Role Map — Ivan Diaz">
-<meta property="og:description" content="A practical role map for agentic tasks, deterministic workflows, data workers, outputs, and human decision rights.">
+<meta property="og:description" content="A practical view of business requirements, agent and collaborator implementation, deterministic workflows, testing, verification and human decision rights.">
 <meta property="og:url" content="https://ivanadiaz.com/hierarchy/agent-role-map.html">
 <meta property="og:image" content="https://ivanadiaz.com/preview-card.png">
 <meta name="theme-color" content="#343A40">
@@ -17,21 +17,23 @@
 <link rel="stylesheet" href="/config/ivan-ambient-surface.css">
 <link rel="stylesheet" href="/hierarchy/hierarchy-shell.css">
 <link rel="stylesheet" href="/hierarchy/hierarchy-rhythm.css">
+<link rel="stylesheet" href="/experience/career-alignment.css">
 </head>
-<body class="ivan-surface hierarchy-public ivan-page">
+<body class="career-role-map ivan-surface hierarchy-public ivan-page">
+<a class="career-skip" href="#main-content">Skip to main content</a>
 <header class="hierarchy-topnav">
   <a class="hierarchy-brand" href="/">
     <img class="hierarchy-brand__mark" src="/favicon.png" width="28" height="28" alt="">
     <span class="hierarchy-brand__name">Ivan A. Diaz</span>
   </a>
-  <ul class="hierarchy-nav-links">
+  <ul class="hierarchy-nav-links" aria-label="Main navigation">
     <li><a href="/">Home</a></li>
     <li><a href="/experience/">Experience</a></li>
     <li><a href="/hierarchy/">Architecture</a></li>
   </ul>
 </header>
 
-<main class="hierarchy-wrap">
+<main id="main-content" class="hierarchy-wrap">
   <nav class="hierarchy-tabs" aria-label="Hierarchy views">
     <a href="/hierarchy/">Architecture</a>
     <a href="/hierarchy/agent-role-map.html" aria-current="page">Role Map</a>
@@ -39,17 +41,14 @@
 
   <p class="hierarchy-eyebrow">Proof of work · orchestration &amp; decision rights</p>
   <h1>Agent &amp; Automation Role Map</h1>
-  <p class="hierarchy-lede">
-    I do not treat every scheduled process as an “agent.” Known paths stay deterministic.
-    Agentic tasks are reserved for bounded work where interpretation or synthesis adds value.
-    Data workers supply context, outputs consolidate attention, and consequential decisions return to a human gate.
-  </p>
+  <p class="hierarchy-lede">I choose the work pattern that fits the requirement. Known paths use explicit rules; interpretation uses bounded agent tasks. Tools connect information. I define the business requirements, architectural decisions and acceptance criteria; agents and collaborators implement recent code.</p>
+  <p class="hierarchy-proof-banner">The map explains responsibilities and work patterns, not current schedules or proof that every component is active. Implementation, testing, deployment and accepted results need their own evidence.</p>
 
   <div class="rhythm-legend">
     <span class="rhythm-pill rhythm-pill-digest">Output</span>
-    <span class="rhythm-pill rhythm-pill-agent">Agentic Task</span>
-    <span class="rhythm-pill rhythm-pill-scout">Research Agent</span>
-    <span class="rhythm-pill rhythm-pill-worker">Data / Tool Worker</span>
+    <span class="rhythm-pill rhythm-pill-agent">Bounded Agent Task</span>
+    <span class="rhythm-pill rhythm-pill-scout">Research Task</span>
+    <span class="rhythm-pill rhythm-pill-worker">Data / Integration Tool</span>
     <span class="rhythm-pill rhythm-pill-auto">Deterministic Workflow</span>
     <span class="rhythm-pill rhythm-pill-coach">Human Gate</span>
   </div>
@@ -58,10 +57,10 @@
     <div class="rhythm-stack-row">
       <div class="rhythm-stack-label">Outputs</div>
       <div class="rhythm-stack-items">
-        <div class="rhythm-chip"><strong>Follow Up</strong><small>one prioritized operating brief</small></div>
+        <div class="rhythm-chip"><strong>Mortgage Daily Follow Up</strong><small>one prioritized operating brief</small></div>
         <div class="rhythm-chip"><strong>Opportunity Brief</strong><small>research synthesis</small></div>
         <div class="rhythm-chip"><strong>Tech Advisor</strong><small>decision brief</small></div>
-        <div class="rhythm-chip"><strong>Headhunter</strong><small>role / fit brief</small></div>
+        <div class="rhythm-chip"><strong>Career Apply</strong><small>job-specific evidence packet</small></div>
         <div class="rhythm-chip"><strong>Marketing</strong><small>research output</small></div>
       </div>
     </div>
@@ -69,7 +68,7 @@
       <div class="rhythm-stack-label">Agentic Judgment</div>
       <div class="rhythm-stack-items">
         <div class="rhythm-chip"><strong>Tech Advisor</strong><small>bounded recommendation</small></div>
-        <div class="rhythm-chip"><strong>Headhunter</strong><small>role matching + synthesis</small></div>
+        <div class="rhythm-chip"><strong>Career Apply</strong><small>role matching + synthesis</small></div>
         <div class="rhythm-chip"><strong>Opportunity Researcher</strong><small>evidence-led exploration</small></div>
         <div class="rhythm-chip"><strong>Founder Strategy</strong><small>scenario exploration</small></div>
       </div>
@@ -87,23 +86,23 @@
       <div class="rhythm-stack-label">Deterministic</div>
       <div class="rhythm-stack-items">
         <div class="rhythm-chip"><strong>DFU</strong><small>daily roster assembly</small></div>
-        <div class="rhythm-chip"><strong>LO2 pre-7am</strong><small>scheduled enrichment trigger</small></div>
+        <div class="rhythm-chip"><strong>Milestone rules</strong><small>explicit workflow conditions</small></div>
         <div class="rhythm-chip"><strong>Workflow contracts</strong><small>Airtable + Cloud Run paths</small></div>
       </div>
     </div>
     <div class="rhythm-stack-row">
       <div class="rhythm-stack-label">Human Authority</div>
       <div class="rhythm-stack-items">
-        <div class="rhythm-chip"><strong>Ivan</strong><small>priority · commitments · spend · merge / release</small></div>
+        <div class="rhythm-chip"><strong>Ivan</strong><small>requirements · priorities · risk · acceptance</small></div>
       </div>
     </div>
   </div>
 
-  <h2 class="rhythm-layer-title">Example A <span>deterministic when judgment is unnecessary</span></h2>
+  <h2 class="rhythm-layer-title">Example A <span>known rules and operating context</span></h2>
   <div class="rhythm-flow rhythm-flow-3">
     <div class="glass-card rhythm-card rhythm-card-worker">
       <h3>Enrichment Workers</h3>
-      <p>LO2.0 and vendor tools refresh the context needed for the day’s operating roster.</p>
+      <p>Enrichment tools can supply context for the operating roster. Availability and successful refresh require separate verification.</p>
       <span class="rhythm-pill rhythm-pill-worker tag">Data / tools</span>
     </div>
     <div class="rhythm-arrow">→</div>
@@ -115,10 +114,19 @@
     <div class="rhythm-arrow">→</div>
     <div class="glass-card rhythm-card rhythm-card-digest">
       <h3>Human-Ready Output</h3>
-      <p>One Follow Up brief answers “who needs attention today?” without inventing a decision-maker.</p>
+      <p>An operating brief brings due work and context together for human review. A diagram alone does not prove successful delivery.</p>
       <span class="rhythm-pill rhythm-pill-digest tag">Output</span>
     </div>
   </div>
+
+  <section aria-labelledby="document-workflow">
+    <h2 class="rhythm-layer-title" id="document-workflow">Document intake <span>one household checklist across channels</span></h2>
+    <div class="rhythm-flow rhythm-flow-3">
+      <div class="glass-card rhythm-card rhythm-card-worker"><h3>Business requirement</h3><p>I identified inconsistent checklist updates between intake channels and required one reconciliation path, borrower-specific coverage and preservation of manual statuses.</p><span class="rhythm-pill rhythm-pill-worker tag">Ivan's design decisions</span></div><div class="rhythm-arrow" aria-hidden="true">→</div>
+      <div class="glass-card rhythm-card rhythm-card-auto"><h3>Delegated implementation</h3><p>Codex implemented the integration and regression tests. Filing and checklist updates remain separate observable actions so one successful step does not conceal another failure.</p><span class="rhythm-pill rhythm-pill-auto tag">Agent implementation</span></div><div class="rhythm-arrow" aria-hidden="true">→</div>
+      <div class="glass-card rhythm-card rhythm-card-digest"><h3>Verification boundary</h3><p>Reviewed source and tests support implementation, with deployment recorded separately. Live household acceptance remained outstanding in the reviewed evidence.</p><span class="rhythm-pill rhythm-pill-digest tag">Acceptance still to verify</span></div>
+    </div>
+  </section>
 
   <h2 class="rhythm-layer-title">Example B <span>agentic only where interpretation adds value</span></h2>
   <div class="rhythm-flow rhythm-flow-3">
@@ -136,86 +144,48 @@
     <div class="rhythm-arrow">→</div>
     <div class="glass-card rhythm-card">
       <h3>Human Decision</h3>
-      <p>I accept, reject, redirect, or authorize consequential execution. The outcome is written back for later retrieval.</p>
+      <p>I accept, reject or redirect the recommendation and authorize consequential execution where required. Supported outcomes and learning can then be retained for later work.</p>
       <span class="rhythm-pill rhythm-pill-coach tag">Human gate</span>
     </div>
   </div>
 
-  <h2 class="rhythm-layer-title">Operating Roster <span>orchestration, inputs, and gates</span></h2>
-  <table class="glass-card rhythm-table">
-    <thead>
-      <tr>
-        <th>Output</th>
-        <th>Cadence</th>
-        <th>Orchestration</th>
-        <th>Inputs / tools</th>
-        <th>Decision boundary</th>
-      </tr>
-    </thead>
+  <h2 class="rhythm-layer-title">Work patterns <span>inputs, implementation and boundaries</span></h2>
+  <table class="glass-card career-table rhythm-table">
+    <thead><tr><th scope="col">Output / pattern</th><th scope="col">Orchestration</th><th scope="col">Inputs / tools</th><th scope="col">Decision boundary</th></tr></thead>
     <tbody>
-      <tr>
-        <td><strong>Opportunity Brief</strong></td>
-        <td>Scheduled</td>
-        <td>Research agent — Opportunity Researcher</td>
-        <td>Defined research question + external evidence</td>
-        <td>Recommends; does not commit capital or launch work</td>
-      </tr>
-      <tr>
-        <td><strong>Follow Up</strong></td>
-        <td>Daily</td>
-        <td>Deterministic assembly</td>
-        <td>LO2.0 · DFU · vendor enrichment</td>
-        <td>Prioritizes context; human owns outreach and commitments</td>
-      </tr>
-      <tr>
-        <td><strong>Tech Advisor</strong></td>
-        <td>Scheduled / on demand</td>
-        <td>Bounded agentic task</td>
-        <td>GitHub state · decision history · current constraints</td>
-        <td>Proposes; human authorizes consequential changes</td>
-      </tr>
-      <tr>
-        <td><strong>Headhunter</strong></td>
-        <td>Scheduled</td>
-        <td>Bounded agentic task</td>
-        <td>Role requirements · career evidence · fit criteria</td>
-        <td>Shortlists and drafts; human decides where to apply</td>
-      </tr>
-      <tr>
-        <td><strong>Marketing</strong></td>
-        <td>As needed</td>
-        <td>Human-directed research workflow</td>
-        <td>Market research · buyer evidence · project artifacts</td>
-        <td>Research informs tests; human chooses message and spend</td>
-      </tr>
+      <tr><td data-label="Output / pattern">Opportunity research</td><td data-label="Orchestration">Bounded evidence gathering</td><td data-label="Inputs / tools">Defined question and current sources</td><td data-label="Decision boundary">Recommendation does not commit capital, contact a buyer or launch work</td></tr>
+      <tr><td data-label="Output / pattern">Mortgage operating brief</td><td data-label="Orchestration">Defined rules and available context</td><td data-label="Inputs / tools">Due dates, birthdays, Next Touch and supported enrichment</td><td data-label="Decision boundary">Human outreach and commitments; delivery requires a receipt</td></tr>
+      <tr><td data-label="Output / pattern">Decision brief</td><td data-label="Orchestration">Bounded interpretation</td><td data-label="Inputs / tools">Source history, decisions and current constraints</td><td data-label="Decision boundary">Proposes an action within scope; no implied unrestricted authority</td></tr>
+      <tr><td data-label="Output / pattern">Career Apply</td><td data-label="Orchestration">Requirements-based matching and draft preparation</td><td data-label="Inputs / tools">Career evidence, employer requirements and fit criteria</td><td data-label="Decision boundary">Human application and outreach; distinct from a client-facing recruiting service</td></tr>
+      <tr><td data-label="Output / pattern">Marketing / Peregrin3 exploration</td><td data-label="Orchestration">Requirements, research and scoped prototypes</td><td data-label="Inputs / tools">Business problem, evidence and feasibility</td><td data-label="Decision boundary">Emerging work; no implied paid pilot, customer deployment or revenue</td></tr>
     </tbody>
   </table>
 
   <h2 class="rhythm-layer-title">Design Rules <span>the boundaries are part of the architecture</span></h2>
-  <table class="glass-card rhythm-table">
+  <table class="glass-card career-table rhythm-table">
     <thead>
-      <tr><th>Work type</th><th>Default pattern</th><th>Escalate to human when</th></tr>
+      <tr><th scope="col">Work type</th><th scope="col">Default pattern</th><th scope="col">Escalate to human when</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td><strong>Known, repeatable path</strong></td>
-        <td>Deterministic workflow with explicit inputs and outputs</td>
-        <td>Required data is missing, validation fails, or the next action changes a commitment</td>
+        <td data-label="Work type"><strong>Known, repeatable path</strong></td>
+        <td data-label="Default pattern">Deterministic workflow with explicit inputs and outputs</td>
+        <td data-label="Escalate to human when">Required data is missing, validation fails, or the next action changes a commitment</td>
       </tr>
       <tr>
-        <td><strong>Research / synthesis</strong></td>
-        <td>Bounded agentic task with a defined objective and evidence requirement</td>
-        <td>The recommendation affects spend, customer commitments, risk, or production systems</td>
+        <td data-label="Work type"><strong>Research / synthesis</strong></td>
+        <td data-label="Default pattern">Bounded agentic task with a defined objective and evidence requirement</td>
+        <td data-label="Escalate to human when">The next action requires spending, external commitments, publication or a protected production decision</td>
       </tr>
       <tr>
-        <td><strong>External action</strong></td>
-        <td>Tool call or workflow after the decision is authorized</td>
-        <td>Scope is ambiguous, permissions change, or the requested action exceeds delegated authority</td>
+        <td data-label="Work type"><strong>External action</strong></td>
+        <td data-label="Default pattern">Tool call or workflow after the decision is authorized</td>
+        <td data-label="Escalate to human when">Scope is ambiguous, permissions change, or the requested action exceeds delegated authority</td>
       </tr>
       <tr>
-        <td><strong>Learning / state</strong></td>
-        <td>Write verified outcomes and preferences back to the shared knowledge layer</td>
-        <td>New learning would overwrite source-of-truth records or alter protected governance state</td>
+        <td data-label="Work type"><strong>Learning / state</strong></td>
+        <td data-label="Default pattern">Write verified outcomes and preferences back to the shared knowledge layer</td>
+        <td data-label="Escalate to human when">Evidence is uncertain or a proposed change exceeds authorized scope</td>
       </tr>
     </tbody>
   </table>
@@ -225,9 +195,11 @@
     deterministic where rules are known, and human-gated where consequences matter. That separation is a design choice, not a naming convention.
   </div>
 
+  <p class="hierarchy-proof-banner"><strong>Implemented versus planned:</strong> a design or prototype is not a deployment. Tests establish their stated checks; an operating result needs observation and acceptance. <a href="/hierarchy/#verification">Read the evidence distinctions</a>.</p>
+
   <p class="hierarchy-foot">
     <a href="/hierarchy/">Architecture</a> ·
-    <a href="/experience/">Experience hub</a>
+    <a href="/experience/">Experience hub</a> · <a href="https://www.linkedin.com/in/ivanadiaz" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="mailto:ivan@ivanadiaz.com">Contact</a>
   </p>
 </main>
 </body>
