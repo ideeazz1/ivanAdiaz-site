@@ -110,3 +110,19 @@
   .career-contribution-heading { flex-direction: column; gap: 8px; }
   .career-contribution-chart { width: 100%; }
 }
+
+/* Approved five-project gallery. Keeps the established Experience background and typography. */
+.career-visual-projects { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; margin-top:22px; }
+.career-visual-card { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:20px; background:var(--surface); box-shadow:0 12px 30px rgba(37,51,66,.06); }
+.career-visual-card--featured { grid-column:1 / -1; }
+.career-visual-card__image { display:block; width:100%; height:auto; aspect-ratio:1.54; object-fit:contain; background:#F5F5F5; }
+.career-visual-card--featured .career-visual-card__image { aspect-ratio:2.2; }
+.career-visual-card__content { padding:22px 24px 25px; }
+.career-visual-card__content h3 { margin:7px 0; font-size:clamp(1.2rem,2vw,1.5rem); letter-spacing:-.02em; }
+.career-visual-card__content p { max-width:45em; margin:0 0 13px; color:var(--ink-soft); font-size:.95rem; line-height:1.5; }
+@media(max-width:720px) {
+  .career-visual-projects { grid-template-columns:1fr; gap:18px; }
+  .career-visual-card--featured { grid-column:auto; }
+  .career-visual-card__image,.career-visual-card--featured .career-visual-card__image { aspect-ratio:1.45; }
+  .career-visual-card__content { padding:17px 19px 20px; }
+}
