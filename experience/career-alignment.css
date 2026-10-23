@@ -117,29 +117,14 @@
   .career-contribution-chart-wrap::after { animation: none; transform: none; opacity: 0; }
 }
 
-/* Approved five-project gallery. Keeps the established Experience background and typography. */
-/* Equal-weight project showcases: desktop alternates, mobile is always image first. */
-.career-visual-projects { display:grid; grid-template-columns:minmax(0,1fr); grid-auto-rows:clamp(292px,24vw,346px); gap:24px; margin-top:22px; }
-.career-visual-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-areas:"image content"; align-items:stretch; min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:20px; background:var(--surface); box-shadow:0 10px 28px rgba(37,51,66,.05); transition:box-shadow .22s ease, transform .22s ease; }
-.career-visual-card:nth-child(even) { grid-template-areas:"content image"; }
-.career-visual-card:hover, .career-visual-card:focus-within { box-shadow:0 16px 36px rgba(70,76,68,.12); transform:translateY(-2px); }
-.career-visual-card__image { grid-area:image; display:block; width:100%; height:100%; min-height:290px; max-height:400px; object-fit:contain; background:#F5F5F5; }
-.career-visual-card__content { grid-area:content; display:flex; flex-direction:column; justify-content:center; padding:clamp(22px,4vw,50px); min-width:0; }
-.career-visual-card__content h3 { margin:8px 0 10px; font-size:clamp(1.35rem,2.2vw,1.85rem); letter-spacing:-.02em; }
-.career-visual-card__content p { max-width:34em; margin:0 0 17px; color:var(--ink-soft); font-size:.96rem; line-height:1.6; }
-.career-visual-card__content .career-text-link { align-self:flex-start; }
-@media(max-width:720px) {
-  .career-visual-projects { grid-auto-rows:auto; gap:18px; }
-  .career-visual-card, .career-visual-card:nth-child(even) { grid-template-columns:minmax(0,1fr); grid-template-areas:"image" "content"; }
-  .career-visual-card__image { height:auto; min-height:0; max-height:none; aspect-ratio:1.65; object-fit:contain; }
-  .career-visual-card__content { min-height:260px; box-sizing:border-box; padding:18px 20px 22px; }
-}
-@media(max-width:360px) {
-  .career-visual-card__content { min-height:290px; }
-}
+/* Approved image-only five-project gallery. Artwork keeps its natural proportions. */
+.career-visual-projects { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; margin-top:22px; }
+.career-visual-card { display:block; width:100%; min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:var(--surface); box-shadow:0 8px 28px rgba(70,76,68,.07),0 1px 3px rgba(52,58,64,.05); text-decoration:none; transition:box-shadow .22s ease,transform .22s ease; }
+.career-visual-card:hover, .career-visual-card:focus-visible { box-shadow:0 16px 36px rgba(70,76,68,.12); transform:translateY(-2px); }
+.career-visual-card__image { display:block; width:100%; height:auto; object-fit:contain; background:#F5F5F5; }
 @media(prefers-reduced-motion:reduce) {
   .career-visual-card { transition:none; }
-  .career-visual-card:hover, .career-visual-card:focus-within { transform:none; }
+  .career-visual-card:hover, .career-visual-card:focus-visible { transform:none; }
 }
 
 /* Compact portfolio flow below the unchanged animated hero. */
