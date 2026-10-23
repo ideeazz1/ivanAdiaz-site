@@ -135,7 +135,7 @@
 .career-tech-group,.career-tech-static { display:flex; align-items:center; flex:none; gap:30px; margin:0; padding:12px 30px; list-style:none; white-space:nowrap; }
 .career-tech-group li { display:inline-flex; align-items:center; gap:8px; min-height:20px; font-size:.78rem; letter-spacing:.01em; }
 .career-tech-mark { display:inline-block; flex:none; width:16px; height:16px; background:currentColor; -webkit-mask:var(--tech-mark) center / contain no-repeat; mask:var(--tech-mark) center / contain no-repeat; }
-.career-tech-code { font-family:var(--mono); font-size:.75rem; font-weight:650; }
+.career-tech-mark--openai { -webkit-mask-size:140%; mask-size:140%; }
 .career-tech-static { display:none; }
 @keyframes career-tech-scroll { to { transform:translateX(-50%); } }
 .career-recent { margin:0 0 34px; }
@@ -168,5 +168,5 @@
 @media(prefers-reduced-motion:reduce) {
   .career-tech-track { display:none; animation:none; }
   .career-tech-static { display:flex; flex-wrap:wrap; justify-content:center; gap:5px 14px; padding:12px 8px; white-space:normal; }
-  .career-tech-static li { font-size:.74rem; }
+  .career-tech-static li { display:inline-flex; align-items:center; gap:6px; font-size:.74rem; }
 }
