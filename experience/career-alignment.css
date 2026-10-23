@@ -117,11 +117,11 @@
   .career-contribution-chart-wrap::after { animation: none; transform: none; opacity: 0; }
 }
 
-/* Centered image-only project gallery. Each approved illustration keeps its natural ratio. */
-.career-visual-projects { display:grid; grid-template-columns:minmax(0,1fr); width:min(100%,950px); gap:16px; margin:22px auto 0; }
-.career-visual-card { display:flex; align-items:center; justify-content:center; width:fit-content; max-width:100%; min-width:0; margin-inline:auto; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:var(--surface); box-shadow:0 8px 28px rgba(70,76,68,.07),0 1px 3px rgba(52,58,64,.05); text-decoration:none; transition:box-shadow .22s ease,transform .22s ease; }
+/* Equal 2:1 project frames preserve each illustration at its natural proportions. */
+.career-visual-projects { display:grid; grid-template-columns:minmax(0,1fr); width:min(100%,900px); gap:16px; margin:22px auto 0; }
+.career-visual-card { display:block; width:100%; aspect-ratio:2 / 1; min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:#F0F2F4; box-shadow:0 8px 28px rgba(70,76,68,.07),0 1px 3px rgba(52,58,64,.05); text-decoration:none; transition:box-shadow .22s ease,transform .22s ease; }
 .career-visual-card:hover, .career-visual-card:focus-visible { box-shadow:0 16px 36px rgba(70,76,68,.12); transform:translateY(-2px); }
-.career-visual-card__image { display:block; width:auto; max-width:100%; height:auto; max-height:450px; object-fit:contain; background:#F5F5F5; }
+.career-visual-card__image { display:block; width:100%; height:100%; object-fit:contain; object-position:center; background:#F0F2F4; }
 @media(prefers-reduced-motion:reduce) {
   .career-visual-card { transition:none; }
   .career-visual-card:hover, .career-visual-card:focus-visible { transform:none; }
