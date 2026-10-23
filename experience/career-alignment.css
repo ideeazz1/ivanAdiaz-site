@@ -103,7 +103,7 @@
 .career-contribution-heading h3 { margin: 0 0 4px; font-size: 1rem; }
 .career-contribution-heading p { margin: 0; color: var(--ink-soft); font-size: .82rem; }
 .career-contribution-heading a { flex: 0 0 auto; }
-.career-contribution-chart-wrap { position: relative; isolation: isolate; width: min(100%, 470px); margin: 12px 0 0; }
+.career-contribution-chart-wrap { position: relative; isolation: isolate; overflow: hidden; border-radius: 4px; width: min(100%, 470px); margin: 12px 0 0; }
 .career-contribution-chart { display: block; width: 100%; height: auto; }
 .career-contribution-chart-wrap::after { content: ""; position: absolute; inset: 0; pointer-events: none; clip-path: inset(13.3% 2.5% 20.7% 13.3% round 4px); background: linear-gradient(108deg, transparent 40%, rgba(255,255,255,.14) 46%, rgba(255,255,255,.42) 50%, rgba(255,255,255,.12) 54%, transparent 60%); transform: translateX(-100%); opacity: .55; animation: career-contribution-shimmer 12s ease-in-out infinite; }
 @keyframes career-contribution-shimmer { 0%, 58% { transform: translateX(-100%); } 86%, 100% { transform: translateX(100%); } }
