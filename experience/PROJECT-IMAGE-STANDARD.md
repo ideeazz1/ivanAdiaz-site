@@ -12,6 +12,29 @@
 - Future source artworks should share a template artboard and reserved title/safe area. A single reusable HTML/CSS header is an optional future migration **only after all embedded titles can be removed without losing approved content**; do not layer a duplicate header over existing text or trigger a six-image redesign under a one-image fix.
 - Compare new images with Database 2.0, Dream and all remaining cards on desktop and 390px mobile. Count an image as accepted only when the visible title scale, card fill, bounds, whitespace, order and image loading match. Render screenshots, check for clipping/distortion and inspect the published site. A PR or successful build alone is not visual acceptance.
 
-## Current Audit & Security defect
+## Approved normalization assignment — six-card collection (2026-10-24)
 
-The approved airport-control-tower image occupies card #2 but appears smaller than adjacent images due to extra framing/inset, with a visibly smaller title. Correct only this artboard/header-size mismatch using the approved image, preserve the composition, then verify against the standard above. Do not change the Registry / Console image. No made-up live status metrics.
+**Objective:** A recruiter sees six visually cohesive, professionally finished project illustrations. This supersedes the narrower single-card correction below; do not interpret earlier “leave the other five alone” as blocking the approved consistency fixes. Preserve each project's approved *visual story and contents*, not its inconsistent padding or typography.
+
+### Source-of-truth and scope
+
+- Work only on `/experience/` and the six existing `experience/projects/` assets, plus the minimal CSS/HTML required for faithful sizing. No new redesign, navigation, site header, hero, tool ticker, animation, page copy, or new system.
+- Project sequence: (1) Database 2.0, (2) Audit & Security, (3) Dream, (4) Registry / Console, (5) Mortgage Intelligence Core, (6) Daily Follow Up / EOD.
+- Inspect **all six actual source image pixel dimensions, transparency/embedded frames, visible title bounding boxes and the CSS rendered width/height** before deciding changes. Distinguish container problems from image-internal whitespace. Do not assume that setting `width`/`height` HTML attributes makes visible content uniform.
+- Use **Registry / Console and Daily Follow Up / EOD** as initial visual references for balanced title scale. Preserve deliberate line wrapping (e.g. Mortgage Intelligence Core, Daily Follow Up / EOD). Derive the shared title visual scale, left/top alignment, subtitle spacing and safe zones from rendered measurements; do not hardcode speculative pixel values.
+- Database 2.0 and Dream: reduce oversized *visible title* scale to the chosen reference; maintain clarity of other artwork.
+- Audit & Security: remove its extra nested-looking white frame/inset and normalize its undersized title/header and content scale **without** cropping the airport control tower, status illustration or tools.
+- Registry / Console and Mortgage Intelligence Core: correct only header offsets/scale if confirmed by comparison.
+- Daily Follow Up / EOD: baseline reference; adjust only if necessary for uniformity.
+- Source aspect ratios currently vary; a consistent outer website card appearance is required, but **no stretching, destructive `object-fit: cover` cropping, excessive padding, or blanket source-ratio conversion**. Prefer minimal asset-level correction when internal typography is baked into raster. If edit would materially alter approved illustration, report the precise tradeoff before substituting or regenerating.
+- Important content, including title and tool strip, must be fully visible; avoid drawing a second inner rounded card inside the outer website card. Treat illustration dashboard status/counts as artistic examples, not live operational claims.
+
+### Verification and closure
+
+1. Capture comparable before/after screenshots of **the same six-card page** at desktop (~1440px) and mobile (390px; also inspect 320px if practical). Compare title appearance, horizontal left edge, top inset, two-line spacing, outer card fill, whitespace and visibility—not only file metadata.
+2. All six images load, preserve approved order, have consistent outer displayed width/height rules, and look like one series; no broken paths, duplicated titles, overlaps, clipped text, squeezed imagery or mobile overflow.
+3. Use a focused PR and existing build/check process; check changed asset files and exact rendered outputs. Merge/deploy via normal approvals only after checks. Independently review the deployed `https://ivanadiaz.com/experience/` at desktop/mobile, not just branch preview.
+4. Deliver concise evidence: changed file list, actual asset dimensions, matched presentation measurements, before/after screenshots, PR/merge/deployment state and direct live URL. **Ivan's browser visual approval is final acceptance.** Until that approval, status is `IMPLEMENTED — OWNER VISUAL REVIEW PENDING`, not finished.
+5. If unable to correct a raster's embedded title without degrading the artwork, state exactly which asset and what was attempted; show one bounded proposed alternative. Do not silently replace approved art or ask Ivan to recapture all requirements.
+
+**Accountability:** The requesting assistant owns completeness of this specification and accepts responsibility for omissions; Codex executes the smallest necessary changes and reports discrepancies rather than inventing scope. This is one controlled normalization task, not six projects.
