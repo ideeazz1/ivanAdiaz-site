@@ -38,3 +38,13 @@
 5. If unable to correct a raster's embedded title without degrading the artwork, state exactly which asset and what was attempted; show one bounded proposed alternative. Do not silently replace approved art or ask Ivan to recapture all requirements.
 
 **Accountability:** The requesting assistant owns completeness of this specification and accepts responsibility for omissions; Codex executes the smallest necessary changes and reports discrepancies rather than inventing scope. This is one controlled normalization task, not six projects.
+
+## Restoration and replacement strategy — owner instruction 2026-10-24
+
+The bulk raster edits in PR #54 and follow-up PR #55 were rejected after mobile visual review due to apparent washed-out/degraded title text. On owner request, `main` was restored to commit `0cf4b6c` (before both image edits), while the previous tip is preserved on backup branch `backup/image-retouch-pr54-pr55-20261024`. Do not reuse the failed images as final sources; this strategy supersedes the prior instruction to batch-normalize all six images now.
+
+**New process: one image prototype, then scale cautiously.** Keep the restored published cards unchanged while designing an isolated replacement. Use clean, sharp typography built from a single approved header template rather than raster repainting/warping an existing embedded title. Establish title style, line wrapping, top and left safe zones, subtitle style, and a shared deliverable artboard by comparing actual approved source illustrations. Original scene/content must remain intact. Favor remastering from suitable clean source or image-by-image recreation when title separation would damage existing pixels; never assume a destructive pixel retouch is safe. Avoid fabricated status metrics and preserve the individual visual metaphor.
+
+**Initial prototype:** choose one problematic asset (Audit & Security is suitable), prepare a before/after pair off-site without touching current production, visually inspect at desktop and mobile, and seek owner's image approval. Only then apply the approved typography/artboard template separately to other cards, checking each against its original and the prior approved prototype. No bulk automatic resizing, edge smearing, inpainting or CSS-only optical fixes; don't force a single aspect ratio without evaluating content loss. Roll out only approved replacements with a reversible PR and deployed mobile verification.
+
+**Current acceptance boundary:** restoration to previous site source is verified in GitHub; live CDN/browser propagation and owner's subsequent review are separate milestones. No new image artwork is approved under this strategy yet.
