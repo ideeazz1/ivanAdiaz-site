@@ -14,40 +14,40 @@
   .tl{font-size:11.5px;font-weight:600;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;margin-bottom:10px}
   .grp{position:absolute}
   .tiles{display:flex;gap:12px}
-  .tile{width:108px;height:76px;background:#fff;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  .tile{width:68px;height:68px;background:#fff;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
         box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 20px -10px rgba(16,24,40,.12);font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap}
   .tile img,.tile svg{height:26px;width:auto}
   /* cards */
-  .card{position:absolute;left:1070px;min-height:200px;align-content:start;width:446px;background:#fff;border-radius:20px;padding:18px 18px 18px 20px;display:grid;grid-template-columns:200px 1fr;gap:16px;
+  .card{position:absolute;left:1044px;min-height:206px;align-content:start;width:480px;background:#fff;border-radius:20px;padding:18px 18px 18px 20px;display:grid;grid-template-columns:222px 1fr;gap:16px;
         box-shadow:0 1px 2px rgba(16,24,40,.04),0 14px 34px -12px rgba(16,24,40,.14);transition:box-shadow .3s}
   .card.on{box-shadow:0 0 0 2px var(--ac),0 14px 34px -12px rgba(0,66,136,.30)}
-  .t{grid-column:1/-1;margin-bottom:-10px;white-space:nowrap;font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--ink3);text-transform:uppercase;display:flex;align-items:center;gap:7px}
+  .t{grid-column:1/-1;margin-bottom:-10px;white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--ink3);text-transform:uppercase;display:flex;align-items:center;gap:7px}
   .t b{color:var(--ac);font-weight:700}
-  .num{width:18px;height:18px;border-radius:50%;background:var(--ac);color:#fff;font-size:10.5px;font-weight:700;display:grid;place-items:center;letter-spacing:0}
-  .h{font-size:19px;font-weight:600;letter-spacing:-.015em;margin:6px 0 8px}
+  .num{width:21px;height:21px;border-radius:50%;background:var(--ac);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;letter-spacing:0}
+  .h{font-size:22px;font-weight:600;letter-spacing:-.015em;margin:6px 0 8px}
   ul{list-style:none}
-  li{font-size:13.5px;line-height:22px;color:var(--ink2);display:flex;align-items:center;gap:8px;white-space:nowrap}
+  li{font-size:15.5px;line-height:25px;color:var(--ink2);display:flex;align-items:center;gap:8px;white-space:nowrap}
   li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--ac);flex:none}
   .panel{background:#F7F8FA;border-radius:14px;padding:12px}
-  .ph{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;margin-bottom:6px}
+  .ph{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;margin-bottom:6px}
   .ph span{color:var(--ink3);font-weight:500}
-  .row{display:flex;align-items:center;gap:8px;height:27px;font-size:12.5px}
+  .row{display:flex;align-items:center;gap:8px;height:30px;font-size:14.5px}
   .av{width:18px;height:18px;border-radius:50%;background:#E4E6EA;flex:none}
   .bar{height:6px;border-radius:3px;background:#E4E6EA;flex:1}
-  .pill{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:#ECEEF1;color:var(--ink2);white-space:nowrap}
+  .pill{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;background:#ECEEF1;color:var(--ink2);white-space:nowrap}
   .pill.on{background:var(--acT);color:var(--ac)}
-  .msg{font-size:12.5px;line-height:1.45;background:#fff;border-radius:10px 10px 10px 3px;padding:8px 10px}
-  .tag{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11.5px;font-weight:600;color:var(--ac)}
-  .ic{display:flex;gap:3px;flex:none}.ic img{height:14px}
+  .msg{font-size:14.5px;line-height:1.45;background:#fff;border-radius:10px 10px 10px 3px;padding:8px 10px}
+  .tag{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:13.5px;font-weight:600;color:var(--ac)}
+  .ic{display:flex;gap:3px;flex:none}.ic img{height:16px}
   .lbl{flex:1}
-  .chk{width:16px;height:16px;border-radius:50%;background:var(--ac);display:grid;place-items:center;flex:none}
-  .core{display:flex;align-items:center;gap:6px;margin-top:9px;font-size:11.5px;font-weight:600;color:var(--ac)}
+  .chk{width:18px;height:18px;border-radius:50%;background:var(--ac);display:grid;place-items:center;flex:none}
+  .core{display:flex;align-items:center;gap:6px;margin-top:9px;font-size:13.5px;font-weight:600;color:var(--ac)}
   /* dial */
-  .clock{position:absolute;left:735px;top:318px;width:200px;text-align:center}
-  .clock .tm{font-size:34px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-  .clock .ph2{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-top:4px}
-  .pillbig{position:absolute;left:660px;top:650px;width:350px;height:40px;border-radius:999px;background:var(--acT);color:var(--ac);
-           display:flex;align-items:center;justify-content:center;gap:9px;font-size:14.5px;font-weight:600}
+  .clock{position:absolute;left:695px;top:310px;width:240px;width:200px;text-align:center}
+  .clock .tm{font-size:42px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .clock .ph2{font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-top:4px}
+  .pillbig{position:absolute;left:615px;top:668px;width:400px;height:40px;border-radius:999px;background:var(--acT);color:var(--ac);
+           display:flex;align-items:center;justify-content:center;gap:9px;font-size:16.5px;font-weight:600}
   /* motion */
   .anim .f{opacity:0;transform:translateY(8px);animation:in .6s cubic-bezier(.2,.7,.2,1) forwards}
   @keyframes in{to{opacity:1;transform:none}}
@@ -66,39 +66,39 @@
 <div class="grp" style="left:96px;top:420px">
   <div class="tl f" style="animation-delay:.25s">Powered by</div>
   <div class="tiles">
-    <div class="tile f" style="animation-delay:.3s"><img src="icons/gmail.svg">Gmail</div>
-    <div class="tile f" style="animation-delay:.34s"><img src="icons/outlook.svg">Outlook</div>
-    <div class="tile f" style="animation-delay:.38s"><img src="icons/airtable.svg">Airtable</div>
-    <div class="tile f" style="animation-delay:.42s"><img src="icons/gcloud.svg">Google Cloud</div>
+    <div title="Gmail" class="tile f" style="animation-delay:.3s"><img src="icons/gmail.svg"></div>
+    <div title="Outlook" class="tile f" style="animation-delay:.34s"><img src="icons/outlook.svg"></div>
+    <div title="Airtable" class="tile f" style="animation-delay:.38s"><img src="icons/airtable.svg"></div>
+    <div title="Google Cloud" class="tile f" style="animation-delay:.42s"><img src="icons/gcloud.svg"></div>
   </div>
 </div>
-<div class="grp" style="left:96px;top:556px">
+<div class="grp" style="left:96px;top:540px">
   <div class="tl f" style="animation-delay:.46s">Intelligence</div>
   <div class="tiles">
-    <div class="tile f" style="animation-delay:.5s"><img src="icons/claude.svg">Claude</div>
-    <div class="tile f" style="animation-delay:.54s"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#004288"/><path d="M14 6.5l1.9 5.6 5.6 1.9-5.6 1.9L14 21.5l-1.9-5.6L6.5 14l5.6-1.9z" fill="#fff"/></svg>Intelligence Core</div>
+    <div title="Claude" class="tile f" style="animation-delay:.5s"><img src="icons/claude.svg"></div>
+    <div title="Intelligence Core" class="tile f" style="animation-delay:.54s"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#004288"/><path d="M14 6.5l1.9 5.6 5.6 1.9-5.6 1.9L14 21.5l-1.9-5.6L6.5 14l5.6-1.9z" fill="#fff"/></svg></div>
   </div>
 </div>
-<div class="grp" style="left:336px;top:556px">
+<div class="grp" style="left:284px;top:540px">
   <div class="tl f" style="animation-delay:.58s">Built with</div>
   <div class="tiles">
-    <div class="tile f" style="animation-delay:.62s"><img src="icons/codex.svg">Codex</div>
-    <div class="tile f" style="animation-delay:.66s"><img src="icons/claude-code.svg">Claude Code</div>
+    <div title="Codex" class="tile f" style="animation-delay:.62s"><img src="icons/codex.svg"></div>
+    <div title="Claude Code" class="tile f" style="animation-delay:.66s"><img src="icons/claude-code.svg"></div>
   </div>
 </div>
 
 <!-- 24-hour dial -->
 <svg class="abs" width="1600" height="800" viewBox="0 0 1600 800">
-  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FFC83D" stop-opacity=".55"/><stop offset=".45" stop-color="#FFC83D" stop-opacity=".18"/><stop offset="1" stop-color="#FFC83D" stop-opacity="0"/></radialGradient><radialGradient id="core" cx=".38" cy=".35"><stop offset="0" stop-color="#FFE27A"/><stop offset="1" stop-color="#F7A81B"/></radialGradient><mask id="cres"><rect x="-30" y="-30" width="60" height="60" fill="#fff"/><circle cx="6" cy="-5" r="9.5" fill="#000"/></mask><clipPath id="nightClip"><rect x="600" y="400" width="480" height="260"/></clipPath></defs>
-  <circle cx="835" cy="400" r="170" fill="var(--ac)" opacity=".06" clip-path="url(#nightClip)"/>
-  <circle cx="835" cy="400" r="170" fill="none" stroke="var(--line)" stroke-width="2"/>
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FFC83D" stop-opacity=".55"/><stop offset=".45" stop-color="#FFC83D" stop-opacity=".18"/><stop offset="1" stop-color="#FFC83D" stop-opacity="0"/></radialGradient><radialGradient id="core" cx=".38" cy=".35"><stop offset="0" stop-color="#FFE27A"/><stop offset="1" stop-color="#F7A81B"/></radialGradient><mask id="cres"><rect x="-30" y="-30" width="60" height="60" fill="#fff"/><circle cx="6" cy="-5" r="9.5" fill="#000"/></mask><clipPath id="nightClip"><rect x="600" y="400" width="440" height="260"/></clipPath></defs>
+  <circle cx="815" cy="400" r="186" fill="var(--ac)" opacity=".06" clip-path="url(#nightClip)"/>
+  <circle cx="815" cy="400" r="186" fill="none" stroke="var(--line)" stroke-width="2"/>
   <g id="ticks" stroke="var(--ink3)" stroke-linecap="round"></g>
   <!-- horizon -->
-  <line x1="630" y1="400" x2="655" y2="400" stroke="var(--line)" stroke-width="1.5"/>
-  <line x1="1015" y1="400" x2="1040" y2="400" stroke="var(--line)" stroke-width="1.5"/>
-  <text x="642" y="388" font-size="11" fill="var(--ink3)" text-anchor="middle" font-weight="600" letter-spacing="1">6 AM</text>
-  <text x="1028" y="388" font-size="11" fill="var(--ink3)" text-anchor="middle" font-weight="600" letter-spacing="1">6 PM</text>
-  <text x="835" y="606" font-size="11" fill="var(--ink3)" text-anchor="middle" font-weight="600" letter-spacing="1">MIDNIGHT</text>
+  <line x1="590" y1="400" x2="624" y2="400" stroke="var(--line)" stroke-width="1.5"/>
+  <line x1="1006" y1="400" x2="1038" y2="400" stroke="var(--line)" stroke-width="1.5"/>
+  <text x="606" y="422" font-size="13" fill="var(--ink3)" text-anchor="middle" font-weight="600" letter-spacing="1">6 AM</text>
+  <text x="1022" y="422" font-size="13" fill="var(--ink3)" text-anchor="middle" font-weight="600" letter-spacing="1">6 PM</text>
+  <text x="815" y="618" font-size="13" fill="var(--ink3)" text-anchor="middle" font-weight="600" letter-spacing="1">MIDNIGHT</text>
   <path id="prog" fill="none" stroke="var(--ac)" stroke-width="3.5" stroke-linecap="round"/>
   <g id="stations"></g>
   <g id="sun"><circle r="15" fill="#F6F7F9"/><circle r="40" fill="url(#glow)"/><circle r="12" fill="url(#core)"/></g>
@@ -107,7 +107,7 @@
 <div class="clock"><div class="tm" id="tm">7:00 AM</div><div class="ph2" id="ph">Daily Follow Up</div></div>
 
 <!-- 1 -->
-<div class="card f" id="c1" style="top:64px;animation-delay:.7s">
+<div class="card f" id="c1" style="top:46px;animation-delay:.7s">
   <div class="t"><span class="num">1</span><b>7:00 AM</b> · Daily Follow Up</div>
   <div>
     <div class="h">See what matters</div>
@@ -123,7 +123,7 @@
 </div>
 
 <!-- 2 -->
-<div class="card f" id="c2" style="top:300px;animation-delay:2.7s">
+<div class="card f" id="c2" style="top:282px;animation-delay:2.7s">
   <div class="t"><span class="num">2</span><b>All day</b> · Review &amp; engage</div>
   <div>
     <div class="h">Take action</div>
@@ -137,7 +137,7 @@
 </div>
 
 <!-- 3 -->
-<div class="card f" id="c3" style="top:536px;animation-delay:5.5s">
+<div class="card f" id="c3" style="top:518px;animation-delay:5.5s">
   <div class="t"><span class="num">3</span><b>9:00 PM</b> · End of Day</div>
   <div>
     <div class="h">Close the loop</div>
@@ -157,7 +157,7 @@
 </div>
 
 <script>
-const CX=835, CY=400, R=170, A0=-75;              // 7 AM = -75deg (clockwise from top = noon)
+const CX=815, CY=400, R=186, A0=-75;              // 7 AM = -75deg (clockwise from top = noon)
 const pt=(a,r=R)=>[CX+r*Math.sin(a*Math.PI/180), CY-r*Math.cos(a*Math.PI/180)];
 // hour ticks
 const tk=document.getElementById('ticks');
@@ -166,7 +166,7 @@ for(let h=0;h<24;h++){const a=(h-12)*15, big=h%6===0, [x1,y1]=pt(a,R-8), [x2,y2]
 // numbered stations: 7 AM, noon, 9 PM
 const st=document.getElementById('stations');
 [[A0,1],[0,2],[135,3]].forEach(([a,n])=>{const [x,y]=pt(a);
-  st.insertAdjacentHTML('beforeend',`<circle cx="${x}" cy="${y}" r="10" fill="#fff" stroke="var(--ac)" stroke-width="2"/><text x="${x}" y="${y+3.8}" font-size="11" font-weight="700" fill="var(--ac)" text-anchor="middle">${n}</text>`);});
+  st.insertAdjacentHTML('beforeend',`<circle cx="${x}" cy="${y}" r="12" fill="#fff" stroke="var(--ac)" stroke-width="2"/><text x="${x}" y="${y+4.3}" font-size="12.5" font-weight="700" fill="var(--ac)" text-anchor="middle">${n}</text>`);});
 // sun keyframes [time s, angle]
 const K=[[0,A0],[1.0,A0],[2.9,0],[3.5,0],[5.7,135],[6.4,135],[8.6,A0+360],[99,A0+360]];
 const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;

@@ -1,26 +1,26 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
 <style>
-  .col{position:absolute;left:1150px;top:64px;width:370px;display:flex;flex-direction:column;gap:22px}
-  .stk{padding:18px 20px}
-  .stk h5{font-size:18px;font-weight:600;letter-spacing:-.015em;margin:6px 0 10px}
+  .col{position:absolute;left:1132px;top:52px;width:392px;display:flex;flex-direction:column;gap:22px}
+  .stk{padding:20px 22px}
+  .stk h5{font-size:21px;font-weight:600;letter-spacing:-.015em;margin:6px 0 10px}
   .chips{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--acT);color:var(--ac)}
-  ul{list-style:none} li{font-size:13.5px;line-height:23px;color:var(--ink2);display:flex;align-items:center;gap:8px}
+  .chip{font-size:14px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--acT);color:var(--ac)}
+  ul{list-style:none} li{font-size:16px;line-height:27px;color:var(--ink2);display:flex;align-items:center;gap:8px}
   li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--ac)}
-  .mail{background:#F7F8FA;border-radius:12px;padding:12px}
+  .mail{background:#F7F8FA;border-radius:12px;padding:14px}
   .mail .bar{height:7px;border-radius:4px;background:#E2E5EA;margin:5px 0}
   .btns{display:flex;gap:6px;margin-top:10px}
-  .btn{font-size:11.5px;font-weight:700;letter-spacing:.06em;padding:6px 12px;border-radius:8px;background:#fff;color:var(--ink2);border:1px solid #E2E5EA}
+  .btn{font-size:13.5px;font-weight:700;letter-spacing:.06em;padding:7px 14px;border-radius:8px;background:#fff;color:var(--ink2);border:1px solid #E2E5EA}
   .btn.yes{background:var(--ac);color:#fff;border-color:var(--ac)}
-  .night{position:absolute;left:740px;top:104px;width:320px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--ac)}
-  .pill{position:absolute;left:690px;top:650px;width:420px;height:40px;border-radius:999px;background:var(--acT);color:var(--ac);display:flex;align-items:center;justify-content:center;gap:9px;font-size:14px;font-weight:600}
+  .night{position:absolute;left:720px;top:96px;width:320px;text-align:center;font-size:14px;font-weight:700;letter-spacing:.14em;color:var(--ac)}
+  .pill{position:absolute;left:645px;top:648px;width:470px;height:40px;border-radius:999px;background:var(--acT);color:var(--ac);display:flex;align-items:center;justify-content:center;gap:9px;font-size:16.5px;font-weight:600}
 </style></head>
 <body>
 <svg class="abs" width="1600" height="800" viewBox="0 0 1600 800">
   <g id="rings"></g>
-  <circle cx="900" cy="380" r="34" fill="var(--ac)"/>
-  <text x="900" y="385" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="Inter">GBrain</text>
+  <circle cx="880" cy="372" r="44" fill="var(--ac)"/>
+  <text x="880" y="378" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Inter">GBrain</text>
   <g id="dots"></g>
 </svg>
 <div class="night" id="night">NIGHT 1</div>
@@ -39,7 +39,7 @@
 <div class="stk card shadow f" style="animation-delay:3.6s">
   <div class="kicker"><b>12:00 AM</b> · Sadie</div>
   <h5>Up to three new ideas, by email</h5>
-  <div class="mail"><div style="font-size:12px;font-weight:600">Idea 1 of 3 <span style="color:var(--ink3);font-weight:500">· from a captured learning</span></div>
+  <div class="mail"><div style="font-size:14px;font-weight:600">Idea 1 of 3 <span style="color:var(--ink3);font-weight:500">· from a captured learning</span></div>
     <div class="bar" style="width:92%"></div><div class="bar" style="width:70%"></div>
     <div class="btns"><span class="btn yes pop" style="animation-delay:4.6s">YES</span><span class="btn">NO</span><span class="btn">LATER</span></div></div>
 </div>
@@ -51,13 +51,13 @@
 <script>
 window.PAGE={eyebrow:'Learning system',title:'Dream',sub:'Every lesson captured.<br>Every night, a little wiser.',
  tools:[{label:'Powered by',x:96,y:420,items:[['fly-icon','Fly.io'],['gcloud','Google Cloud'],['github-icon','GitHub'],['gmail','Gmail']]},
-        {label:'Intelligence',x:96,y:556,items:[['gbrain','GBrain'],['sadie','Sadie']]},
-        {label:'Built with',x:336,y:556,items:[['codex','Codex'],['claude-code','Claude Code']]}]};
-const CX=900, CY=380, N=6, T0=1.0, STEP=.75;
+        {label:'Intelligence',x:96,y:540,items:[['gbrain','GBrain'],['sadie','Sadie']]},
+        {label:'Built with',x:284,y:540,items:[['codex','Codex'],['claude-code','Claude Code']]}]};
+const CX=880, CY=372, N=6, T0=1.0, STEP=.75;
 const rings=document.getElementById('rings'), dots=document.getElementById('dots');
 const R=[];
 for(let k=0;k<N;k++){
-  const r=62+k*26;
+  const r=74+k*30;
   const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
   c.setAttribute('cx',CX);c.setAttribute('cy',CY);c.setAttribute('r',r);c.setAttribute('fill','none');
   c.setAttribute('stroke','#004288');c.setAttribute('stroke-width',k===N-1?2.2:1.6);c.setAttribute('opacity',.85-k*.1);
@@ -66,7 +66,7 @@ for(let k=0;k<N;k++){
   const ds=[]; const n=3+k%3;
   for(let j=0;j<n;j++){const a=(k*67+j*(360/n)+23)*Math.PI/180;
     const d=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    d.setAttribute('cx',CX+r*Math.cos(a));d.setAttribute('cy',CY+r*Math.sin(a));d.setAttribute('r',k===N-1&&j===0?6:4);
+    d.setAttribute('cx',CX+r*Math.cos(a));d.setAttribute('cy',CY+r*Math.sin(a));d.setAttribute('r',k===N-1&&j===0?7.5:5);
     d.setAttribute('fill',k===N-1&&j===0?'#F7A81B':'#004288');rings.appendChild(d);ds.push(d);}
   R.push({c,L,ds,t:T0+k*STEP+.5});
 }
@@ -74,7 +74,7 @@ for(let k=0;k<N;k++){
 const FLY=[];
 for(let k=0;k<N;k++)for(let j=0;j<3;j++){
   const d=document.createElementNS('http://www.w3.org/2000/svg','circle'); d.setAttribute('r',4.5); d.setAttribute('fill','#004288'); dots.appendChild(d);
-  FLY.push({d,t:T0+k*STEP+j*.08,sx:1150,sy:130+j*14});
+  FLY.push({d,t:T0+k*STEP+j*.08,sx:1132,sy:120+j*14});
 }
 const ease=x=>1-Math.pow(1-x,3);
 window.setT=function(t){
