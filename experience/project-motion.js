@@ -1,39 +1,61 @@
-// Selected Systems cards: play each short video once when it scrolls into view.
-// Only the most visible card plays; the rest pause. Leaving and returning replays it.
-// Reduced motion, no JS, or a failed load all fall back to the still poster.
+// Selected Systems cards.
+// 1. Reveal: each card fades in, rises and comes into focus the first time it scrolls into view.
+// 2. Play: each card's video plays once per visit, starting just after its reveal, and then
+//    stays on its final frame. Only the most visible card plays; a card scrolled away mid-play
+//    pauses and resumes where it left off. Nothing replays when you scroll back.
+// Reduced motion, no JS, or a failed load show the still poster with no effects.
 (function () {
-  var videos = Array.prototype.slice.call(document.querySelectorAll('.career-visual-card__video'));
-  if (!videos.length || !('IntersectionObserver' in window)) return;
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.career-visual-card'));
+  if (!cards.length || !('IntersectionObserver' in window)) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var ratio = new Map();
-  var active = null;
-  var played = new Set(); // played during the current visit to the viewport
+  var REVEAL_MS = 800;
+  var section = cards[0].parentElement;
+  section.classList.add('pm-reveal');
+
+  var info = new Map(); // card -> { ratio, revealedAt, video, done }
+  cards.forEach(function (c) {
+    var v = c.querySelector('.career-visual-card__video');
+    info.set(c, { ratio: 0, revealedAt: 0, video: v, done: !v });
+    if (v) v.addEventListener('ended', function () { info.get(c).done = true; active = null; pick(); });
+  });
+
+  var active = null, timer = null;
+
+  function reveal(c, i) {
+    if (i.revealedAt) return;
+    i.revealedAt = performance.now();
+    c.classList.add('is-in');
+    setTimeout(function () { c.classList.add('is-done'); }, REVEAL_MS + 100);
+  }
 
   function pick() {
-    var best = null, bestRatio = 0.6; // must be at least 60% visible
-    videos.forEach(function (v) {
-      var r = ratio.get(v) || 0;
-      if (r >= bestRatio) { best = v; bestRatio = r; }
+    var best = null, bestRatio = 0.6; // at least 60% visible
+    cards.forEach(function (c) {
+      var i = info.get(c);
+      if (!i.done && i.ratio >= bestRatio) { best = c; bestRatio = i.ratio; }
     });
     if (best === active) return;
-    if (active) active.pause();
+    clearTimeout(timer);
+    if (active) info.get(active).video.pause();
     active = best;
-    if (active && !played.has(active)) {
-      played.add(active);
-      active.currentTime = 0;
-      var p = active.play();
-      if (p && p.catch) p.catch(function () {}); // autoplay refused: the poster stays
-    }
+    if (!active) return;
+    var i = info.get(active);
+    var wait = Math.max(0, i.revealedAt + REVEAL_MS - performance.now());
+    timer = setTimeout(function () {
+      var p = i.video.play();
+      if (p && p.catch) p.catch(function () { i.done = true; }); // autoplay refused: keep the poster
+    }, wait);
   }
 
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      ratio.set(e.target, e.intersectionRatio);
-      if (e.intersectionRatio < 0.15) played.delete(e.target); // gone: replay next visit
+      var i = info.get(e.target);
+      i.ratio = e.intersectionRatio;
+      if (e.intersectionRatio >= 0.12) reveal(e.target, i);
     });
     pick();
-  }, { threshold: [0, 0.15, 0.6, 0.8, 1] });
+  }, { threshold: [0, 0.12, 0.6, 0.8, 1] });
 
-  videos.forEach(function (v) { io.observe(v); });
+  cards.forEach(function (c) { io.observe(c); });
 })();
