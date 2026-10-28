@@ -1,0 +1,87 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
+<style>
+  .rcw{position:absolute;left:680px;top:64px;filter:drop-shadow(0 14px 22px rgba(16,24,40,.13))}
+  .rc{position:relative;width:340px;height:500px;background:#fff;padding:28px 28px 0;
+      clip-path:polygon(0 0,100% 0,100% 100%,95% 98%,90% 100%,85% 98%,80% 100%,75% 98%,70% 100%,65% 98%,60% 100%,55% 98%,50% 100%,45% 98%,40% 100%,35% 98%,30% 100%,25% 98%,20% 100%,15% 98%,10% 100%,5% 98%,0 100%)}
+  .rc h4{font-size:19px;font-weight:600;letter-spacing:-.015em;margin-top:6px}
+  .dash{border-top:1.5px dashed #D7DBE0;margin:18px 0}
+  .kv{display:flex;justify-content:space-between;font-size:13.5px;height:31px;align-items:center}
+  .kv span{color:var(--ink3)} .kv b{font-weight:600} .kv b.m{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:500}
+  .kv b.ok{color:var(--ac);display:flex;gap:6px;align-items:center}
+  .bars{display:flex;gap:3px;height:34px;margin-top:4px}.bars i{background:#1D1D1F;display:block}
+  .lens{position:absolute;left:0;top:0;width:84px;height:84px;pointer-events:none;opacity:0}
+  .stamp{position:absolute;left:752px;top:452px;padding:8px 18px;border:3.5px solid var(--ac);border-radius:10px;color:var(--ac);
+         font:800 30px/1 Inter,sans-serif;letter-spacing:.14em;transform:rotate(-9deg);background:rgba(231,238,247,.55)}
+  .anim .stamp{opacity:0;animation:stamp .35s 4.7s cubic-bezier(.2,.9,.3,1.2) forwards}
+  @keyframes stamp{from{opacity:0;transform:rotate(-9deg) scale(1.9)}to{opacity:1;transform:rotate(-9deg) scale(1)}}
+  .step{position:absolute;left:1080px;width:440px;height:96px;padding:18px 20px;display:flex;gap:16px;align-items:center;transition:box-shadow .2s}
+  .step.on{box-shadow:0 0 0 2px var(--ac),0 14px 34px -12px rgba(0,66,136,.3)}
+  .n{width:40px;height:40px;border-radius:12px;background:var(--acT);color:var(--ac);display:grid;place-items:center;flex:none}
+  .n svg{width:20px;height:20px}
+  .step b{display:block;font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .step span{display:block;font-size:13.5px;color:var(--ink2);margin-top:3px}
+  .legend{position:absolute;left:1080px;top:560px;width:440px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .lab{font:700 10.5px/1 Inter;letter-spacing:.08em;padding:8px 10px;border-radius:999px}
+  .cap{font-size:13px;color:var(--ink2);margin-top:14px}
+</style></head>
+<body>
+<div class="rcw f" style="animation-delay:.6s"><div class="rc">
+  <div class="kicker"><b>Run receipt</b></div>
+  <h4>End of Day Reconciliation</h4>
+  <div class="dash"></div>
+  <div class="kv f" style="animation-delay:1.0s"><span>Scheduled</span><b>9:00 PM CT</b></div>
+  <div class="kv f" style="animation-delay:1.25s"><span>Result</span><b>Completed</b></div>
+  <div class="kv f" style="animation-delay:1.5s"><span>Destination</span><b>Airtable Notes</b></div>
+  <div class="kv f" style="animation-delay:1.75s"><span>Read-back</span><b class="ok"><span class="chk"><svg width="9" height="9" viewBox="0 0 12 12"><path d="M2.5 6.2 5 8.5l4.5-5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Matched</b></div>
+  <div class="kv f" style="animation-delay:2.0s"><span>Instructions</span><b class="m">sha 3f9c1e2</b></div>
+  <div class="kv f" style="animation-delay:2.25s"><span>Errors</span><b>None</b></div>
+  <div class="kv f" style="animation-delay:2.5s"><span>Secrets shown</span><b>None</b></div>
+  <div class="dash"></div>
+  <div class="bars f" id="bars" style="animation-delay:2.7s"></div>
+</div></div>
+<svg class="lens" id="lens" viewBox="0 0 84 84"><circle cx="34" cy="34" r="26" fill="rgba(231,238,247,.35)" stroke="var(--ac)" stroke-width="4"/><path d="M53 53 77 77" stroke="var(--ac)" stroke-width="7" stroke-linecap="round"/></svg>
+<div class="stamp">PROVEN</div>
+
+<div id="steps"></div>
+
+<div class="legend">
+  <div class="tl f" style="animation-delay:5.3s">Evidence labels</div>
+  <div class="chips">
+    <span class="lab pop" style="animation-delay:5.4s;background:var(--ac);color:#fff">PROVEN</span>
+    <span class="lab pop" style="animation-delay:5.5s;background:var(--acT);color:var(--ac)">VERIFY</span>
+    <span class="lab pop" style="animation-delay:5.6s;background:#ECEEF1;color:var(--ink2)">UNPROVEN</span>
+    <span class="lab pop" style="animation-delay:5.7s;background:#FCE8E6;color:#B3261E">BLOCKED</span>
+    <span class="lab pop" style="animation-delay:5.8s;background:#FFF1D6;color:#9A6200">GATE</span>
+  </div>
+  <div class="cap f" style="animation-delay:6.0s">Missing evidence never counts as success. GATE means Ivan decides.</div>
+</div>
+<script>
+window.PAGE={eyebrow:'Oversight',title:'Audit &amp;<br>Security',sub:'Nothing counts as done<br>until the evidence says so.',
+ tools:[{label:'Powered by',x:96,y:420,items:[['github-icon','GitHub'],['gcloud','Google Cloud'],['python','Python']]},
+        {label:'Independent review',x:96,y:556,items:[['codex','Codex'],['claude','Claude']]},
+        {label:'Built with',x:336,y:556,items:[['claude-code','Claude Code']]}]};
+const I={eye:'<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ alert:'<path d="M12 4 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.3"/>',
+ check:'<circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16 9.5"/>',
+ wrench:'<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5"/>'};
+const STEPS=[['eye','Monitor','Every run publishes a receipt'],['alert','Detect','Failed, missing or unapproved changes'],
+ ['check','Verify','An independent reviewer reads back the result'],['wrench','Remediate','Fix and retry, or flag the decision for Ivan']];
+const W=[[1.0,2.8],[2.8,3.6],[3.6,4.9],[4.9,5.6]];
+STEPS.forEach(([ic,t,d],i)=>document.getElementById('steps').insertAdjacentHTML('beforeend',
+ `<div class="step card shadow f" id="s${i}" style="top:${64+i*116}px;animation-delay:${.7+i*.12}s"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${I[ic]}</svg></div><div><b>${i+1}. ${t}</b><span>${d}</span></div></div>`));
+const bars=document.getElementById('bars'); [3,1,2,1,3,2,1,1,3,1,2,3,1,2,1,3,1,1,2,3,1,2,1,3,2,1,3,1,2,1,1,3,2,1,2,3,1].forEach(w=>bars.insertAdjacentHTML('beforeend',`<i style="width:${w}px"></i>`));
+const lens=document.getElementById('lens');
+window.setT=function(t){
+  const anim=location.search.includes('anim');
+  W.forEach(([a,b],i)=>document.getElementById('s'+i).classList.toggle('on',anim&&t>=a&&t<b));
+  // lens sweeps down the receipt between 3.0s and 4.5s
+  const k=Math.min(1,Math.max(0,(t-3.0)/1.5)), vis=anim&&t>2.85&&t<4.75;
+  lens.style.opacity=vis?1:0;
+  lens.style.transform=`translate(${880+Math.sin(k*Math.PI*2)*40}px,${190+k*230}px)`;
+};
+setT(0);
+</script>
+<script src="tools.js"></script>
+</body></html>

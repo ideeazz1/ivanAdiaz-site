@@ -48,3 +48,13 @@ The bulk raster edits in PR #54 and follow-up PR #55 were rejected after mobile 
 **Initial prototype:** choose one problematic asset (Audit & Security is suitable), prepare a before/after pair off-site without touching current production, visually inspect at desktop and mobile, and seek owner's image approval. Only then apply the approved typography/artboard template separately to other cards, checking each against its original and the prior approved prototype. No bulk automatic resizing, edge smearing, inpainting or CSS-only optical fixes; don't force a single aspect ratio without evaluating content loss. Roll out only approved replacements with a reversible PR and deployed mobile verification.
 
 **Current acceptance boundary:** restoration to previous site source is verified in GitHub; live CDN/browser propagation and owner's subsequent review are separate milestones. No new image artwork is approved under this strategy yet.
+
+## Motion replacement — owner direction 2026-10-28
+
+Supersedes the 2026-10-24 "no animation" scope and the one-image-at-a-time rollout for this set. Source: Ivan, Claude Code chat session, 2026-10-28: "I like your style. and I like the video." · "Come back with simple video for the end of day using what we currently have." · "Great can you finish all of them?" · on site behavior: "the scroll can trigger the automation to run, and if one is running, then the other wouldn't".
+
+- All six cards are rebuilt from one HTML template at 1600x800 (2:1, the card's own ratio, so no letterbox or crop). Header, title scale, tool tiles and colors are identical across cards; each card keeps its own metaphor. Source and export steps: `experience/projects/motion/source/README.md`.
+- Each card is a muted, inline video with its final frame as the poster (`experience/projects/motion/*.mp4` and `*.webp`). `experience/project-motion.js` plays a card once when it is at least 60% visible, plays only the most visible card, pauses the rest, and replays after the card leaves and returns. Reduced motion, no JavaScript or a failed load show the poster only.
+- The previous images stay in `experience/projects/` for rollback: revert the `experience/index.html` card markup and the `project-motion.js` script tag.
+- Known gap: at 390px the titles are legible but card-level body text is small, as it was in the previous images. A phone-specific layout would be a separate owner decision.
+- Status until Ivan reviews the deployed page in his browser: IMPLEMENTED — OWNER VISUAL REVIEW PENDING.
