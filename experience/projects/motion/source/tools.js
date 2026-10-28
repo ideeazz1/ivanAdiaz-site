@@ -16,7 +16,7 @@
   P.tools.forEach(g => {
     const tiles = g.items.map(([ic, name]) => { d += .04;
       const img = CUSTOM[ic] || `<img src="icons/${ic}.svg">`;
-      return `<div class="tile f" style="animation-delay:${d.toFixed(2)}s">${img}${name}</div>`; }).join('');
+      return `<div class="tile f" title="${name}" style="animation-delay:${d.toFixed(2)}s">${img}</div>`; }).join('');
     b.insertAdjacentHTML('beforeend', `<div class="grp" style="left:${g.x}px;top:${g.y}px"><div class="tl f" style="animation-delay:${d.toFixed(2)}s">${g.label}</div><div class="tiles">${tiles}</div></div>`);
   });
   window.setT = window.setT || (() => {});

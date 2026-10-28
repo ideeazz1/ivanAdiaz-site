@@ -15,13 +15,13 @@ const [page, out, secs] = process.argv.slice(2);
     await p.goto(url + '?anim', { waitUntil: 'networkidle' });
     await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(400);
     await p.evaluate(() => document.getAnimations().forEach(a => a.pause()));
-    const dir = 'fr_' + out; fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir);
+    const dir = out + '_frames'; fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir);
     for (let i = 0; i < 30 * secs; i++) {
       const t = i * 1000 / 30;
       await p.evaluate(t => { document.getAnimations().forEach(a => a.currentTime = t); window.setT(t / 1000); }, t);
       await p.screenshot({ path: `${dir}/${String(i).padStart(4, '0')}.png` });
     }
-    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '30', '-i', `${dir}/%04d.png`, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-preset', 'slow', '-movflags', '+faststart', out + '.mp4']);
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '30', '-i', `${dir}/%04d.png`, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '17', '-preset', 'slow', '-movflags', '+faststart', out + '.mp4']);
     fs.rmSync(dir, { recursive: true, force: true });
   }
   await b.close();

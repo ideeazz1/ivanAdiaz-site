@@ -1,36 +1,36 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
 <style>
-  .board{position:absolute;left:660px;top:72px;width:860px;height:520px;background:#0E1E38;border-radius:22px;padding:28px 34px;color:#fff}
+  .board{position:absolute;left:616px;top:48px;width:908px;height:568px;background:#0E1E38;border-radius:22px;padding:26px 30px;color:#fff}
   .bh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .bh h3{font-size:15px;font-weight:700;letter-spacing:.16em}
-  .bh span{font-size:12.5px;color:#9FB3D1;display:flex;gap:7px;align-items:center}
-  .cols,.r{display:grid;grid-template-columns:152px 323px 76px 1fr;gap:20px;align-items:center}
-  .cols{font-size:10.5px;font-weight:600;letter-spacing:.14em;color:#6F86A8;margin-bottom:8px}
-  .r{height:50px;border-top:1px solid rgba(255,255,255,.06)}
+  .bh h3{font-size:17px;font-weight:700;letter-spacing:.16em}
+  .bh span{font-size:15px;color:#9FB3D1;display:flex;gap:7px;align-items:center}
+  .cols,.r{display:grid;grid-template-columns:174px 372px 64px 1fr;gap:20px;align-items:center}
+  .cols{font-size:12.5px;font-weight:600;letter-spacing:.14em;color:#6F86A8;margin-bottom:8px}
+  .r{height:55px;border-top:1px solid rgba(255,255,255,.06)}
   .cells{display:flex;gap:2px}
-  .c{width:17px;height:30px;border-radius:3px;background:#182C4C;font:700 16px/30px 'JetBrains Mono',monospace;text-align:center;position:relative;color:#F2F5FA}
+  .c{width:20px;height:35px;border-radius:3px;background:#182C4C;font:700 19px/35px 'JetBrains Mono',monospace;text-align:center;position:relative;color:#F2F5FA}
   .c:after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#0E1E38}
   .c.g{color:#3DDC97}.c.a{color:#FFB547}
   .dot{width:8px;height:8px;border-radius:50%;margin-right:8px;flex:none;opacity:0}
   .st{display:flex;align-items:center}
-  .mini{position:absolute;top:620px;width:272px;height:96px;padding:16px 18px}
-  .mini b{display:block;font-size:15px;font-weight:600;margin-top:6px}
-  .mini span{display:block;font-size:12.5px;color:var(--ink2);margin-top:3px}
+  .mini{position:absolute;top:636px;width:292px;height:108px;padding:16px 20px}
+  .mini b{display:block;font-size:18px;font-weight:600;margin-top:6px}
+  .mini span{display:block;font-size:15px;color:var(--ink2);margin-top:3px}
 </style></head>
 <body>
 <div class="board shadow f" style="animation-delay:.6s">
-  <div class="bh"><h3>TODAY'S RUNS</h3><span class="f" id="okline" style="animation-delay:4.6s"><span class="chk" style="background:#3DDC97"><svg width="9" height="9" viewBox="0 0 12 12"><path d="M2.5 6.2 5 8.5l4.5-5" fill="none" stroke="#0E1E38" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Every run reports back with a receipt</span></div>
+  <div class="bh"><h3>TODAY'S RUNS</h3><span class="f" id="okline" style="animation-delay:4.6s"><span class="chk" style="background:#3DDC97;width:18px;height:18px"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2.5 6.2 5 8.5l4.5-5" fill="none" stroke="#0E1E38" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Every run reports back with a receipt</span></div>
   <div class="cols"><div>TIME</div><div>AUTOMATION</div><div>LANE</div><div>STATUS</div></div>
   <div id="rows"></div>
 </div>
-<div class="mini card shadow f" style="left:660px;animation-delay:3.9s"><div class="kicker"><b>Schedule</b></div><b>Approved times, one place</b><span>No hidden or duplicate clocks</span></div>
-<div class="mini card shadow f" style="left:954px;animation-delay:4.1s"><div class="kicker"><b>Receipt</b></div><b>Every run reports back</b><span>Succeeded, needs help or missing</span></div>
-<div class="mini card shadow f" style="left:1248px;animation-delay:4.3s"><div class="kicker"><b>6:00 PM</b></div><b>Daily Update email</b><span>One summary, every lane</span></div>
+<div class="mini card shadow f" style="left:616px;animation-delay:3.9s"><div class="kicker"><b>Schedule</b></div><b>Approved times, one place</b><span>No hidden or duplicate clocks</span></div>
+<div class="mini card shadow f" style="left:924px;animation-delay:4.1s"><div class="kicker"><b>Receipt</b></div><b>Every run reports back</b><span>Succeeded, needs help or missing</span></div>
+<div class="mini card shadow f" style="left:1232px;animation-delay:4.3s"><div class="kicker"><b>6:00 PM</b></div><b>Daily Update email</b><span>One summary, every lane</span></div>
 <script>
 window.PAGE={eyebrow:'Operations control',title:'Registry /<br>Console',sub:'Every automation on one board.<br>Every run backed by a receipt.',
  tools:[{label:'Powered by',x:96,y:420,items:[['github-icon','GitHub'],['gcloud','Google Cloud'],['airtable','Airtable'],['gmail','Gmail']]},
-        {label:'Built with',x:96,y:556,items:[['codex','Codex'],['claude-code','Claude Code']]}]};
+        {label:'Built with',x:96,y:540,items:[['codex','Codex'],['claude-code','Claude Code']]}]};
 const ROWS=[['12:00 AM','SADIE','OS','ACTIVE'],['05:00 AM','INTELLIGENCE CORE','MTG','ACTIVE'],['06:35 AM','DRIFT REVIEW','OS','ACTIVE'],
  ['07:00 AM','DAILY FOLLOW UP','MTG','ACTIVE'],['06:00 PM','DAILY UPDATE','OS','ACTIVE'],['09:00 PM','END OF DAY','MTG','ACTIVE'],
  ['EVERY 5M','CONTACTS INTAKE','MTG','ACTIVE'],['MON 8 AM','POST-CLOSING','MTG','PAUSED']];

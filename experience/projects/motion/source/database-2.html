@@ -13,32 +13,32 @@
   .tl{font-size:11.5px;font-weight:600;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;margin-bottom:10px}
   .grp{position:absolute}
   .tiles{display:flex;gap:12px}
-  .tile{width:108px;height:76px;background:#fff;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  .tile{width:68px;height:68px;background:#fff;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
         box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 20px -10px rgba(16,24,40,.12);font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap}
   .tile img,.tile svg{height:26px;width:auto}
   .shadow{box-shadow:0 1px 2px rgba(16,24,40,.04),0 14px 34px -12px rgba(16,24,40,.14)}
   /* satellites */
-  .sat{position:absolute;width:212px;height:72px;margin:-36px 0 0 -106px;background:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:11px;align-items:center}
-  .sat .ico{width:36px;height:36px;border-radius:10px;background:var(--acT);display:grid;place-items:center;flex:none}
-  .sat b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em}
-  .sat span{display:block;font-size:12px;color:var(--ink2);margin-top:2px}
-  .src{position:absolute;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;width:300px;text-align:center}
+  .sat{position:absolute;width:252px;height:86px;margin:-43px 0 0 -126px;background:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:11px;align-items:center}
+  .sat .ico{width:44px;height:44px;border-radius:10px;background:var(--acT);display:grid;place-items:center;flex:none}
+  .sat b{display:block;font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .sat span{display:block;font-size:14.5px;color:var(--ink2);margin-top:2px}
+  .src{position:absolute;font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;width:300px;text-align:center}
   .src i{font-style:normal;color:var(--ac)}
   /* center record */
-  .hub{position:absolute;left:930px;top:276px;width:300px;height:168px;background:#fff;border-radius:20px;padding:18px 20px}
-  .hub .t{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ac);text-transform:uppercase}
-  .hub .t span{font-size:10.5px;letter-spacing:.04em;background:var(--acT);padding:3px 8px;border-radius:999px;text-transform:none;font-weight:600}
+  .hub{position:absolute;left:895px;top:262px;width:350px;height:178px;background:#fff;border-radius:20px;padding:18px 20px}
+  .hub .t{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ac);text-transform:uppercase;font-size:13px}
+  .hub .t span{font-size:12.5px;letter-spacing:.04em;background:var(--acT);padding:3px 8px;border-radius:999px;text-transform:none;font-weight:600}
   .who{display:flex;align-items:center;gap:10px;margin:12px 0 14px}
   .avs{display:flex}.avs i{width:26px;height:26px;border-radius:50%;background:#E4E6EA;border:2px solid #fff}.avs i+i{margin-left:-8px;background:#D9DCE1}
   .nm{height:9px;width:120px;border-radius:5px;background:#E4E6EA}
   .slots{display:flex;gap:8px}
-  .slot{width:30px;height:30px;border-radius:9px;background:#F0F1F4;display:grid;place-items:center;color:var(--ink3)}
-  .slot svg{width:16px;height:16px}
-  .ok{margin-top:14px;font-size:12.5px;font-weight:600;color:var(--ac);display:flex;gap:6px;align-items:center;white-space:nowrap}
+  .slot{width:38px;height:38px;border-radius:9px;background:#F0F1F4;display:grid;place-items:center;color:var(--ink3)}
+  .slot svg{width:20px;height:20px}
+  .ok{margin-top:16px;font-size:14.5px;font-weight:600;color:var(--ac);display:flex;gap:6px;align-items:center;white-space:nowrap}
   /* feeds */
-  .feeds{position:absolute;left:640px;top:664px;width:880px;display:flex;align-items:center;justify-content:center;gap:10px}
+  .feeds{position:absolute;left:600px;top:672px;width:940px;display:flex;align-items:center;justify-content:center;gap:10px}
   .feeds .tl{margin:0 6px 0 0}
-  .chip{height:36px;padding:0 14px;border-radius:999px;background:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .chip{height:40px;padding:0 15px;border-radius:999px;background:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;gap:7px;white-space:nowrap}
   .chip:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ac)}
   /* motion */
   .anim .f{opacity:0;transform:translateY(8px);animation:in .6s cubic-bezier(.2,.7,.2,1) forwards}
@@ -65,24 +65,24 @@
 <div class="grp" style="left:96px;top:420px">
   <div class="tl f" style="animation-delay:.25s">Powered by</div>
   <div class="tiles">
-    <div class="tile f" style="animation-delay:.3s"><img src="icons/airtable.svg">Airtable</div>
-    <div class="tile f" style="animation-delay:.34s"><img src="icons/gcloud.svg">Google Cloud</div>
-    <div class="tile f" style="animation-delay:.38s"><img src="icons/gmail.svg">Gmail</div>
-    <div class="tile f" style="animation-delay:.42s"><img src="icons/google-drive.svg">Google Drive</div>
+    <div title="Airtable" class="tile f" style="animation-delay:.3s"><img src="icons/airtable.svg"></div>
+    <div title="Google Cloud" class="tile f" style="animation-delay:.34s"><img src="icons/gcloud.svg"></div>
+    <div title="Gmail" class="tile f" style="animation-delay:.38s"><img src="icons/gmail.svg"></div>
+    <div title="Google Drive" class="tile f" style="animation-delay:.42s"><img src="icons/google-drive.svg"></div>
   </div>
 </div>
-<div class="grp" style="left:96px;top:556px">
+<div class="grp" style="left:96px;top:540px">
   <div class="tl f" style="animation-delay:.46s">Connected</div>
   <div class="tiles">
-    <div class="tile f" style="animation-delay:.5s"><img src="icons/contacts.svg">Google Contacts</div>
-    <div class="tile f" style="animation-delay:.54s"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#004288"/><path d="M14 6.5l1.9 5.6 5.6 1.9-5.6 1.9L14 21.5l-1.9-5.6L6.5 14l5.6-1.9z" fill="#fff"/></svg>Intelligence Core</div>
+    <div title="Google Contacts" class="tile f" style="animation-delay:.5s"><img src="icons/contacts.svg"></div>
+    <div title="Intelligence Core" class="tile f" style="animation-delay:.54s"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#004288"/><path d="M14 6.5l1.9 5.6 5.6 1.9-5.6 1.9L14 21.5l-1.9-5.6L6.5 14l5.6-1.9z" fill="#fff"/></svg></div>
   </div>
 </div>
-<div class="grp" style="left:336px;top:556px">
+<div class="grp" style="left:284px;top:540px">
   <div class="tl f" style="animation-delay:.58s">Built with</div>
   <div class="tiles">
-    <div class="tile f" style="animation-delay:.62s"><img src="icons/codex.svg">Codex</div>
-    <div class="tile f" style="animation-delay:.66s"><img src="icons/claude-code.svg">Claude Code</div>
+    <div title="Codex" class="tile f" style="animation-delay:.62s"><img src="icons/codex.svg"></div>
+    <div title="Claude Code" class="tile f" style="animation-delay:.66s"><img src="icons/claude-code.svg"></div>
   </div>
 </div>
 
@@ -115,22 +115,22 @@ const I={ // 24px line icons
  flow:'<path d="M4 5h16l-6 7.5V19l-4-2v-4.5z"/>'
 };
 const svgI=(k,c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${I[k]}</svg>`;
-const C=[1080,360];
+const C=[1070,350];
 const S=[ // x,y,icon,title,detail,source
- [850,150,'person','Contacts','Exact-email identity','Google Contacts'],
- [1310,150,'house','Properties','Value & ownership','Enrichment'],
- [1376,360,'loan','Loans','Rate, lien & term','Enrichment'],
- [1310,570,'docs','Documents','Filed to Drive','Gmail · CRM/Docs'],
- [850,570,'notes','Notes','Client history','EOD · 9 PM'],
- [784,360,'flow','Pipeline','Stage & next touch','Lead forms'],
+ [818,138,'person','Contacts','Exact-email identity','Google Contacts'],
+ [1322,138,'house','Properties','Value & ownership','Enrichment'],
+ [1398,350,'loan','Loans','Rate, lien & term','Enrichment'],
+ [1322,562,'docs','Documents','Filed to Drive','Gmail · CRM/Docs'],
+ [818,562,'notes','Notes','Client history','EOD · 9 PM'],
+ [742,350,'flow','Pipeline','Stage & next touch','Lead forms'],
 ];
 const lines=document.getElementById('lines'), sats=document.getElementById('sats'), slots=document.getElementById('slots');
-lines.insertAdjacentHTML('beforeend',`<path class="ln" d="M1080 444 V650" stroke="var(--ac)" stroke-width="1.8" fill="none" opacity=".5" style="--L:206;animation-delay:5.0s"/>`);
+lines.insertAdjacentHTML('beforeend',`<path class="ln" d="M1070 440 V652" stroke="var(--ac)" stroke-width="1.8" fill="none" opacity=".5" style="--L:212;animation-delay:5.0s"/>`);
 S.forEach(([x,y,ic,t,d,src],i)=>{
   const T=1.2+i*0.5, L=Math.hypot(C[0]-x,C[1]-y);
   lines.insertAdjacentHTML('beforeend',`<path class="ln" d="M${x} ${y} L${C[0]} ${C[1]}" stroke="var(--ac)" stroke-width="1.8" fill="none" opacity=".45" style="--L:${L};animation-delay:${T+.2}s"/>`);
   sats.insertAdjacentHTML('beforeend',`<div class="sat shadow pop" style="left:${x}px;top:${y}px;animation-delay:${T}s"><div class="ico" style="color:var(--ac)">${svgI(ic)}</div><div><b>${t}</b><span>${d}</span></div></div>`
-    +`<div class="src f" style="left:${x-150}px;top:${y+(y<360?-58:y>360?44:44)}px;animation-delay:${T+.25}s">from <i>${src}</i></div>`);
+    +`<div class="src f" style="left:${x-150}px;top:${y+(y<350?-72:52)}px;animation-delay:${T+.25}s">from <i>${src}</i></div>`);
   slots.insertAdjacentHTML('beforeend',`<div class="slot" style="animation-delay:${T+.7}s">${svgI(ic)}</div>`);
 });
 window.setT=()=>{};
