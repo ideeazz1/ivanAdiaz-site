@@ -21,11 +21,12 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const intervalMs = Number(root.dataset.interval) || 2500;
   const charDelayMs = Number(root.dataset.charDelay) || 50;
+  const fadePhrase = root.dataset.heroTransition === 'fade';
   let index = 0;
 
   function renderWord(word) {
     wordEl.replaceChildren();
-    if (reducedMotion) {
+    if (reducedMotion || fadePhrase) {
       wordEl.textContent = word;
       return;
     }
@@ -40,7 +41,15 @@
 
   function tick() {
     index = (index + 1) % words.length;
-    renderWord(words[index]);
+    if (fadePhrase) {
+      wordEl.classList.add('is-hero-fading');
+      window.setTimeout(() => {
+        renderWord(words[index]);
+        wordEl.classList.remove('is-hero-fading');
+      }, 200);
+    } else {
+      renderWord(words[index]);
+    }
   }
 
   requestAnimationFrame(() => {

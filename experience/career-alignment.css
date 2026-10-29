@@ -180,3 +180,23 @@
   font-size: clamp(1.8rem, 6vw, 5.5rem);
   line-height: 1.05;
 }
+
+/* Keep the approved phrase rotation readable and prevent vertical layout shifts. */
+.career-experience .experience-hero__title--phrases {
+  font-size: clamp(1.5rem, 6vw, 5.5rem);
+}
+.career-experience .experience-hero__phrase { min-height: 1.35em; }
+.career-experience .experience-hero__phrase .experience-hero__rotate { margin-left: 0; }
+.career-experience .experience-hero__phrase .experience-hero__word {
+  display: inline-block;
+  color: #22d3ee;
+  opacity: 1;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.career-experience .experience-hero__phrase .experience-hero__word.is-hero-fading {
+  opacity: 0;
+  transform: translateY(.06em);
+}
+@media (prefers-reduced-motion: reduce) {
+  .career-experience .experience-hero__phrase .experience-hero__word { transition: none; }
+}
