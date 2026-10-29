@@ -174,3 +174,9 @@
   .career-tech-static { display:flex; flex-wrap:wrap; justify-content:center; gap:5px 14px; padding:12px 8px; white-space:normal; }
   .career-tech-static li { display:inline-flex; align-items:center; gap:6px; font-size:.74rem; }
 }
+
+/* Approved process-focused title; existing layout and project visuals stay. */
+.career-experience .experience-hero__title--process {
+  font-size: clamp(1.8rem, 6vw, 5.5rem);
+  line-height: 1.05;
+}
