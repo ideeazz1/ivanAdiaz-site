@@ -3,11 +3,11 @@
 const { chromium } = require('playwright');
 const { execFileSync } = require('child_process');
 const fs = require('fs');
-const [page, out, secs] = process.argv.slice(2);
+const [page, out, secs, W = 1600, H = 800] = process.argv.slice(2);
 (async () => {
   const b = await chromium.launch();
-  const p = await b.newPage({ viewport: { width: 1600, height: 800 }, deviceScaleFactor: 2 });
-  const url = 'file://' + process.cwd() + '/' + page;
+  const p = await b.newPage({ viewport: { width: +W, height: +H }, deviceScaleFactor: 2 });
+  const url = 'file://' + require('path').resolve(page);
   await p.goto(url, { waitUntil: 'networkidle' });
   await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(400);
   await p.screenshot({ path: out + '.png' });
