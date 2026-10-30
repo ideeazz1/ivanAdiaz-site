@@ -19,7 +19,10 @@
     video.pause();
   }
 
-  // Mobile screens use the existing CSS background, avoiding a continuous HLS stream.\n  // This also respects users who prefer reduced motion or reduced data usage.\n  if (window.matchMedia('(max-width: 720px), (prefers-reduced-motion: reduce)').matches ||\n      (navigator.connection && navigator.connection.saveData)) {
+  // Mobile screens use the existing CSS background, avoiding a continuous HLS stream.
+  // This also respects users who prefer reduced motion or reduced data usage.
+  if (window.matchMedia('(max-width: 720px), (prefers-reduced-motion: reduce)').matches ||
+      (navigator.connection && navigator.connection.saveData)) {
     setCssMode();
     return;
   }
