@@ -19,7 +19,10 @@
     video.pause();
   }
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Mobile screens use the existing CSS background, avoiding a continuous HLS stream.
+  // This also respects users who prefer reduced motion or reduced data usage.
+  if (window.matchMedia('(max-width: 720px), (prefers-reduced-motion: reduce)').matches ||
+      (navigator.connection && navigator.connection.saveData)) {
     setCssMode();
     return;
   }
