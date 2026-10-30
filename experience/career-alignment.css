@@ -175,16 +175,7 @@
   .career-tech-static li { display:inline-flex; align-items:center; gap:6px; font-size:.74rem; }
 }
 
-/* Approved process-focused title; existing layout and project visuals stay. */
-.career-experience .experience-hero__title--process {
-  font-size: clamp(1.8rem, 6vw, 5.5rem);
-  line-height: 1.05;
-}
-
 /* Keep the approved phrase rotation readable and prevent vertical layout shifts. */
-.career-experience .experience-hero__title--phrases {
-  font-size: clamp(1.5rem, 6vw, 5.5rem);
-}
 .career-experience .experience-hero__phrase { min-height: 1.35em; }
 .career-experience .experience-hero__phrase .experience-hero__rotate { margin-left: 0; }
 .career-experience .experience-hero__phrase .experience-hero__word {
