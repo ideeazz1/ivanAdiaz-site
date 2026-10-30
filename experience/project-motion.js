@@ -24,6 +24,7 @@
   });
 
   var active = null, timer = null, lastReveal = 0;
+  var generation = 0; // invalidate pending playback when the active card changes
 
   function reveal(el, s) {
     if (s.settledAt) return;
@@ -42,14 +43,27 @@
       if (!s.done && s.ratio >= bestRatio) { best = c; bestRatio = s.ratio; }
     });
     if (best === active) return;
+    ++generation;
     clearTimeout(timer);
     if (active) state.get(active).video.pause();
     active = best;
     if (!active) return;
     var s = state.get(active);
+    var selected = active;
+    var ticket = generation;
     timer = setTimeout(function () {
+      // An earlier delayed start must never play after scroll selected another card.
+      if (ticket !== generation || active !== selected || s.done || s.ratio < 0.6) return;
       var p = s.video.play();
-      if (p && p.catch) p.catch(function () { s.done = true; }); // autoplay refused: keep the poster
+      if (p && p.catch) p.catch(function () {
+        // Interrupted play() promises are normal on mobile when scrolling.
+        // Only genuine autoplay failures of the selected card retire it.
+        if (ticket === generation && active === selected) {
+          s.done = true;
+          active = null;
+          pick();
+        }
+      });
     }, Math.max(0, s.settledAt - performance.now()));
   }
 
