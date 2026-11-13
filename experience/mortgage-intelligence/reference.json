@@ -1,0 +1,149 @@
+{
+  "checkedAt": "2026-11-13T04:04:30.885808+00:00",
+  "sourceCommit": "a673d06e19abe294f65a6703440ca68c036d4ef0",
+  "workers": [
+    {
+      "id": "wfl0x0DHu5QkNU8QN",
+      "name": "Daily Follow Up",
+      "role": "Specialist",
+      "schedule": "Daily at 7:00 AM America/Chicago",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-11-12T12:02:04.682Z",
+      "contract": "ideeazz1/ivan-cos:jobs/daily-follow-up.md",
+      "receiptPath": "evidence/workers/wfl0x0DHu5QkNU8QN.json"
+    },
+    {
+      "id": "wflTu7FnHpI2g2fQQ",
+      "name": "Organize Docs",
+      "role": "Worker",
+      "schedule": "When Pipeline Organize Inbox is checked",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-10-29T22:21:55.700Z",
+      "contract": "ideeazz1/ivan-cos:jobs/organize-docs.md",
+      "receiptPath": "evidence/workers/wflTu7FnHpI2g2fQQ.json"
+    },
+    {
+      "id": "eod-relationship-reconciliation",
+      "name": "EOD Relationship Reconciliation",
+      "role": "Specialist",
+      "schedule": "Daily at 9:00 PM America/Chicago",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-11-13T03:02:41.165Z",
+      "contract": "ideeazz1/ivan-cos:jobs/eod.md",
+      "receiptPath": "evidence/workers/eod-relationship-reconciliation.json"
+    },
+    {
+      "id": "google-contacts-airtable-intake",
+      "name": "Google Contacts Intake",
+      "role": "Worker",
+      "schedule": "Every 5 minutes America/Chicago",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-11-12T20:10:29.083Z",
+      "contract": "ideeazz1/ivan-cos:jobs/google-contacts.md",
+      "receiptPath": "evidence/workers/google-contacts-airtable-intake.json"
+    },
+    {
+      "id": "post-closing-journey-weekly",
+      "name": "Post-Closing Journey",
+      "role": "Worker",
+      "schedule": "Mondays at 8:00 AM America/Chicago when enabled",
+      "registeredState": "paused",
+      "outcome": null,
+      "completedAt": null,
+      "contract": "ideeazz1/ivan-cos:jobs/post-closing.md",
+      "receiptPath": null
+    },
+    {
+      "id": "6a6419d0abdc81918ca199977ab609cf",
+      "name": "Worker - Systems Implementation [GPT]",
+      "role": "Worker / Improve",
+      "schedule": "Daily at 7:30 AM and 5:30 PM America/Chicago",
+      "registeredState": "paused",
+      "outcome": "BLOCKED",
+      "completedAt": "2026-10-25T22:30:14Z",
+      "contract": "ideeazz1/database2-api:audit/IMPLEMENTER.md",
+      "receiptPath": "evidence/workers/6a6419d0abdc81918ca199977ab609cf.json"
+    },
+    {
+      "id": "6a6a0db834e88191b0743821e411dd8e",
+      "name": "Operations - Runtime Audit [GPT]",
+      "role": "Support",
+      "schedule": "Daily at 5:00 PM America/Chicago",
+      "registeredState": "paused",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-10-25T22:10:03Z",
+      "contract": "ideeazz1/database2-api:audit/AUDITOR.md",
+      "receiptPath": "evidence/workers/6a6a0db834e88191b0743821e411dd8e.json"
+    },
+    {
+      "id": "process-docs-email",
+      "name": "CRM Docs Intake",
+      "role": "Worker",
+      "schedule": "Every minute America/Chicago",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-11-09T22:49:26.838Z",
+      "contract": "ideeazz1/ivan-cos:jobs/crm-docs.md",
+      "receiptPath": "evidence/workers/process-docs-email.json"
+    },
+    {
+      "id": "mortgage-intelligence-core-v1",
+      "name": "Research Scout",
+      "role": "Specialist",
+      "schedule": "Daily at 5:00 AM America/Chicago",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-11-12T11:13:52.351Z",
+      "contract": "ideeazz1/ivan-cos:jobs/intelligence-core.md",
+      "receiptPath": "evidence/workers/mortgage-intelligence-core-v1.json"
+    },
+    {
+      "id": "mortgage-5am-scouts",
+      "name": "5 AM Scouts",
+      "role": "Worker",
+      "schedule": "Daily at 5:00 AM America/Chicago",
+      "registeredState": "active",
+      "outcome": "PARTIAL",
+      "completedAt": "2026-11-12T11:14:04.694Z",
+      "contract": "ideeazz1/ivan-cos:jobs/5am-manager.md",
+      "receiptPath": "evidence/workers/mortgage-5am-scouts.json"
+    },
+    {
+      "id": "trig_01R6Y1Xz9dzs4Bj6w4vWLhQg",
+      "name": "END [Claude]",
+      "role": "Support",
+      "schedule": "Daily at 5:22 AM America/Chicago",
+      "registeredState": "active",
+      "outcome": null,
+      "completedAt": null,
+      "contract": "ideeazz1/ivan-cos:end/README.md",
+      "receiptPath": "evidence/workers/trig_01R6Y1Xz9dzs4Bj6w4vWLhQg.json"
+    },
+    {
+      "id": "renter-journey",
+      "name": "Renter Journey",
+      "role": "Worker",
+      "schedule": "Daily at 5:00 AM America/Chicago",
+      "registeredState": "active",
+      "outcome": "SUCCEEDED",
+      "completedAt": "2026-11-13T03:01:35.073Z",
+      "contract": "ideeazz1/ivan-cos:jobs/daily-follow-up.md",
+      "receiptPath": "evidence/workers/renter-journey.json"
+    },
+    {
+      "id": "mortgage-relationship-factory",
+      "name": "Opportunity Scout / M Brain",
+      "role": "Worker",
+      "schedule": "Daily at 5:00 AM America/Chicago",
+      "registeredState": "active",
+      "outcome": null,
+      "completedAt": null,
+      "contract": "ideeazz1/ivan-cos:jobs/intelligence-core.md",
+      "receiptPath": "evidence/workers/mortgage-relationship-factory.json"
+    }
+  ]
+}

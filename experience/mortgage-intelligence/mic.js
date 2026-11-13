@@ -10,3 +10,20 @@ document.querySelector('#close-detail').addEventListener('click',()=>{detail.hid
 const scenarios=[['Purchase interest','Clarify the need','Confirm timing before choosing outreach.','\u2315'],['Future contact request','Wait until the agreed date','Respect the commitment. Prepare internally.','\u23F8'],['A specific property','Recommend personal action','Review the opportunity with Ivan.','\u2197']];
 document.querySelectorAll('[data-scenario]').forEach((b,i)=>b.addEventListener('click',()=>{document.querySelectorAll('[data-scenario]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));['signal-text','decision-title','decision-copy','result-icon'].forEach((id,j)=>document.getElementById(id).textContent=scenarios[i][j]);document.querySelector('.result').dataset.state=i;}));
 document.querySelector('.result').setAttribute('aria-live','polite');
+
+const viewButtons=[...document.querySelectorAll('[data-view]')];
+viewButtons.forEach(button=>button.addEventListener('click',()=>{
+ const reference=button.dataset.view==='reference';
+ viewButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+ document.getElementById('operating-reference').hidden=!reference;
+ document.querySelectorAll('.scenario,.rhythm,.proof').forEach(s=>s.hidden=reference);
+ document.body.classList.toggle('reference-view',reference);
+}));
+const workerFilter=document.getElementById('worker-filter');
+workerFilter.addEventListener('change',()=>{
+ let count=0;document.querySelectorAll('.worker-row').forEach(row=>{
+ const value=workerFilter.value;
+ const show=value==='all'||row.dataset.group===value||(value==='paused'&&row.dataset.state==='paused')||(value==='missing'&&row.dataset.missing==='true');
+ row.hidden=!show;if(show)count++;
+ });document.getElementById('worker-count').textContent=count+' workers';
+});
