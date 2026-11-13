@@ -1,0 +1,114 @@
+/* Systems & Work detail pages (Database 2.0, Daily Follow Up & EOD, Audit & Security, Dream).
+   Loads after /experience/mortgage-intelligence/mic.css and reuses its hero, panels, nodes,
+   inspector, scenario, timeline, proof strip and footer. Only page-specific visuals live here.
+   Visual rules: experience/projects/motion/source/STYLE.md. */
+
+.sys-panel{background:rgba(255,255,255,.94);border-radius:var(--radius,8px);box-shadow:0 14px 40px #0e1e3808;padding:24px 30px;margin-bottom:28px}
+.sys-panel>.quiet{margin:14px 0 0;line-height:1.6}
+.node{position:relative;z-index:1}
+.node b.when{display:block;font:500 11px var(--mono,ui-monospace,Menlo,monospace);letter-spacing:.06em;color:#004288;margin-bottom:5px}
+.inspector .badge{display:inline-block;margin-top:2px}
+.sys-links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.sys-links path,.sys-links line{fill:none;stroke:#004288;stroke-width:1.5;opacity:.3}
+footer .sys-next{margin-left:auto}
+
+/* One dark focal object per page (same treatment as M Brain) */
+.node.core,.node.core:hover,.node.core[aria-pressed=true]{flex-direction:column;justify-content:center;text-align:center;gap:10px;min-height:188px;padding:20px 16px 18px;background:#03142e;background-image:radial-gradient(120% 90% at 50% 0%,#0a4a94 0%,#04234d 46%,#020f24 100%);border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 40px rgba(0,36,82,.28),inset 0 1px 0 rgba(255,255,255,.12)}
+.node.core:hover,.node.core[aria-pressed=true]{border-color:rgba(255,255,255,.55)}
+.node.core strong{color:#fff;font-size:28px;letter-spacing:-.04em}
+.node.core small{color:rgba(255,255,255,.7)}
+.node.core svg{width:96px;height:auto;stroke:#fff;overflow:visible}
+
+/* ---------- Database 2.0: household constellation ---------- */
+.hub{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;gap:80px;align-items:center;padding:26px 0 24px}
+.hub .lane{gap:12px}
+.hub-mark circle{fill:#dbe8f7;stroke:none}
+.hub-mark .hot{fill:#fff;filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px rgba(140,190,255,.9));animation:sys-glow 3.2s ease-in-out infinite alternate}
+.hub-mark path{stroke:#fff;stroke-width:.8;opacity:.45;fill:none}
+@keyframes sys-glow{from{opacity:.7}to{opacity:1}}
+.feed-row{display:grid;grid-template-columns:1.2fr 1fr 1.4fr;gap:24px;border-top:1px solid #e3e7ed;padding:18px 0;align-items:baseline}
+.feed-row h3{font-size:17px;letter-spacing:-.02em;margin:0}
+.feed-row span{font-size:13px;color:#004288}
+.feed-row p{font-size:13px;line-height:1.6;color:#5b5b60;margin:0}
+.feed-row[data-state=paused] span{color:#5b5b60}
+
+/* ---------- Daily Follow Up & EOD: 24-hour clock ---------- */
+.day{display:grid;grid-template-columns:1fr 260px 1fr;grid-template-areas:"am clock pm" ". mid .";gap:18px 44px;align-items:center;padding:26px 0 24px}
+.day .am{grid-area:am}.day .pm{grid-area:pm}.day .mid{grid-area:mid}
+.clock{grid-area:clock;width:100%;height:auto;overflow:visible}
+.clock .ring{fill:none;stroke:#e3e7ed;stroke-width:10}
+.clock .arc{fill:none;stroke:#004288;stroke-width:10;stroke-linecap:round;opacity:.28;transition:opacity .3s,stroke-width .3s}
+.clock .dot{fill:#fff;stroke:#004288;stroke-width:3;transition:r .25s,fill .25s}
+.clock text{font:500 10px Inter,sans-serif;fill:#9a9aa0;text-anchor:middle}
+.clock .hub-time{font:700 22px Inter,sans-serif;fill:#1d1d1f;letter-spacing:-.03em}
+.clock .hub-sub{font:500 10.5px Inter,sans-serif;fill:#5b5b60}
+[data-active="0"] .clock .d-am,[data-active="2"] .clock .d-pm{fill:#004288;r:9}
+[data-active="1"] .clock .arc{opacity:1}
+[data-active="0"] .clock .arc,[data-active="2"] .clock .arc{opacity:.45}
+
+/* ---------- Audit & Security: receipt and stamp ---------- */
+.labels{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.labels .link-btn{font:600 12px var(--mono,ui-monospace,Menlo,monospace);letter-spacing:.08em;min-height:42px;padding:10px 16px;color:#343a40}
+.labels .link-btn[aria-pressed=true]{color:#004288;background:#e7eef7;box-shadow:0 0 0 1px rgba(0,66,136,.22)}
+.audit{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:44px;align-items:center;padding-bottom:6px}
+.receipt{position:relative;background:#fff;border:1px solid #e3e7ed;border-radius:var(--radius,8px);padding:20px 22px 22px;box-shadow:0 4px 15px #0e1e3804}
+.receipt>span{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#5b5b60}
+.receipt>strong{display:block;font-size:17px;letter-spacing:-.02em;margin:6px 0 14px}
+.receipt dl{margin:0;font:500 12.5px var(--mono,ui-monospace,Menlo,monospace)}
+.receipt dl div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px dashed #dce2ea}
+.receipt dt{color:#5b5b60}.receipt dd{margin:0;color:#1d1d1f;text-align:right}
+.stamp{position:absolute;right:18px;top:16px;font:700 13px var(--mono,ui-monospace,Menlo,monospace);letter-spacing:.14em;padding:7px 11px;border:2px solid currentColor;border-radius:6px;color:#004288;background:#ffffffd9;transform:rotate(-7deg)}
+[data-active="1"] .stamp{border-style:dashed}
+[data-active="2"] .stamp,[data-active="3"] .stamp{color:#b3261e;background:#fce8e6}
+[data-active="4"] .stamp{color:#9a6200;background:#fff1d6}
+.verdict h3{font-size:22px;letter-spacing:-.03em;margin:0 0 8px}
+.verdict p{font-size:14px;line-height:1.6;color:#5b5b60;margin:0 0 10px}
+.verdict .badge{font-size:12px}
+.kinds{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;border-top:2px solid #b8cce1;margin-top:6px;padding-top:20px}
+.kinds strong{display:block;font-size:15px;margin-bottom:6px}
+.kinds span{font-size:12px;line-height:1.55;color:#5b5b60}
+
+/* ---------- Dream: tree rings ---------- */
+.dream{display:grid;grid-template-columns:300px 1fr;gap:56px;align-items:center;padding:26px 0 24px}
+.rings{width:100%;height:auto;overflow:visible}
+.rings circle{fill:none;stroke:#004288;stroke-width:1.5;opacity:.22;transition:opacity .4s,stroke-width .4s}
+.rings .today{opacity:.9;stroke-width:2.5;stroke-dasharray:4 6}
+.rings .seed{fill:#004288;opacity:1;stroke:none}
+.rings .sun{fill:#f7a81b;stroke:#fff;stroke-width:3;opacity:0;transition:opacity .4s}
+.rings text{font:500 10px var(--mono,ui-monospace,Menlo,monospace);fill:#9a9aa0;letter-spacing:.08em;text-anchor:middle}
+[data-active="1"] .rings circle:not(.seed):not(.sun){opacity:.7}
+[data-active="1"] .rings .today{stroke-dasharray:none}
+[data-active="2"] .rings .sun{opacity:1}
+.steps{position:relative;display:flex;flex-direction:column;gap:12px}
+.steps:before{content:'';position:absolute;left:27px;top:20px;bottom:20px;width:1.5px;background:#004288;opacity:.25}
+.node .sun-mark{stroke:#f7a81b}
+.mini-brain.owner{font-size:22px}
+
+@media(max-width:750px){
+  .hub{gap:20px}.day{grid-template-columns:1fr 200px 1fr;gap:14px 16px}
+  .audit{grid-template-columns:1fr;gap:22px}.dream{grid-template-columns:200px 1fr;gap:24px}
+  .kinds{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .sys-panel{padding:20px 16px}
+  .hub{grid-template-columns:1fr;gap:14px;padding:20px 0}
+  .hub .lane{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .hub .node:not(.core){flex-direction:column;align-items:flex-start;gap:6px;min-height:0;padding:10px 8px}
+  .hub .node:not(.core) small{display:none}
+  .sys-links{display:none}
+  .node.core{min-height:112px;flex-direction:row;gap:16px;padding:14px 18px}
+  .node.core svg{width:76px}.node.core strong{font-size:24px}.node.core>span{text-align:left}
+  .feed-row{grid-template-columns:1fr auto;gap:6px 12px;padding:16px 0}.feed-row p{grid-column:1/-1}
+  .day{grid-template-columns:1fr 1fr;grid-template-areas:"clock clock" "am pm" "mid mid";padding:16px 0 20px}
+  .clock{max-width:230px;justify-self:center}
+  .labels{gap:6px}.labels .link-btn{font-size:11px;padding:9px 11px}
+  .receipt{padding:18px 16px}
+  .dream{grid-template-columns:1fr;gap:18px;padding:16px 0 20px}.rings{max-width:210px;justify-self:center}
+  .kinds{gap:18px 14px}
+  footer .sys-next{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){.hub-mark .hot{animation:none}}
+.sys-links *{vector-effect:non-scaling-stroke}
+.timeline.four{grid-template-columns:repeat(4,1fr)}
+@media(max-width:520px){.timeline.four{grid-template-columns:1fr 1fr}.timeline.four>div:nth-child(n+3){border-top:2px solid #b8cce1}}
+@media(max-width:520px){.hub .lane .core{grid-column:1/-1}}
