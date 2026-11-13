@@ -14,3 +14,25 @@
 .node.n4 svg{position:relative;z-index:1;filter:drop-shadow(0 0 5px rgba(0,66,136,.22))}
 .node.n4{background-image:radial-gradient(circle at center,#fff 0%,#e7eef7 67%)}
 @media(max-width:520px){.view-switch .link-btn,.choices .link-btn{font-size:12px;padding:9px 11px}.node.n4:before{left:14px}.node.n4:after{right:14px}}
+
+/* M Brain: single dark focal node with an animated neural mark */
+.node.n4,.node.n4:hover,.node.n4[aria-pressed=true]{background:#03142e;background-image:radial-gradient(120% 90% at 50% 0%,#0a4a94 0%,#04234d 46%,#020f24 100%);border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 40px rgba(0,36,82,.28),inset 0 1px 0 rgba(255,255,255,.12);min-height:188px;gap:10px;padding:20px 16px 18px}
+.node.n4:hover,.node.n4[aria-pressed=true]{border-color:rgba(255,255,255,.55)}
+.node.n4:before,.node.n4:after{content:none}
+.node.n4 strong{color:#fff}
+.node.n4 small{color:rgba(255,255,255,.7)}
+.node.n4 svg.brain-mark{width:124px;height:auto;stroke:none;filter:none;overflow:visible}
+.brain-mark .bm-lines path{stroke:#fff;stroke-width:.7;opacity:.4;fill:none}
+.brain-mark .bm-dots circle{fill:#dbe8f7;stroke:none}
+.brain-mark .bm-dots .hot{fill:#fff;filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px rgba(140,190,255,.9));animation:bm-glow 3.2s ease-in-out infinite alternate}
+.brain-mark .bm-dots .hot:nth-of-type(2n){animation-delay:-1.6s}
+.brain-mark .bm-pulse{filter:drop-shadow(0 0 2px #9cc8ff) drop-shadow(0 0 5px rgba(120,180,255,.9))}
+.brain-mark .bm-pulse path{fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:12 400;stroke-dashoffset:12;animation:bm-fire 3.6s linear infinite}
+.brain-mark .bm-pulse .p1{animation-duration:4.4s;animation-delay:-1.3s}
+.brain-mark .bm-pulse .p2{animation-duration:5s;animation-delay:-2.9s}
+.brain-mark .bm-pulse .p3{animation-duration:4s;animation-delay:-.6s}
+.brain-mark .bm-pulse .p4{animation-duration:5.6s;animation-delay:-3.8s}
+@keyframes bm-fire{0%{stroke-dashoffset:12}55%,100%{stroke-dashoffset:-130}}
+@keyframes bm-glow{from{opacity:.7}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.brain-mark .bm-pulse{display:none}}
+@media(max-width:520px){.node.n4{min-height:112px;gap:16px;padding:14px 18px;justify-content:center}.node.n4 svg.brain-mark{width:92px}.node.n4 strong{font-size:26px}.node.n4>span{text-align:left}}
