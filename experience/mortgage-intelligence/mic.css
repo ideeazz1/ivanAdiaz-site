@@ -42,3 +42,9 @@
 .birthday .timeline{margin:6px 0 18px}
 .birthday .timeline strong{font-size:18px}
 .birthday .timeline span{line-height:1.5}
+
+.mini-brain.ex-box{font-size:18px;letter-spacing:-.02em}
+.ex-result small{font-size:14px;line-height:1.5;color:#1d1d1f;max-width:300px}
+.ex .timeline{margin:6px 0 18px}
+.ex .timeline strong{font-size:18px}
+.ex .timeline span{line-height:1.5}
