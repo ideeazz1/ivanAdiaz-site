@@ -36,3 +36,9 @@
 @keyframes bm-glow{from{opacity:.7}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.brain-mark .bm-pulse{display:none}}
 @media(max-width:520px){.node.n4{min-height:112px;gap:16px;padding:14px 18px;justify-content:center}.node.n4 svg.brain-mark{width:92px}.node.n4 strong{font-size:26px}.node.n4>span{text-align:left}}
+
+.mini-brain.bday-box{font-size:18px;letter-spacing:-.02em}
+.bday-result small{font-size:14px;line-height:1.5;color:#1d1d1f;max-width:300px}
+.birthday .timeline{margin:6px 0 18px}
+.birthday .timeline strong{font-size:18px}
+.birthday .timeline span{line-height:1.5}
