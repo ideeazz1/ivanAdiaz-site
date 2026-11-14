@@ -3,42 +3,46 @@
 const ENDPOINT = 'https://decision-os-api-xpxhayoxhq-vp.a.run.app/api/database2/os-console/public-status';
 const $ = id => document.getElementById(id);
 let snapshot = null, lane = 'all', loading = false;
-const labels = { recorded: 'Run recorded', aging: 'Aging receipt', attention: 'Needs attention', paused: 'Paused', retired: 'Retired', missing: 'No receipt', unavailable: 'Evidence unavailable', private_evidence: 'Private evidence' };
+const labels = { recorded: 'Run recorded', paused: 'Paused', missing: 'No receipt', unavailable: 'Evidence unavailable' };
 const escape = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function date(value) { return new Intl.DateTimeFormat('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago',timeZoneName:'short'}).format(new Date(value)); }
-function row(item, index) {
+function row(item) {
  const state = Object.hasOwn(labels,item.status) ? item.status : 'unavailable';
- const explanation = item.scheduleType === 'event' || item.scheduleType === 'on_demand' ? 'Runs when triggered; receipt age alone does not indicate a failure.' : item.freshnessWindowHours ? 'Aging means the receipt exceeds a conservative ' + item.freshnessWindowHours + '-hour freshness window. It does not prove a missed run.' : 'No automatic freshness window is available for this schedule.';
- return '<details class="row" data-index="'+index+'"><summary><span><strong class="name">'+escape(item.name)+'</strong><span class="provider">'+escape(item.lane)+' / '+escape(item.provider)+'</span></span><span class="cadence">'+escape(item.schedule)+'</span><span class="evidence"><span class="badge '+state+'">'+labels[state]+'</span><time class="run-time"'+(item.lastRunAt?' datetime="'+escape(item.lastRunAt)+'"':'')+'>'+(item.lastRunAt?escape(date(item.lastRunAt)):'No public run timestamp')+'</time></span></summary><div class="detail"><p><strong>Registered state: '+escape(item.registeredState)+'</strong><br>'+escape(explanation)+'</p><p><strong>Last recorded outcome: '+escape(item.outcome || 'Not available')+'</strong><br>Execution evidence is reported by the worker. Client details and full receipts are available only in the owner view.</p></div></details>';
+ const evidence = item.outcome || (item.status === 'recorded' ? 'Recorded outcome unavailable' : labels[state]);
+ const lifecycle = item.registeredState === 'paused' ? 'Paused — ' : item.registeredState === 'disabled' ? 'Disabled — ' : '';
+ return '<details class="row" data-id="'+escape(item.id || item.name)+'"><summary><span><strong class="name">'+escape(item.name)+'</strong><span class="provider">'+escape(item.lane)+' / '+escape(item.provider)+'</span></span><span class="cadence">'+escape(lifecycle + item.schedule)+'</span><span class="evidence"><span class="badge '+state+'">'+escape(evidence)+'</span><time class="run-time"'+(item.lastRunAt?' datetime="'+escape(item.lastRunAt)+'"':'')+'>'+(item.lastRunAt?escape(date(item.lastRunAt)):'No recorded run timestamp')+'</time></span></summary><div class="detail"><p><strong>Registered state: '+escape(item.registeredState)+'</strong><br>Schedule and lifecycle are registered intent, not proof of execution.</p><p><strong>Last recorded outcome: '+escape(item.outcome || 'No factual result available')+'</strong><br>The latest valid registered receipt supplies the execution result. Private details remain in the owner view.</p></div></details>';
 }
-// Display-only sections mirror the Daily Automation Update; registry data stays authoritative.
-const sectionOrder = [
- {lane:'Shared Ivan OS',title:'SHARED IVAN OS'},
- {lane:'Peregrine',title:'PEREGRINE'},
- {lane:'Mortgage',title:'MORTGAGE INTELLIGENCE CORE'},
- {lane:'Career',title:'CAREER'}
-];
 function sectionMarkup(matches) {
- const sections=sectionOrder.map(section=>{
-  const entries=matches.filter(({item})=>item.lane===section.lane);
-  if(!entries.length)return '';
-  const items=entries.map(({item,index})=>row(item,index)).join('');
-  return '<section class="registry-section" aria-label="'+escape(section.title)+'"><h3 class="registry-section-title">'+escape(section.title)+'</h3>'+items+'</section>';
+ const sections = snapshot.laneOrder || ['Shared Ivan OS','Peregrine','Mortgage','Career'];
+ const titles = snapshot.laneTitles || {};
+ const sectionsByLane = snapshot.sectionOrder || {};
+ const blocks = sections.map(laneName => {
+  const laneMatches = matches.filter(({item}) => item.lane === laneName);
+  if (!laneMatches.length) return '';
+  const sectionNames = sectionsByLane[laneName] || [];
+  let html = '';
+  for (const name of sectionNames) {
+   const members = laneMatches.filter(({item}) => item.section === name);
+   if (members.length) html += '<h4 class="registry-subsection-title">'+escape(name)+'</h4>'+members.map(({item})=>row(item)).join('');
+  }
+  const other = laneMatches.filter(({item}) => !sectionNames.includes(item.section));
+  html += other.map(({item})=>row(item)).join('');
+  return '<section class="registry-section" aria-label="'+escape(titles[laneName] || laneName)+'"><h3 class="registry-section-title">'+escape(titles[laneName] || laneName)+'</h3>'+html+'</section>';
  }).join('');
- const other=matches.filter(({item})=>!sectionOrder.some(s=>s.lane===item.lane));
- return sections+(other.length?'<section class="registry-section" aria-label="OTHER SYSTEMS"><h3 class="registry-section-title">OTHER SYSTEMS</h3>'+other.map(({item,index})=>row(item,index)).join('')+'</section>':'');
+ const other = matches.filter(({item}) => !sections.includes(item.lane));
+ return blocks + (other.length ? '<section class="registry-section" aria-label="OTHER SYSTEMS"><h3 class="registry-section-title">OTHER SYSTEMS</h3>'+other.map(({item})=>row(item)).join('')+'</section>' : '');
 }
 function render() {
  if (!snapshot) return;
  const all=snapshot.automations, query=$('search').value.toLowerCase().trim();
- const opened=new Set(Array.from(document.querySelectorAll('.row[open]')).map(el=>el.dataset.index));
+ const opened=new Set(Array.from(document.querySelectorAll('.row[open]')).map(el=>el.dataset.id));
  const matches=all.map((item,index)=>({item,index})).filter(({item})=>(lane==='all'||item.lane===lane)&&[item.name,item.provider,item.schedule].join(' ').toLowerCase().includes(query));
- $('rows').innerHTML=(lane==='all'?sectionMarkup(matches):matches.map(({item,index})=>row(item,index)).join(''))||'<p class="empty">No systems match this view.</p>';
- document.querySelectorAll('.row').forEach(el=>{el.open=opened.has(el.dataset.index);});
+ $('rows').innerHTML=(lane==='all'?sectionMarkup(matches):matches.map(({item})=>row(item)).join(''))||'<p class="empty">No systems match this view.</p>';
+ document.querySelectorAll('.row').forEach(el=>{el.open=opened.has(el.dataset.id);});
  $('total').textContent=all.length;
  $('recorded').textContent=all.filter(x=>x.lastRunAt).length;
- $('attention').textContent=all.filter(x=>['attention','aging','missing','unavailable'].includes(x.status)).length;
- $('paused').textContent=all.filter(x=>['paused','retired'].includes(x.status)).length;
+ $('attention').textContent=all.filter(x=>x.status!=='recorded').length;
+ $('paused').textContent=all.filter(x=>x.registeredState==='paused').length;
  $('count').textContent=matches.length+' of '+all.length+' systems. Select a row for evidence details. All times Chicago.';
 }
 async function refresh() {
