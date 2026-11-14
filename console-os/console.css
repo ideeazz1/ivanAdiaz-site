@@ -18,3 +18,7 @@ body{margin:0;background:var(--canvas);color:var(--ink);font-family:Inter,system
 .registry-section .row{margin:0 16px}
 .registry-section .row:first-of-type{border-top:0}
 @media(max-width:560px){.registry-section{margin:18px 0 24px}.registry-section-title{font-size:15px;padding:13px 14px}.registry-section .row{margin:0 13px}}
+
+/* Registry-defined Mortgage subgroups in the All Systems view */
+.registry-subsection-title{margin:0;padding:12px 18px;background:#ffffff0d;border-top:1px solid var(--line);font:600 11px/1.5 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+@media(max-width:560px){.registry-subsection-title{padding:10px 14px;font-size:10px}}
