@@ -7,14 +7,14 @@ const labels = { recorded: 'Run recorded', paused: 'Paused', missing: 'No receip
 const escape = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function date(value) { return new Intl.DateTimeFormat('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago',timeZoneName:'short'}).format(new Date(value)); }
 function row(item) {
- const state = Object.hasOwn(labels,item.status) ? item.status : 'unavailable';
- const evidence = item.outcome || (item.status === 'recorded' ? 'Recorded outcome unavailable' : labels[state]);
+ const state = item.lastRunAt ? 'recorded' : Object.hasOwn(labels,item.status) ? item.status : 'unavailable';
+ const evidence = item.outcome || (item.lastRunAt ? 'Run recorded' : labels[state]);
  const lifecycle = item.registeredState === 'paused' ? 'Paused — ' : item.registeredState === 'disabled' ? 'Disabled — ' : '';
  return '<details class="row" data-id="'+escape(item.id || item.name)+'"><summary><span><strong class="name">'+escape(item.name)+'</strong><span class="provider">'+escape(item.lane)+' / '+escape(item.provider)+'</span></span><span class="cadence">'+escape(lifecycle + item.schedule)+'</span><span class="evidence"><span class="badge '+state+'">'+escape(evidence)+'</span><time class="run-time"'+(item.lastRunAt?' datetime="'+escape(item.lastRunAt)+'"':'')+'>'+(item.lastRunAt?escape(date(item.lastRunAt)):'No recorded run timestamp')+'</time></span></summary><div class="detail"><p><strong>Registered state: '+escape(item.registeredState)+'</strong><br>Schedule and lifecycle are registered intent, not proof of execution.</p><p><strong>Last recorded outcome: '+escape(item.outcome || 'No factual result available')+'</strong><br>The latest valid registered receipt supplies the execution result. Private details remain in the owner view.</p></div></details>';
 }
 function sectionMarkup(matches) {
  const sections = snapshot.laneOrder || ['Shared Ivan OS','Peregrine','Mortgage','Career'];
- const titles = snapshot.laneTitles || {};
+ const titles = Object.assign({'Shared Ivan OS':'SHARED IVAN OS',Peregrine:'PEREGRINE',Mortgage:'MORTGAGE INTELLIGENCE CORE',Career:'CAREER MANAGER'}, snapshot.laneTitles || {});
  const sectionsByLane = snapshot.sectionOrder || {};
  const blocks = sections.map(laneName => {
   const laneMatches = matches.filter(({item}) => item.lane === laneName);
@@ -34,14 +34,14 @@ function sectionMarkup(matches) {
 }
 function render() {
  if (!snapshot) return;
- const all=snapshot.automations, query=$('search').value.toLowerCase().trim();
+ const all=snapshot.automations.filter(item=>item.registeredState!=='retired'), query=$('search').value.toLowerCase().trim();
  const opened=new Set(Array.from(document.querySelectorAll('.row[open]')).map(el=>el.dataset.id));
  const matches=all.map((item,index)=>({item,index})).filter(({item})=>(lane==='all'||item.lane===lane)&&[item.name,item.provider,item.schedule].join(' ').toLowerCase().includes(query));
  $('rows').innerHTML=(lane==='all'?sectionMarkup(matches):matches.map(({item})=>row(item)).join(''))||'<p class="empty">No systems match this view.</p>';
  document.querySelectorAll('.row').forEach(el=>{el.open=opened.has(el.dataset.id);});
  $('total').textContent=all.length;
  $('recorded').textContent=all.filter(x=>x.lastRunAt).length;
- $('attention').textContent=all.filter(x=>x.status!=='recorded').length;
+ $('attention').textContent=all.filter(x=>!x.lastRunAt).length;
  $('paused').textContent=all.filter(x=>x.registeredState==='paused').length;
  $('count').textContent=matches.length+' of '+all.length+' systems. Select a row for evidence details. All times Chicago.';
 }
