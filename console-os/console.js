@@ -11,12 +11,29 @@ function row(item, index) {
  const explanation = item.scheduleType === 'event' || item.scheduleType === 'on_demand' ? 'Runs when triggered; receipt age alone does not indicate a failure.' : item.freshnessWindowHours ? 'Aging means the receipt exceeds a conservative ' + item.freshnessWindowHours + '-hour freshness window. It does not prove a missed run.' : 'No automatic freshness window is available for this schedule.';
  return '<details class="row" data-index="'+index+'"><summary><span><strong class="name">'+escape(item.name)+'</strong><span class="provider">'+escape(item.lane)+' / '+escape(item.provider)+'</span></span><span class="cadence">'+escape(item.schedule)+'</span><span class="evidence"><span class="badge '+state+'">'+labels[state]+'</span><time class="run-time"'+(item.lastRunAt?' datetime="'+escape(item.lastRunAt)+'"':'')+'>'+(item.lastRunAt?escape(date(item.lastRunAt)):'No public run timestamp')+'</time></span></summary><div class="detail"><p><strong>Registered state: '+escape(item.registeredState)+'</strong><br>'+escape(explanation)+'</p><p><strong>Last recorded outcome: '+escape(item.outcome || 'Not available')+'</strong><br>Execution evidence is reported by the worker. Client details and full receipts are available only in the owner view.</p></div></details>';
 }
+// Display-only sections mirror the Daily Automation Update; registry data stays authoritative.
+const sectionOrder = [
+ {lane:'Shared Ivan OS',title:'SHARED IVAN OS'},
+ {lane:'Peregrine',title:'PEREGRINE'},
+ {lane:'Mortgage',title:'MORTGAGE INTELLIGENCE CORE'},
+ {lane:'Career',title:'CAREER'}
+];
+function sectionMarkup(matches) {
+ const sections=sectionOrder.map(section=>{
+  const entries=matches.filter(({item})=>item.lane===section.lane);
+  if(!entries.length)return '';
+  const items=entries.map(({item,index})=>row(item,index)).join('');
+  return '<section class="registry-section" aria-label="'+escape(section.title)+'"><h3 class="registry-section-title">'+escape(section.title)+'</h3>'+items+'</section>';
+ }).join('');
+ const other=matches.filter(({item})=>!sectionOrder.some(s=>s.lane===item.lane));
+ return sections+(other.length?'<section class="registry-section" aria-label="OTHER SYSTEMS"><h3 class="registry-section-title">OTHER SYSTEMS</h3>'+other.map(({item,index})=>row(item,index)).join('')+'</section>':'');
+}
 function render() {
  if (!snapshot) return;
  const all=snapshot.automations, query=$('search').value.toLowerCase().trim();
  const opened=new Set(Array.from(document.querySelectorAll('.row[open]')).map(el=>el.dataset.index));
  const matches=all.map((item,index)=>({item,index})).filter(({item})=>(lane==='all'||item.lane===lane)&&[item.name,item.provider,item.schedule].join(' ').toLowerCase().includes(query));
- $('rows').innerHTML=matches.map(({item,index})=>row(item,index)).join('')||'<p class="empty">No systems match this view.</p>';
+ $('rows').innerHTML=(lane==='all'?sectionMarkup(matches):matches.map(({item,index})=>row(item,index)).join(''))||'<p class="empty">No systems match this view.</p>';
  document.querySelectorAll('.row').forEach(el=>{el.open=opened.has(el.dataset.index);});
  $('total').textContent=all.length;
  $('recorded').textContent=all.filter(x=>x.lastRunAt).length;
