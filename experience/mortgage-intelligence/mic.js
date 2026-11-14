@@ -27,3 +27,7 @@ workerFilter.addEventListener('change',()=>{
  row.hidden=!show;if(show)count++;
  });document.getElementById('worker-count').textContent=count+' workers';
 });
+
+const bdays=[['Replied last month. Conversation is active.','Close','\u201CHappy birthday, Maria. I hope today is easy and full of the people you love.\u201D'],['Last exchange this spring. Friendly, nothing open.','Friendly','\u201CHappy birthday, Maria. Wishing you a great year ahead.\u201D'],['Last contact two years ago, about a home equity line. No replies since.','Been a while','\u201CHappy birthday, Maria. I know it has been a while. I wanted to wish you the best day.\u201D'],['Not enough history to judge. No guess is made.','Short and simple','\u201CHappy birthday, Maria. Have a great day.\u201D']];
+document.querySelectorAll('[data-bday]').forEach((b,i)=>b.addEventListener('click',()=>{document.querySelectorAll('[data-bday]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));['bday-finding','bday-card','bday-copy'].forEach((id,j)=>document.getElementById(id).textContent=bdays[i][j]);}));
+document.querySelector('.bday-result').setAttribute('aria-live','polite');
