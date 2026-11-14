@@ -38,7 +38,7 @@
   if (panel && panel.dataset.default !== undefined) select(Number(panel.dataset.default));
 
   var choices = [].slice.call(document.querySelectorAll('[data-scenario]'));
-  var result = document.querySelector('.result');
+  var result = document.querySelector('.result:not(.ex-result)');
   if (result) result.setAttribute('aria-live', 'polite');
   choices.forEach(function (b, i) {
     b.addEventListener('click', function () {
@@ -47,6 +47,13 @@
         document.getElementById(id).textContent = data.scenarios[i][j];
       });
       result.dataset.state = i;
+    });
+  });
+  [].slice.call(document.querySelectorAll('[data-ex]')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      var n = b.dataset.ex, r = (data.examples || {})[n][Number(b.dataset.i)];
+      [].slice.call(document.querySelectorAll('[data-ex="' + n + '"]')).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      ['finding', 'title', 'copy'].forEach(function (id, j) { document.getElementById(n + '-' + id).textContent = r[j]; });
     });
   });
 })();
