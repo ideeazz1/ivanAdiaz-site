@@ -11,3 +11,10 @@ body{margin:0;background:var(--canvas);color:var(--ink);font-family:Inter,system
 .top-bar{width:calc(100% - 48px);margin-inline:24px}
 .top-bar.is-menu-open .top-bar__links a{color:var(--ink)}
 @media(max-width:720px){.top-bar{margin-top:8px}}
+
+/* Daily Automation Update grouping, shown only in All systems */
+.registry-section{margin:22px 0 28px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#ffffff03}
+.registry-section-title{margin:0;padding:15px 18px;background:#dfe5fa;color:#20212b;font:600 17px/1.35 Inter,system-ui,sans-serif;letter-spacing:.015em}
+.registry-section .row{margin:0 16px}
+.registry-section .row:first-of-type{border-top:0}
+@media(max-width:560px){.registry-section{margin:18px 0 24px}.registry-section-title{font-size:15px;padding:13px 14px}.registry-section .row{margin:0 13px}}
