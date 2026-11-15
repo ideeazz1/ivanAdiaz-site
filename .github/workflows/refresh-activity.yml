@@ -1,0 +1,40 @@
+name: Refresh Recent Activity
+
+on:
+  schedule:
+    - cron: "17 11 * * *" # daily, ~6am Central
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [experience/receipts.json]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-activity
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Regenerate heatmap and receipts
+        env:
+          # ACTIVITY_TOKEN: classic PAT for the profile owner with read:user,
+          # so private contribution counts are included. Falls back to the
+          # workflow token (public contributions only).
+          GITHUB_TOKEN: ${{ secrets.ACTIVITY_TOKEN || github.token }}
+        run: node scripts/refresh-activity.mjs
+      - name: Commit if changed
+        run: |
+          git diff --quiet -- experience/ && { echo "No change."; exit 0; }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experience/index.html experience/github-contributions-90d.json
+          git commit -m "Refresh Recent Activity ($(date -u +%F))"
+          git push

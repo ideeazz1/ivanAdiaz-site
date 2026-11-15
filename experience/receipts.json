@@ -1,0 +1,17 @@
+{
+  "_readme": "Newest first. The site shows the first two. Add an entry only after the outcome is verified; say what Ivan defined, what agents/collaborators implemented, which checks ran, deployment status and owner acceptance. No client data, repository names or private content.",
+  "receipts": [
+    {
+      "title": "Smart Sync receipt readback",
+      "summary": "Directed a safe fix for a missing enrichment date after contact update; agent implementation, targeted regression, deployment health and owner-reported test recorded.",
+      "linkHref": "/hierarchy/#verification",
+      "linkLabel": "Verification approach"
+    },
+    {
+      "title": "Household document checklist",
+      "summary": "Specified one reconciliation path with borrower coverage and manual-status protection; agent integration and regression checks passed, deployment recorded, household acceptance pending.",
+      "linkHref": "/hierarchy/agent-role-map.html#document-workflow",
+      "linkLabel": "Workflow and boundaries"
+    }
+  ]
+}

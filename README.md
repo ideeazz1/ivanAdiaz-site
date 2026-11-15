@@ -10,15 +10,15 @@ Standing Decision OS / runtime remains in `ideeazz1/ivanAdiaz` until later phase
 
 ## Experience content maintenance
 
-The Systems & Work page's GitHub activity and delivery examples are static content. `experience/github-contributions-90d.json` stores the authenticated 90-day snapshot; the visible heatmap is an inline SVG in `experience/index.html` and does not load that JSON at runtime. When refreshing activity, update the JSON, SVG counts, reporting dates and retrieval timestamp together. This repository has no scheduled content-refresh workflow.
+The Systems & Work page's **Recent Activity** block refreshes itself daily via `.github/workflows/refresh-activity.yml`, which runs `scripts/refresh-activity.mjs`:
 
-The Smart Sync receipt readback and household document checklist summaries are also static HTML. Update them only when recent evidence has been verified, preserving the distinction between requirements Ivan defined, collaborator or agent implementation, checks run, deployment status and owner-accepted outcomes.
+- **Heatmap:** fetches the last 90 days (ending today, America/Chicago) from the GitHub GraphQL contribution calendar, rewrites the inline SVG and date range in `experience/index.html` between the `<!-- activity:*:start/end -->` markers, and writes `experience/github-contributions-90d.json`. Shades are quartiles within the window. Only per-day counts are published; no repository names or private content.
+- **Receipts:** the first two entries in `experience/receipts.json` (newest first) are rendered as the delivery examples. Pushing a change to that file triggers a refresh.
 
-A lightweight weekly manual review is sufficient:
+Set the `ACTIVITY_TOKEN` repository secret (classic PAT for `ideeazz1` with `read:user`) so private contribution counts are included; without it the workflow falls back to the workflow token (public contributions only).
 
-- Check whether the 90-day reporting window and displayed dates still represent the intended recent period. If refreshing the graph, retrieve authenticated GitHub data and keep the JSON snapshot and SVG synchronized; do not expose repository names or private content.
-- Review recent delivery examples for newer verified evidence. Replace stale examples only when the new facts and verification level are documented; do not infer results from merged code.
-- Open the supporting architecture links and confirm they still resolve and explain the linked work.
-- Check public links and dates for staleness. Employment history and credentials need review when a fact changes or an expiry approaches, not as weekly rewrites.
+Add a receipt only after the outcome is verified, preserving the distinction between requirements Ivan defined, collaborator or agent implementation, checks run, deployment status and owner-accepted outcomes. Do not infer results from merged code.
 
-No recurring job or new automation is required for this review.
+Run locally: `GITHUB_TOKEN=... node scripts/refresh-activity.mjs`, or `node scripts/refresh-activity.mjs --fixture experience/github-contributions-90d.json` to re-render offline.
+
+Periodically, open the supporting architecture links and confirm they still resolve. Employment history and credentials need review when a fact changes or an expiry approaches, not as weekly rewrites.
