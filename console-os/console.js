@@ -3,45 +3,37 @@
 const ENDPOINT = 'https://decision-os-api-xpxhayoxhq-vp.a.run.app/api/database2/os-console/public-status';
 const $ = id => document.getElementById(id);
 let snapshot = null, lane = 'all', loading = false;
-const labels = { recorded: 'Run recorded', paused: 'Paused', missing: 'No receipt', unavailable: 'Evidence unavailable' };
 const escape = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function date(value) { return new Intl.DateTimeFormat('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Chicago',timeZoneName:'short'}).format(new Date(value)); }
 function row(item) {
- const state = item.lastRunAt ? 'recorded' : Object.hasOwn(labels,item.status) ? item.status : 'unavailable';
- const evidence = item.outcome || (item.lastRunAt ? 'Run recorded' : labels[state]);
- const lifecycle = item.registeredState === 'paused' ? 'Paused — ' : item.registeredState === 'disabled' ? 'Disabled — ' : '';
- return '<details class="row" data-id="'+escape(item.id || item.name)+'"><summary><span><strong class="name">'+escape(item.name)+'</strong><span class="provider">'+escape(item.lane)+' / '+escape(item.provider)+'</span></span><span class="cadence">'+escape(lifecycle + item.schedule)+'</span><span class="evidence"><span class="badge '+state+'">'+escape(evidence)+'</span><time class="run-time"'+(item.lastRunAt?' datetime="'+escape(item.lastRunAt)+'"':'')+'>'+(item.lastRunAt?escape(date(item.lastRunAt)):'No recorded run timestamp')+'</time></span></summary><div class="detail"><p><strong>Registered state: '+escape(item.registeredState)+'</strong><br>Schedule and lifecycle are registered intent, not proof of execution.</p><p><strong>Last recorded outcome: '+escape(item.outcome || 'No factual result available')+'</strong><br>The latest valid registered receipt supplies the execution result. Private details remain in the owner view.</p></div></details>';
+ const state = item.receiptState === 'valid' ? 'recorded' : item.receiptState === 'missing' ? 'missing' : 'unavailable';
+ const result = state === 'recorded' ? item.outcome || 'Outcome withheld' : state === 'missing' ? 'No receipt' : 'Receipt unreadable';
+ const explanation = item.scheduleType === 'event' || item.scheduleType === 'on_demand' ? 'Runs when triggered. The receipt records the latest published execution.' : 'The schedule is registered intent. Execution time and outcome come from the latest published receipt.';
+ return '<details class="row" data-id="'+escape(item.id)+'"><summary><span><strong class="name">'+escape(item.name)+'</strong><span class="provider">'+escape(item.lane)+' / '+escape(item.provider)+'</span></span><span class="cadence">'+escape(item.schedule)+'</span><span class="evidence"><span class="badge '+state+'">'+escape(result)+'</span><time class="run-time"'+(item.lastRunAt?' datetime="'+escape(item.lastRunAt)+'"':'')+'>'+(item.lastRunAt?escape(date(item.lastRunAt)):'No public run timestamp')+'</time></span></summary><div class="detail"><p><strong>Registered state: '+escape(item.registeredState)+'</strong><br>'+escape(explanation)+'</p><p><strong>Last recorded outcome: '+escape(result)+'</strong><br>Execution evidence is reported by the worker. Client details and full receipts stay private.</p></div></details>';
 }
+// Titles, subgroup order and row order come from the shared factual projection.
 function sectionMarkup(matches) {
- const sections = snapshot.laneOrder || ['Shared Ivan OS','Peregrine','Mortgage','Career'];
- const titles = Object.assign({'Shared Ivan OS':'SHARED IVAN OS',Peregrine:'PEREGRINE',Mortgage:'MORTGAGE INTELLIGENCE CORE',Career:'CAREER MANAGER'}, snapshot.laneTitles || {});
- const sectionsByLane = snapshot.sectionOrder || {};
- const blocks = sections.map(laneName => {
-  const laneMatches = matches.filter(({item}) => item.lane === laneName);
-  if (!laneMatches.length) return '';
-  const sectionNames = sectionsByLane[laneName] || [];
-  let html = '';
-  for (const name of sectionNames) {
-   const members = laneMatches.filter(({item}) => item.section === name);
-   if (members.length) html += '<h4 class="registry-subsection-title">'+escape(name)+'</h4>'+members.map(({item})=>row(item)).join('');
-  }
-  const other = laneMatches.filter(({item}) => !sectionNames.includes(item.section));
-  html += other.map(({item})=>row(item)).join('');
-  return '<section class="registry-section" aria-label="'+escape(titles[laneName] || laneName)+'"><h3 class="registry-section-title">'+escape(titles[laneName] || laneName)+'</h3>'+html+'</section>';
+ return snapshot.groups.map(section=>{
+  const entries=matches.filter(item=>item.lane===section.lane);
+  if(!entries.length)return '';
+  const labels=section.sections || [];
+  const items=labels.map(label=>{
+   const members=entries.filter(item=>item.section===label);
+   return members.length?'<h4 class="registry-subsection-title">'+escape(label)+'</h4>'+members.map(row).join(''):'';
+  }).join('')+entries.filter(item=>!labels.includes(item.section)).map(row).join('');
+  return '<section class="registry-section" aria-label="'+escape(section.title)+'"><h3 class="registry-section-title">'+escape(section.title)+'</h3>'+items+'</section>';
  }).join('');
- const other = matches.filter(({item}) => !sections.includes(item.lane));
- return blocks + (other.length ? '<section class="registry-section" aria-label="OTHER SYSTEMS"><h3 class="registry-section-title">OTHER SYSTEMS</h3>'+other.map(({item})=>row(item)).join('')+'</section>' : '');
 }
 function render() {
  if (!snapshot) return;
  const all=snapshot.automations.filter(item=>item.registeredState!=='retired'), query=$('search').value.toLowerCase().trim();
  const opened=new Set(Array.from(document.querySelectorAll('.row[open]')).map(el=>el.dataset.id));
- const matches=all.map((item,index)=>({item,index})).filter(({item})=>(lane==='all'||item.lane===lane)&&[item.name,item.provider,item.schedule].join(' ').toLowerCase().includes(query));
- $('rows').innerHTML=(lane==='all'?sectionMarkup(matches):matches.map(({item})=>row(item)).join(''))||'<p class="empty">No systems match this view.</p>';
+ const matches=all.filter(item=>(lane==='all'||item.lane===lane)&&[item.name,item.provider,item.schedule].join(' ').toLowerCase().includes(query));
+ $('rows').innerHTML=(lane==='all'?sectionMarkup(matches):matches.map(row).join(''))||'<p class="empty">No systems match this view.</p>';
  document.querySelectorAll('.row').forEach(el=>{el.open=opened.has(el.dataset.id);});
  $('total').textContent=all.length;
- $('recorded').textContent=all.filter(x=>x.lastRunAt).length;
- $('attention').textContent=all.filter(x=>!x.lastRunAt).length;
+ $('recorded').textContent=all.filter(x=>x.receiptState==='valid').length;
+ $('missing').textContent=all.filter(x=>x.receiptState!=='valid').length;
  $('paused').textContent=all.filter(x=>x.registeredState==='paused').length;
  $('count').textContent=matches.length+' of '+all.length+' systems. Select a row for evidence details. All times Chicago.';
 }
@@ -53,7 +45,7 @@ async function refresh() {
   const response=await fetch(ENDPOINT,{cache:'no-store',credentials:'omit',signal:controller.signal});
   if(!response.ok) throw new Error('Unavailable');
   const payload=await response.json();
-  if(payload.schemaVersion!==1||!Array.isArray(payload.automations)||!Number.isFinite(Date.parse(payload.fetchedAt))) throw new Error('Invalid response');
+  if(payload.schemaVersion!==1||!Array.isArray(payload.automations)||!Array.isArray(payload.groups)||!Number.isFinite(Date.parse(payload.fetchedAt))) throw new Error('Invalid response');
   snapshot=payload; render();
   const old=Date.now()-Date.parse(payload.fetchedAt)>300000;
   const current=payload.sourceStatus==='current'&&!old;
