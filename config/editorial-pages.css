@@ -202,3 +202,39 @@
 .detail-page .will-reveal { opacity:0; transform:translateY(32px); transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1); }
 .detail-page .will-reveal.is-revealed { opacity:1; transform:none; }
 @media (prefers-reduced-motion:reduce) { .detail-page .will-reveal { opacity:1; transform:none; } }
+
+/* ---- Brand families (Ivan, 2026-11-16): one feel, two identities, a color per page.
+   Shared: Outfit headlines, glass header, soft white cards, rise-in motion.
+   Mortgage = warm and personal (portrait). Experience = cool and technical (ID mark).
+   Each page varies the palette, Mercury-style. ---- */
+.detail-page { --head:Outfit,Inter,system-ui,sans-serif; --glow1:transparent; --glow2:transparent; --line:#D3D7DD;
+  background-image:radial-gradient(ellipse 70% 55% at 85% -5%, var(--glow1), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 0% 30%, var(--glow2), transparent 62%);
+  background-repeat:no-repeat; background-size:100% 1400px; }
+.detail-page h1, .detail-page h2, .detail-page h3, .detail-page .top-bar__brand,
+.detail-page .conveyor-stages strong, .detail-page .learning-stages strong, .detail-page .program-strip strong { font-family:var(--head); }
+.detail-page h1 { letter-spacing:-.03em; font-weight:700; }
+.detail-page .top-bar__pill { background:rgba(255,255,255,.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.detail-page .top-bar__mark--portrait { border-radius:50%; object-fit:cover; object-position:top center; }
+.program-strip, .story-split, .lesson-example { border-color:var(--line) !important; }
+
+/* Mortgage: warm canvas, rotating line in a soft pill of the page color. */
+.brand-mortgage { --bg:#FBF8F3; --ink:#1F1A17; --ink2:#5E5650; --line:#E6DDD2; }
+.brand-mortgage .rotating-line, .brand-mortgage .experience-hero__word { background:var(--acT); color:var(--ac); }
+.brand-mortgage .program-section, .brand-mortgage .product-visual { box-shadow:0 14px 36px -26px rgba(70,40,20,.28); }
+.brand-mortgage .state-visual>img { filter:drop-shadow(0 18px 24px rgba(0,0,0,.06)); }
+.theme-texas { --ac:#B5471B; --acT:#FBE6DA; --dark:#3B1D10; --glow1:rgba(232,140,80,.22); --glow2:rgba(247,168,27,.12); }
+.theme-california { --ac:#0F6E73; --acT:#DDF0EF; --dark:#0B2F33; --glow1:rgba(64,170,190,.22); --glow2:rgba(247,200,120,.14); }
+
+/* Experience: cool canvas, the site's cyan word on a dark plate, per-page tint. */
+.brand-experience { --bg:#F5F7FA; --ink:#15181D; --ink2:#535B66; --line:#DCE1E8; }
+.brand-experience .rotating-line, .brand-experience .story-hero h1 .rotating-line { background:transparent; padding:0; border-radius:0; }
+.brand-experience .rotating-line .experience-hero__word, .brand-experience .rotating-line { color:var(--word); }
+.brand-experience .story-hero h1 .rotating-line { font-size:1em; margin-top:2px; padding:0; }
+.theme-database { --ac:#0B4F8A; --acT:#E3EEF8; --word:#0EA5C6; --glow1:rgba(34,211,238,.2); --glow2:rgba(80,110,220,.12); }
+.theme-dream { --ac:#2F6B3F; --acT:#E4F0E6; --word:#3E9B5B; --sun:#E0A21B; --glow1:rgba(90,170,110,.2); --glow2:rgba(224,162,27,.1); }
+.theme-dream .tree-rings [stroke] { stroke:#7FAE8B; }
+.theme-dream .tree-rings circle[fill="#004288"] { fill:var(--ac); }
+.theme-dream .tree-rings circle[fill="#F7A81B"] { fill:var(--sun); }
+/* Flex drops the whitespace before the rotating word so it aligns with the headline. */
+.detail-page .rotating-line { display:flex; }
