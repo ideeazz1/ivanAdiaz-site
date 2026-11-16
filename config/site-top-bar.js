@@ -20,7 +20,7 @@
 
   if (!bar) return;
 
-  if (isMortgagePath) {
+  if (isMortgagePath && !bar.hasAttribute('data-page-nav')) {
     if (brand) brand.setAttribute('href', '/');
 
     if (mark) {
