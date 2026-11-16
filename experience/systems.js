@@ -1,3 +1,21 @@
+/* Editorial detail pages use the locked, once-per-visit arrival motion. */
+(function () {
+  if (!document.body.classList.contains('detail-page') ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-revealed');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -24px 0px' });
+  document.querySelectorAll('.program-section, .story-section, .decide-strip').forEach(function (item) {
+    item.classList.add('will-reveal');
+    observer.observe(item);
+  });
+})();
+
 /* Shared behavior for the Systems & Work detail pages.
    Page content comes from the inline <script type="application/json" id="system-data">. */
 (function () {
