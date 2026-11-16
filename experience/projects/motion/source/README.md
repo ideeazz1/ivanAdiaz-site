@@ -10,6 +10,7 @@ Each card on `/experience/` is a small HTML page here, exported to a still (`.we
 | Registry / Console | `registry-console.html` | 7.5 s |
 | Mortgage Intelligence Core | `mortgage-intelligence.html` | 7.5 s |
 | Daily Follow Up & EOD | `daily-followup-eod.html` | 10.5 s |
+| The Org Chart | `org-chart.html` | 9 s |
 
 - Locked rules for every card, page and social post: `STYLE.md`. Social post base (1080x1350): `social.css`.
 - Shared look (header, colors, tool tiles, motion): `common.css` and `tools.js`. The Database 2.0 and Daily Follow Up pages predate these and carry their own copy of the same styles.
