@@ -589,14 +589,16 @@
   }
 
   .lane-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
     width: 100%;
     margin-top: 12px;
   }
   .lane-row .link-btn {
-    flex: 1;
+    width: 100%;
+    min-height: 52px;
+    height: 52px;
     margin-bottom: 0;
     justify-content: center !important;
     padding-left: 16px !important;
@@ -609,7 +611,6 @@
       --blob-x 0.35s ease-out,
       --blob-y 0.35s ease-out;
   }
-  .lane-row .link-btn--systems { flex-basis: 100%; }
   .lane-row .link-btn:first-child { animation-delay: 0.46s; }
   .lane-row .link-btn:last-child { animation-delay: 0.54s; }
   .lane-row .link-btn.primary:hover {
@@ -617,10 +618,6 @@
   }
   .lane-row .link-btn.primary:active {
     transform: scale(1);
-  }
-  @media (max-width: 520px) {
-    .lane-row { flex-direction: column; }
-    .lane-row .link-btn { margin-bottom: 10px; }
   }
 
   /* ── Today's Rates bar ── (hidden) */
@@ -837,9 +834,9 @@
 
       <div class="lane-row">
         <a class="link-btn primary" href="/mortgage/">Mortgage Lending</a>
+        <a class="link-btn primary" href="/experience/">The Design Lab</a>
+        <a class="link-btn primary" href="https://peregrin3.com/jobswoop/">Job Swoop</a>
         <span class="link-btn primary">Peregrin3</span>
-        <a class="link-btn primary link-btn--systems" href="/experience/">Systems &amp; Work</a>
-        <a class="link-btn primary" href="https://peregrin3.com/jobswoop/">JobSwoop · Find your next job</a>
       </div>
 
   <footer id="contact"><a href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/501968" target="_blank" rel="noopener noreferrer">NMLS #501968</a> &nbsp;·&nbsp; ivanadiaz.com &nbsp;·&nbsp; Equal Housing Lender</footer>
