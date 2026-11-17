@@ -255,3 +255,6 @@
 .skill-list { list-style:none; margin:0; padding:0; display:grid; gap:14px; }
 .skill-list li { font-size:16px; color:var(--ink2); line-height:1.6; } .skill-list strong { color:var(--ink); }
 @media (max-width:760px){ .ops-grid, .ops-grid--four { grid-template-columns:1fr; } .status-list li { grid-template-columns:1fr; gap:8px; } }
+.theme-org { --ac:#4A6FA5; --acT:#E4ECF8; --word:#4A6FA5; --glow1:rgba(166,201,245,.32); --glow2:rgba(240,207,156,.16); }
+.status-list .role { font-family:var(--display); font-weight:500; font-size:15px; color:var(--ink2); letter-spacing:0; }
+.pill--plan { background:#EEF0F3; color:#5B5B60; }
