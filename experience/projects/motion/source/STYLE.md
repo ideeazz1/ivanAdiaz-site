@@ -30,7 +30,7 @@ Inter (JetBrains Mono for code, times and IDs). Note: the marketing quality stan
 - Tool logos: logo-only square tiles (68px card / no labels), grouped as Powered by / Intelligence / Built with. Brand logos from the Iconify `logos` set.
 
 ## Metaphors
-Each system or lesson gets its own picture; never reuse a layout for two subjects. In use: 24-hour clock (Daily Follow Up), household constellation (Database 2.0), receipt and stamp (Audit), tree rings (Dream), departures board (Registry), signal filter (Intelligence Core), prompted vs coded (lesson), rule diff with drift review (lesson).
+Each system or lesson gets its own picture; never reuse a layout for two subjects. In use: 24-hour clock (Daily Follow Up), household constellation (Database 2.0), receipt and stamp (Audit), tree rings (Dream), departures board (Registry), signal filter (Intelligence Core), coal pressed into diamonds (Lead Generation & Enrichment), prompted vs coded (lesson), rule diff with drift review (lesson).
 
 ## Honesty
 No fake client names, photos or live-looking metrics. Gray bars stand in for client data. Samples are labelled as examples. Only name tools and schedules the job instructions confirm.
