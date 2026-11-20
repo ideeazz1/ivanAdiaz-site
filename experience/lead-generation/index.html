@@ -81,7 +81,35 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
 @keyframes fill{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
 .coal-to-gem .gem,.coal-to-gem .coal,.check,.press,.key{transform-box:fill-box;transform-origin:center}
 .runner{offset-path:path("M60 110 C60 40 200 40 200 110 C200 180 340 180 340 110 C340 40 480 40 480 110 C480 180 340 180 340 110 C340 40 200 40 200 110");offset-distance:100%;offset-rotate:0deg}
-@media (prefers-reduced-motion: reduce){.play *{animation:none!important}.coal-to-gem .coal{opacity:0}}
+.flow{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:f}
+.flow li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;min-width:0}
+.flow li::before{counter-increment:f;content:counter(f);font:500 12px/28px var(--mono);text-align:center;border-radius:50%;background:var(--chip);border:1px solid var(--line);color:var(--gem-deep)}
+.flow b{font-weight:700}
+.bar{display:flex;height:34px;border-radius:10px;overflow:hidden;background:var(--chip);border:1px solid var(--line)}
+.bar span{display:flex;align-items:center;justify-content:center;font:500 12px var(--mono);color:#0B1F38;white-space:nowrap;overflow:hidden;transition:flex-basis .6s ease}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-soft)}
+.toggle{display:flex;flex-wrap:wrap;gap:8px}
+.toggle button{font:500 14px var(--body);color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--gem-deep);border-color:var(--gem-deep);color:#fff}
+.toggle button:focus-visible{outline:3px solid var(--gem);outline-offset:2px}
+.readout{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.readout .stat{min-width:3ch}
+.pill{display:inline-block;font:700 12px var(--mono);letter-spacing:.06em;border-radius:999px;padding:4px 10px;color:#0B1F38}
+.option{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--flag);border:1px solid var(--flag);border-radius:999px;padding:3px 9px;width:max-content}
+.letter{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:12px;box-shadow:0 10px 30px -18px rgba(19,40,74,.45)}
+.letter .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.letter .kv{background:var(--chip);border-radius:12px;padding:10px 12px;display:grid;gap:2px;min-width:0}
+.letter .kv small{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.letter .kv b{font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.play .env{animation:drop .5s cubic-bezier(.2,1.2,.4,1) both}
+.play .e1{animation-delay:.3s}.play .e2{animation-delay:.6s}.play .e3{animation-delay:.9s}.play .e4{animation-delay:1.2s}
+.play .gate-l{animation:gateL 1s ease 1s 1 both}.play .gate-r{animation:gateR 1s ease 1s 1 both}
+.play .beam{animation:fill 1.2s ease 1.6s 1 both}
+@keyframes drop{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes gateL{from{transform:translateX(0)}to{transform:translateX(-34px)}}
+@keyframes gateR{from{transform:translateX(0)}to{transform:translateX(34px)}}
+.gate-l{transform:translateX(-34px)}.gate-r{transform:translateX(34px)}
+@media (prefers-reduced-motion: reduce){.play *{animation:none!important}.bar span{transition:none}.coal-to-gem .coal{opacity:0}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
 </head>
@@ -91,10 +119,9 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
 <a class="backlink" href="/experience/">← Systems &amp; Work</a>
 <main id="story">
   <section class="hero" aria-labelledby="t">
-    
     <span class="eyebrow">Lead Generation &amp; Enrichment</span>
     <h1 id="t">From a name on a list to a client for life.</h1>
-    <p class="lede">Every lead starts as a lump of coal: a name, a number and an email someone typed, maybe years ago. With the right pressure, the real ones turn into diamonds. The rest never touch your client list.</p>
+    <p class="lede">Every lead starts as a lump of coal: a name, a number and an email someone typed, maybe years ago. We treat each one as a suspect, not a source. With the right pressure, the real ones turn into diamonds. The rest never touch your client list.</p>
     <svg class="art coal-to-gem" viewBox="0 0 560 220" role="img" aria-label="A press squeezes a lump of coal into a sparkling diamond">
       <rect x="0" y="0" width="560" height="220" fill="var(--chip)"/>
       <g class="press"><rect x="215" y="18" width="130" height="22" rx="6" fill="var(--ink)"/><rect x="270" y="0" width="20" height="20" fill="var(--ink)"/></g>
@@ -108,21 +135,47 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
       </g>
       <g class="spark" fill="var(--sun)"><path d="M352 92 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/><path d="M212 80 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z"/></g>
       <text x="40" y="60" class="mono soft">LEAD</text><text x="40" y="80" style="font-weight:700">Pat Sample</text><text x="40" y="100" class="soft" style="font-size:13px">(210) 555-0100</text>
-      <text x="420" y="60" class="mono soft">CLIENT</text><text x="420" y="80" style="font-weight:700">Verified</text><text x="420" y="100" class="soft" style="font-size:13px">Score 95 · High</text>
+      <text x="420" y="60" class="mono soft">CLIENT</text><text x="420" y="80" style="font-weight:700">Verified</text><text x="420" y="100" class="soft" style="font-size:13px">Score 100 · High</text>
     </svg>
+    <div class="chips" aria-label="The pipeline in order"><span class="chip">Email research</span><span class="chip">Carbon</span><span class="chip">Atom</span><span class="chip">People-search pass</span><span class="chip">Confidence gate</span><span class="chip">Journey + ads</span><span class="chip">Homeowner Pulse</span></div>
     <button class="replay" id="replay" type="button">Play it again</button>
   </section>
 
   <section class="stage" aria-labelledby="s1">
     <header><span class="eyebrow">1 · The mine</span><h2 id="s1">Leads come in raw</h2></header>
-    <p>Portal leads, referrals, people who never worked with you, and old contacts you lost touch with. They go to the <b>Leads table</b>, not your client list.</p>
+    <p>Portal leads, referrals, people who never worked with you, and old contacts you lost touch with. They go to the <b>Leads table</b>, not your client list. One checkbox runs a lead start to finish. New leads run on their own, and the backlog clears 25 a day, oldest first.</p>
     <div class="chips"><span class="chip">Portal leads</span><span class="chip">Referral partners</span><span class="chip">Never worked with me</span><span class="chip">Lost contact</span></div>
     <p class="joke">Coal is not a diamond. Not yet. Don't put it in the jewelry box.</p>
     <div class="notes"><b>Why a separate Leads table:</b> your journeys, birthday notes and phone contacts stay accurate; refinance reports count only real owners; and you can finally measure which lead sources are worth paying for.</div>
   </section>
 
   <section class="stage" aria-labelledby="s2">
-    <header><span class="eyebrow">2 · Pressure</span><h2 id="s2">Carbon tests every claim</h2></header>
+    <header><span class="eyebrow">2 · Dig</span><h2 id="s2">Email research reads the history first</h2></header>
+    <svg class="art" viewBox="0 0 560 180" role="img" aria-label="Emails from three mailboxes drop into one timeline, oldest first">
+      <rect width="560" height="180" fill="var(--chip)"/>
+      <text x="30" y="34" class="mono soft">3 MAILBOXES</text>
+      <g font-size="12">
+        <g class="env e1" transform="translate(30,48)"><rect width="150" height="26" rx="6" fill="var(--paper)" stroke="var(--line)"/><text x="10" y="17">2023 · lead form</text></g>
+        <g class="env e2" transform="translate(30,82)"><rect width="150" height="26" rx="6" fill="var(--paper)" stroke="var(--line)"/><text x="10" y="17">2024 · referral note</text></g>
+        <g class="env e3" transform="translate(30,116)"><rect width="150" height="26" rx="6" fill="var(--paper)" stroke="var(--line)"/><text x="10" y="17">2025 · their reply</text></g>
+      </g>
+      <path class="fill" d="M196 95 L250 95" stroke="var(--gem)" stroke-width="4" stroke-dasharray="300" fill="none"/>
+      <g class="env e4" transform="translate(262,30)">
+        <rect width="270" height="124" rx="12" fill="var(--paper)" stroke="var(--line)"/>
+        <text x="16" y="26" class="mono soft">RESEARCH NOTES · OLDEST FIRST</text>
+        <text x="16" y="52" style="font-size:13px">Their own words, footers removed</text>
+        <text x="16" y="74" style="font-size:13px">One entry per referral, both links</text>
+        <text x="16" y="96" style="font-size:13px">Blank intake fields filled</text>
+        <text x="16" y="114" class="soft" style="font-size:12px">timing · price · credit · Realtor</text>
+      </g>
+    </svg>
+    <p>Before anything paid runs, we search the mailboxes for every email about this person: the original lead form, referral notes, and any conversation you already had. The timeline keeps their original wording. The original lead form fills only the fields that are still blank.</p>
+    <div class="notes"><b>The rule that saves you:</b> a listing they asked about is the house they wanted, not where they live. It never becomes their address.</div>
+  </section>
+
+  <section class="stage" aria-labelledby="s3">
+    <header><span class="eyebrow">3 · Pressure</span><h2 id="s3">Carbon decides which clues belong together</h2></header>
+    <p>The evidence is phone, email and name. Carbon's job is to work out which of the three belong to the same person, and whether that person is the lead. The name matters least: people marry, use nicknames and share phones.</p>
     <svg class="art" viewBox="0 0 560 190" role="img" aria-label="Four checks light up: phone belongs to the lead, line is active, email is real, current address found">
       <rect width="560" height="190" fill="var(--chip)"/>
       <g font-size="14">
@@ -134,21 +187,33 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
       <g transform="translate(360,40)">
         <text class="mono soft" x="0" y="0">CARBON SCORE</text>
         <circle cx="70" cy="70" r="52" fill="none" stroke="var(--line)" stroke-width="12"/>
-        <circle class="fill" cx="70" cy="70" r="52" fill="none" stroke="var(--gem)" stroke-width="12" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="16" transform="rotate(-90 70 70)"/>
-        <text x="70" y="80" text-anchor="middle" style="font-family:var(--display);font-weight:800;font-size:34px">95</text>
+        <circle class="fill" cx="70" cy="70" r="52" fill="none" stroke="var(--gem)" stroke-width="12" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="105" transform="rotate(-90 70 70)"/>
+        <text x="70" y="80" text-anchor="middle" style="font-family:var(--display);font-weight:800;font-size:34px">65</text>
       </g>
     </svg>
+    <ol class="flow">
+      <li><span><b>Check the three together.</b> Does the phone, the email and the name point to one person? Is the email deliverable, and is the line active?</span></li>
+      <li><span><b>Look up the phone only when it helps.</b> If the phone isn't confirmed as theirs, or there's no address, we ask who the phone is tied to. Every name tied to the phone is kept as evidence, strangers included.</span></li>
+      <li><span><b>First name only?</b> If exactly one person on the phone shares that first name, we borrow their last name and say so. If none or several do, we stop. No guessing.</span></li>
+      <li><span><b>Follow the person, not the form.</b> The address we test is the matched person's address. If nobody matches, we use the address of someone tied to the phone, clearly marked unconfirmed. We check up to two more addresses and stop at the first match.</span></li>
+      <li><span><b>Never pay twice.</b> Every lookup is stored and reused for 60 days. A rerun costs nothing.</span></li>
+    </ol>
+    <div class="bar" role="img" aria-label="Score parts: phone 40, email 40, address 20, minus 15 for a quiet line">
+      <span style="flex-basis:40%;background:var(--leaf)">Phone 40</span><span style="flex-basis:40%;background:var(--gem)">Email 40</span><span style="flex-basis:20%;background:var(--sun)">Home 20</span>
+    </div>
+    <div class="legend"><span>Phone confirmed: <b>+40</b></span><span>Email confirmed: <b>+40</b></span><span>Home address matches the lead: <b>+20</b></span><span>Confirmed phone, but the line is barely active: <b>−15</b></span></div>
     <div class="grades">
       <div class="grade"><b><span class="dot" style="background:var(--leaf)"></span>High · 80+</b><small>Trust it. Call and text.</small></div>
-      <div class="grade"><b><span class="dot" style="background:var(--sun)"></span>Medium · 50–79</b><small>Check by hand. Email and ads.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--sun)"></span>Medium · 50–79</b><small>Check it again. Email and ads.</small></div>
       <div class="grade"><b><span class="dot" style="background:var(--rose)"></span>Low · under 50</b><small>Ads only, or stays in Leads.</small></div>
     </div>
+    <div class="notes"><b>Carbon raises its hand when:</b> the phone grades C or worse, the line activity is 60 or below, the phone is tied to more than one name, the email isn't confirmed, or the lead is over a year old. Any score under 80 is flagged for the people-search pass, with the reasons written out.</div>
     <div class="statrow"><span class="stat">18 / 20</span><p>emails in our first sample belonged to the right person. Two were flagged before a single message went out.</p></div>
-    <div class="notes"><b>What we learned:</b> the number the lead gave you, confirmed and active, beats a directory's "most recent" guess. A second number becomes a backup, never a replacement.</div>
+    <div class="notes"><b>What we learned:</b> the number the lead gave you, confirmed and active, beats a directory's "most recent" guess. A second number becomes a backup, never a replacement. Two sources disagreeing isn't a red flag. It's a cue to keep both.</div>
   </section>
 
-  <section class="stage" aria-labelledby="s3">
-    <header><span class="eyebrow">3 · The setting</span><h2 id="s3">Atom checks the home</h2></header>
+  <section class="stage" aria-labelledby="s4">
+    <header><span class="eyebrow">4 · The setting</span><h2 id="s4">Atom checks the home on its own</h2></header>
     <svg class="art" viewBox="0 0 560 170" role="img" aria-label="A key turns and a house roof lights up: the lead owns the home">
       <rect width="560" height="170" fill="var(--chip)"/>
       <path class="roof" d="M210 80 L280 30 L350 80 Z" fill="var(--chip)" stroke="var(--ink)" stroke-width="3"/>
@@ -157,21 +222,90 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
       <g class="key" transform="translate(400,85)"><circle cx="0" cy="0" r="16" fill="none" stroke="var(--sun)" stroke-width="6"/><rect x="14" y="-3" width="60" height="6" fill="var(--sun)"/><rect x="58" y="3" width="6" height="12" fill="var(--sun)"/></g>
       <text x="40" y="70" class="mono soft">OWNER?</text><text x="40" y="94" style="font-weight:700">Name on the deed</text><text x="40" y="114" class="soft" style="font-size:13px">matches the lead</text>
     </svg>
-    <p>Owners have equity, refinance options and a home to sell. Renters and buyers need a home search. Atom tells you which conversation to have.</p>
-  </section>
-
-  <section class="stage" aria-labelledby="s4">
-    <header><span class="eyebrow">4 · The sort</span><h2 id="s4">Four doors, no guessing</h2></header>
+    <p>As soon as Carbon returns an address, Atom pulls the property record for it and asks one question: is the lead on title? It never checks the house they inquired about. Every run adds a dated line to the history, so you always know which address was checked and who owns it.</p>
     <div class="grades">
-      <div class="grade"><b><span class="dot" style="background:var(--gem)"></span>Ready to promote</b><small>Verified. One click moves them into Contacts.</small></div>
-      <div class="grade"><b><span class="dot" style="background:var(--sun)"></span>Needs attention</b><small>Partly verified. A quick manual check finishes it.</small></div>
-      <div class="grade"><b><span class="dot" style="background:var(--flag)"></span>Wrong number</b><small>Stays in Leads. We never call a stranger.</small></div>
-      <div class="grade"><b><span class="dot" style="background:var(--coal)"></span>Junk</b><small>Phone and email both fail. Swept out.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--leaf)"></span>Owner</b><small>The lead is on title, as a co-owner, middle name or trustee.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--sun)"></span>Household</b><small>Same last name, not on title. Living with family, not owning.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--flag)"></span>Not the owner</b><small>Someone else owns it. Likely a renter.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--coal)"></span>Unclear</b><small>No parcel match, a unit inside a building, or a Sr./Jr. tie.</small></div>
     </div>
+    <div class="notes"><b>Why it matters:</b> owners have equity, refinance options and a home to sell. Renters need a home search. Atom tells you which conversation to have, and the record it pulls (value, purchase, mortgages) becomes the property file.</div>
   </section>
 
   <section class="stage" aria-labelledby="s5">
-    <header><span class="eyebrow">5 · Into the vault</span><h2 id="s5">One click builds the relationship</h2></header>
+    <header><span class="eyebrow">5 · The loupe</span><h2 id="s5">A people-search pass for higher confidence</h2></header>
+    <p>When Carbon flags a lead, a second look finds a better phone, the current address or a married name. Carbon and Atom then rerun on what it found. The first result is kept, so nothing is lost. You choose how that second look happens.</p>
+    <div class="toggle" role="group" aria-label="People-search pass">
+      <button type="button" id="tps-off" data-mode="off" aria-pressed="false">Skip it</button>
+      <button type="button" id="tps-manual" data-mode="manual" aria-pressed="true">Manual check</button>
+      <button type="button" id="tps-auto" data-mode="auto" aria-pressed="false">Automated pass</button>
+    </div>
+    <div class="readout">
+      <span class="stat" id="tps-score">100</span>
+      <div style="display:grid;gap:6px;min-width:0">
+        <span class="pill" id="tps-pill" style="background:var(--leaf)">HIGH</span>
+        <p id="tps-text">A person checks the flagged lead and enters the better phone and address. Carbon and Atom rerun on them. Best accuracy, about two minutes of your time per flagged lead.</p>
+      </div>
+    </div>
+    <div class="bar" role="img" aria-label="Example lead score parts">
+      <span id="b-phone" style="flex-basis:40%;background:var(--leaf)">Phone 40</span><span id="b-email" style="flex-basis:40%;background:var(--gem)">Email 40</span><span id="b-home" style="flex-basis:20%;background:var(--sun)">Home 20</span><span id="b-gap" style="flex-basis:0%;background:transparent"></span>
+    </div>
+    <p class="legend" style="display:block">Example: Pat's phone and email check out, but the line is barely active and the address is unconfirmed. Carbon scores 65.</p>
+    <div class="notes"><span class="option">Option</span> <b>Automating the pass</b> runs up to three extra confirmations on the lead's home inside the same run, with no waiting. A person still reviews anything that stays low. Only a person ever marks a lead Junk.</div>
+  </section>
+
+  <section class="stage" aria-labelledby="s6">
+    <header><span class="eyebrow">6 · The gate</span><h2 id="s6">Confidence opens the journey and the ads</h2></header>
+    <svg class="art" viewBox="0 0 560 170" role="img" aria-label="A gate opens when the score reaches 80, releasing a journey and a targeted ad audience">
+      <rect width="560" height="170" fill="var(--chip)"/>
+      <text x="30" y="40" class="mono soft">SCORE</text>
+      <text x="30" y="78" style="font-family:var(--display);font-weight:800;font-size:34px">80+</text>
+      <text x="30" y="102" class="soft" style="font-size:12px">manual or automated</text>
+      <path class="fill" d="M130 85 L210 85" stroke="var(--gem)" stroke-width="4" stroke-dasharray="300" fill="none"/>
+      <rect class="gate-l" x="226" y="40" width="20" height="90" rx="4" fill="var(--ink)"/>
+      <rect class="gate-r" x="252" y="40" width="20" height="90" rx="4" fill="var(--ink)"/>
+      <path class="beam" d="M300 85 C340 85 350 50 390 50 M300 85 C340 85 350 120 390 120" stroke="var(--sun)" stroke-width="4" stroke-dasharray="300" fill="none"/>
+      <rect x="396" y="32" width="140" height="36" rx="10" fill="var(--paper)" stroke="var(--line)"/><text x="410" y="55" style="font-weight:700;font-size:13px">Journey starts</text>
+      <rect x="396" y="102" width="140" height="36" rx="10" fill="var(--paper)" stroke="var(--line)"/><text x="410" y="125" style="font-weight:700;font-size:13px">Targeted ads</text>
+    </svg>
+    <p>Once a lead reaches the confidence level, by a person's review or by the automation, two things start at once. The lead profile picks the journey, owner or renter. The score sets the ad risk, so we only build audiences from data we trust. Your own note on the lead overrides the automation.</p>
+    <div class="grades">
+      <div class="grade"><b>Owner journey</b><small>Equity, refinance and selling conversations. Offered Homeowner Pulse.</small></div>
+      <div class="grade"><b>Renter journey</b><small>"Still renting?" first, then quarterly, with a home search in their ZIP.</small></div>
+      <div class="grade"><b>Targeted ads</b><small>Ads and LinkedIn audiences from verified emails and aliases only.</small></div>
+    </div>
+    <div class="notes"><b>Guardrails:</b> confidence decides how we reach out, never who qualifies for anything. Every message starts as a draft, opt-outs are honored, and a wrong-number owner is never contacted. A positive reply moves the lead into Contacts.</div>
+  </section>
+
+  <section class="stage" aria-labelledby="s7">
+    <header><span class="eyebrow">7 · For owners</span><h2 id="s7">Homeowner Pulse keeps them close</h2></header>
+    <p>Owners get the option to enroll in <b>Homeowner Pulse</b>, an electronic newsletter built from the home and loan we already verified. It shows them something they can't get from a generic market report: their own numbers.</p>
+    <div class="letter" aria-label="Example Homeowner Pulse issue with sample numbers">
+      <span class="eyebrow">Homeowner Pulse · example issue</span>
+      <b style="font-family:var(--display);font-size:22px">Pat, here's your home this month</b>
+      <div class="row">
+        <div class="kv"><small>Est. value</small><b>$342,000</b></div>
+        <div class="kv"><small>Est. equity</small><b>$118,500</b></div>
+        <div class="kv"><small>Your rate</small><b>7.125%</b></div>
+        <div class="kv"><small>Refi radar</small><b style="color:var(--leaf)">Worth a look</b></div>
+      </div>
+      <small style="color:var(--ink-soft)">Sample figures. Each issue uses the subscriber's own property value, loan balance and rate, plus recent sales nearby.</small>
+    </div>
+    <div class="notes"><b>Opt-in only:</b> owners choose to enroll and can leave any time. When their numbers line up for a refinance or a move, the newsletter is where they hear it first.</div>
+  </section>
+
+  <section class="stage" aria-labelledby="s8">
+    <header><span class="eyebrow">8 · The sort</span><h2 id="s8">Four doors, no guessing</h2></header>
+    <div class="grades">
+      <div class="grade"><b><span class="dot" style="background:var(--gem)"></span>Ready</b><small>Verified. Journey and ads start.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--sun)"></span>Needs attention</b><small>Partly verified. The people-search pass finishes it.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--flag)"></span>Wrong number</b><small>Recorded only. We never call a stranger.</small></div>
+      <div class="grade"><b><span class="dot" style="background:var(--coal)"></span>Junk</b><small>Only a person marks Junk. Automation never does.</small></div>
+    </div>
+  </section>
+
+  <section class="stage" aria-labelledby="s9">
+    <header><span class="eyebrow">9 · Into the vault</span><h2 id="s9">A reply builds the relationship</h2></header>
     <svg class="art" viewBox="0 0 560 160" role="img" aria-label="Three linked tables: Contact, Contact to Property link, Property">
       <rect width="560" height="160" fill="var(--chip)"/>
       <g font-size="13">
@@ -181,20 +315,11 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
         <path class="fill" d="M174 80 L205 80 M355 80 L386 80" stroke="var(--gem)" stroke-width="4" stroke-dasharray="300" fill="none"/>
       </g>
     </svg>
-    <p>A relational database, not a spreadsheet: a person, their home and the link between them, so one person can own two homes and one home can have two owners.</p>
+    <p>A relational database, not a spreadsheet: a person, their home and the link between them, so one person can own two homes and one home can have two owners. Promotion reuses an existing contact instead of creating a duplicate.</p>
   </section>
 
-  <section class="stage" aria-labelledby="s6">
-    <header><span class="eyebrow">6 · Shine</span><h2 id="s6">Nurture what's accurate</h2></header>
-    <div class="grades">
-      <div class="grade"><b>Journeys</b><small>Personal notes, a monthly home value report for owners, a home search in their ZIP for buyers.</small></div>
-      <div class="grade"><b>Retargeting</b><small>Ads and LinkedIn audiences built only from verified emails and aliases.</small></div>
-      <div class="grade"><b>Matched to the score</b><small>High gets a call. Medium gets email and ads. Low gets ads only.</small></div>
-    </div>
-  </section>
-
-  <section class="stage" aria-labelledby="s7">
-    <header><span class="eyebrow">7 · Two loops, one system</span><h2 id="s7">The lead loop feeds the client loop</h2></header>
+  <section class="stage" aria-labelledby="s10">
+    <header><span class="eyebrow">10 · Two loops, one system</span><h2 id="s10">The lead loop feeds the client loop</h2></header>
     <svg class="art" viewBox="0 0 540 220" role="img" aria-label="A figure-eight: the lead generation loop on the left flows into the mortgage intelligence loop on the right, which keeps re-checking stale contacts">
       <rect width="540" height="220" fill="var(--chip)"/>
       <path d="M60 110 C60 40 200 40 200 110 C200 180 340 180 340 110 C340 40 480 40 480 110 C480 180 340 180 340 110 C340 40 200 40 200 110" fill="none" stroke="var(--line)" stroke-width="10" stroke-linecap="round"/>
@@ -205,7 +330,7 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
       <text x="350" y="200" style="font-size:12px">contacts · clients · past clients</text>
       <text x="270" y="115" text-anchor="middle" style="font-weight:700;font-size:12px">promote</text>
     </svg>
-    <p>New leads get checked, scored and promoted. Inside the client loop, contacts with stale details get re-checked on their own, so your list stays accurate without you lifting a finger. Refinance chances surface when the numbers line up.</p>
+    <p>New leads get researched, checked, scored and routed. Inside the client loop, contacts with stale details get re-checked on their own, so your list stays accurate without you lifting a finger. Refinance chances surface when the numbers line up.</p>
     <div class="statrow"><span class="stat">100 → 5</span><p>leads to closings is the target. Accurate data is how you get there without burning your reputation on wrong numbers.</p></div>
   </section>
 
@@ -222,6 +347,25 @@ svg .mono{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
   function play(){story.classList.remove('play');void story.offsetWidth;story.classList.add('play');}
   play();
   document.getElementById('replay').addEventListener('click',play);
+  var modes={
+    off:{score:65,pill:'MEDIUM',color:'var(--sun)',phone:25,email:40,home:0,text:'No second look. Pat stays at 65: email and ads only, and the lead waits in Needs attention.'},
+    manual:{score:100,pill:'HIGH',color:'var(--leaf)',phone:40,email:40,home:20,text:'A person checks the flagged lead and enters the better phone and address. Carbon and Atom rerun on them. Best accuracy, about two minutes of your time per flagged lead.'},
+    auto:{score:100,pill:'HIGH',color:'var(--leaf)',phone:40,email:40,home:20,text:'Extra confirmations run inside the same pipeline, so Pat reaches the gate without waiting on anyone. Leads that stay low still go to a person.'}
+  };
+  var btns=document.querySelectorAll('.toggle button');
+  function set(m){
+    var d=modes[m];
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===m));});
+    document.getElementById('tps-score').textContent=d.score;
+    var pill=document.getElementById('tps-pill');pill.textContent=d.pill;pill.style.background=d.color;
+    document.getElementById('tps-text').textContent=d.text;
+    var ph=document.getElementById('b-phone');ph.style.flexBasis=d.phone+'%';ph.textContent=d.phone===40?'Phone 40':'Phone 40 − 15';
+    var hm=document.getElementById('b-home');hm.style.flexBasis=d.home+'%';hm.textContent=d.home?'Home 20':'';
+    document.getElementById('b-email').style.flexBasis=d.email+'%';
+    document.getElementById('b-gap').style.flexBasis=(100-d.phone-d.email-d.home)+'%';
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.mode);});});
+  set('manual');
 })();
 </script>
 <script src="/experience/systems-footer.js" defer></script>
