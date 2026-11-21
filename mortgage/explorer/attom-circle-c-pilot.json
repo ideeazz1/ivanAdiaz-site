@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "kind": "ATTOM neighborhood historical estimated-price pilot",
+    "status": "pilot_only_not_live",
+    "estimated": true,
+    "notVerifiedClosingPrices": true,
+    "source": "ATTOM Property API v1.0.0 /sale/snapshot, pulled 2026-11-20",
+    "neighborhood": "Circle C, Austin, Texas",
+    "sourcePR": "https://github.com/ideeazz1/ivanAdiaz/pull/1148",
+    "note": "Travis County nondisclosure: 2026 ATTOM amounts are largely flagged ESTIMATED; 2023 amounts show loan/0.8 derivation pattern. Do not claim market appreciation, depreciation, or buyer savings from this dataset. Never interpolate missing months. Live Explorer remains illustrative pending safe rendering.",
+    "range": "2023 and 2026 only; 2024–2025 not retrieved"
+  },
+  "geography": {
+    "neighborhood": "Circle C, Austin, Travis County, TX",
+    "attom_geoIdV4_N2": "4ae6ac6d6eab8f5cb21fa4ad0e8ea45a",
+    "area_sq_mi": 8.66,
+    "note": "ATTOM neighborhood boundary, not ZIP 78739"
+  },
+  "property": {
+    "type": "SFR",
+    "sizeSqftMin": 2400,
+    "sizeSqftMax": 2800,
+    "category": "growing",
+    "referenceSqft": 2600
+  },
+  "observations": [
+    {
+      "month": "2023-01",
+      "medianEstimatedPricePerSqft": 325.36,
+      "recordedSales": 1,
+      "pricedSales": 1,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-02",
+      "medianEstimatedPricePerSqft": 316.77,
+      "recordedSales": 2,
+      "pricedSales": 2,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-03",
+      "medianEstimatedPricePerSqft": 210.74,
+      "recordedSales": 3,
+      "pricedSales": 3,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-04",
+      "medianEstimatedPricePerSqft": 316.2,
+      "recordedSales": 1,
+      "pricedSales": 1,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-05",
+      "medianEstimatedPricePerSqft": 281.98,
+      "recordedSales": 7,
+      "pricedSales": 4,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-06",
+      "medianEstimatedPricePerSqft": 274.53,
+      "recordedSales": 6,
+      "pricedSales": 1,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-07",
+      "medianEstimatedPricePerSqft": 239.76,
+      "recordedSales": 4,
+      "pricedSales": 3,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-08",
+      "medianEstimatedPricePerSqft": 301.25,
+      "recordedSales": 6,
+      "pricedSales": 4,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-09",
+      "medianEstimatedPricePerSqft": 247.48,
+      "recordedSales": 1,
+      "pricedSales": 1,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-10",
+      "medianEstimatedPricePerSqft": 252.65,
+      "recordedSales": 5,
+      "pricedSales": 4,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2023-12",
+      "medianEstimatedPricePerSqft": 259.59,
+      "recordedSales": 2,
+      "pricedSales": 2,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2026-01",
+      "medianEstimatedPricePerSqft": 330.76,
+      "recordedSales": 3,
+      "pricedSales": 2,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2026-02",
+      "medianEstimatedPricePerSqft": 304.5,
+      "recordedSales": 3,
+      "pricedSales": 2,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2026-03",
+      "medianEstimatedPricePerSqft": 318.52,
+      "recordedSales": 5,
+      "pricedSales": 1,
+      "flaggedEstimated": 0
+    },
+    {
+      "month": "2026-04",
+      "medianEstimatedPricePerSqft": 322.23,
+      "recordedSales": 12,
+      "pricedSales": 5,
+      "flaggedEstimated": 5
+    },
+    {
+      "month": "2026-05",
+      "medianEstimatedPricePerSqft": 333.33,
+      "recordedSales": 4,
+      "pricedSales": 3,
+      "flaggedEstimated": 3
+    },
+    {
+      "month": "2026-06",
+      "medianEstimatedPricePerSqft": 321.69,
+      "recordedSales": 8,
+      "pricedSales": 8,
+      "flaggedEstimated": 8
+    },
+    {
+      "month": "2026-07",
+      "medianEstimatedPricePerSqft": 314.16,
+      "recordedSales": 6,
+      "pricedSales": 5,
+      "flaggedEstimated": 5
+    },
+    {
+      "month": "2026-08",
+      "medianEstimatedPricePerSqft": 223.46,
+      "recordedSales": 3,
+      "pricedSales": 2,
+      "flaggedEstimated": 2
+    },
+    {
+      "month": "2026-09",
+      "medianEstimatedPricePerSqft": 285.72,
+      "recordedSales": 3,
+      "pricedSales": 2,
+      "flaggedEstimated": 2
+    },
+    {
+      "month": "2026-10",
+      "medianEstimatedPricePerSqft": 298.25,
+      "recordedSales": 9,
+      "pricedSales": 3,
+      "flaggedEstimated": 3
+    }
+  ],
+  "missingMonths": [
+    "2023-11",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-11"
+  ],
+  "summary": {
+    "year2023": {
+      "recorded": 38,
+      "priced": 26,
+      "attomMedianAmount": 702187.5
+    },
+    "year2026": {
+      "recorded": 56,
+      "priced": 33,
+      "attomMedianAmount": 824600
+    }
+  },
+  "requiredDisplayRules": [
+    "Label all amounts ATTOM estimated or derived, never verified closed sale prices",
+    "Graph time axis must preserve real missing-month gaps; never connect across unobserved years as a continuous history",
+    "Do not use sparse one-sale month as a robust market signal; display sample count",
+    "Do not calculate claimed savings or equivalent house size using cross-year amounts",
+    "Use independent illustrative rates in mortgage calculator, explicitly labeled",
+    "Do not substitute this data for Avana, Meridian, or different sizes"
+  ]
+}
