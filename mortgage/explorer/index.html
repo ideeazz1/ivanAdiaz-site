@@ -70,7 +70,7 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .pill[aria-pressed=true]{background:var(--ac);border-color:var(--ac);color:#fff}
 .pill.try{border-style:dashed;color:var(--ink2)}
 .zipbox{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.zipbox[hidden]{display:none}
+.zipbox[hidden],.houses[hidden],.legend[hidden]{display:none}
 .zipbox input{border:1.5px solid #E3E5EA;border-radius:var(--radius);padding:11px 14px;width:150px;background:#fff}
 .zipbox input:focus{outline:2px solid var(--ac);outline-offset:1px}
 .zipbox button{border:0;background:var(--ink);color:#fff;border-radius:var(--radius);padding:11px 16px;font-weight:600}
@@ -178,7 +178,7 @@ footer p{margin:0 0 10px;max-width:56em}
 
 <div class="bar"><div class="wrap">
   <div class="brand">Ivan Diaz <span>· Home Opportunity Explorer</span></div>
-  <div class="tag">Concept · illustrative data</div>
+  <div class="tag">Estimates &amp; demos</div>
 </div></div>
 
 <header class="hero">
@@ -219,12 +219,12 @@ footer p{margin:0 0 10px;max-width:56em}
   <div class="wrap">
     <div class="panel rv" id="chartPanel">
       <div class="top">
-        <div class="ttl"><b id="cTitle"></b><br>Median closed-sale price, comparable homes</div>
+        <div class="ttl"><b id="cTitle"></b><br><span id="sourceLabel"></span></div>
         <span class="chip-il">Illustrative</span>
       </div>
       <div class="stats">
         <div><small id="sLabel">Then</small><strong id="sVal">—</strong></div>
-        <div class="r"><small>Today</small><strong id="nVal">—</strong></div>
+        <div class="r"><small class="latestLabel">Today</small><strong id="nVal">—</strong></div>
       </div>
       <p class="delta" id="dSent" aria-live="polite"></p>
       <div class="plot" id="plot">
@@ -242,7 +242,7 @@ footer p{margin:0 0 10px;max-width:56em}
         <button type="button" data-j="start">Jan 2023</button>
         <button type="button" data-j="now">Today</button>
       </div>
-      <p class="hint">Drag across the chart to travel through time. Illustrative data; the vertical axis doesn’t start at $0.</p>
+      <p class="hint">Drag across the chart to travel through time. The vertical axis doesn’t start at $0.</p>
     </div>
   </div>
 </section>
@@ -256,9 +256,9 @@ footer p{margin:0 0 10px;max-width:56em}
     <div class="grid">
       <div class="card rv" style="--d:0">
         <p class="k">The price</p>
-        <div class="two"><div class="dim"><small id="pThenL">Then</small><strong id="pThen">—</strong></div><div><small>Today</small><strong id="pNow">—</strong></div></div>
+        <div class="two"><div class="dim"><small id="pThenL">Then</small><strong id="pThen">—</strong></div><div><small class="latestLabel">Today</small><strong id="pNow">—</strong></div></div>
         <p class="res" id="pDiff"></p>
-        <p class="fine">Median closed-sale price of comparable homes in the neighborhood. A price change on the market doesn’t automatically mean savings on any one home.</p>
+        <p class="fine"><span id="priceNote"></span></p>
       </div>
 
       <div class="card rv" style="--d:1">
@@ -266,12 +266,12 @@ footer p{margin:0 0 10px;max-width:56em}
         <div class="houses"><svg id="houseSvg" viewBox="0 0 320 210" role="img" aria-label="Two house outlines drawn to scale"></svg></div>
         <div class="legend"><span><i></i><span id="hThen"></span></span><span><i class="s"></i><span id="hNow"></span></span></div>
         <p class="res" id="hRes" style="margin-top:12px"></p>
-        <p class="fine">Drawn to scale. Square feet are the budget divided by today’s illustrative price per square foot.</p>
+        <p class="fine"><span id="budgetNote">Drawn to scale. Square feet are the budget divided by today’s illustrative price per square foot.</span></p>
       </div>
 
       <div class="card rv wide" style="--d:0">
         <p class="k">The monthly payment</p>
-        <div class="two"><div class="dim"><small id="mThenL">Then</small><strong id="mThen">—</strong></div><div><small>Today</small><strong id="mNow">—</strong></div></div>
+        <div class="two"><div class="dim"><small id="mThenL">Then</small><strong id="mThen">—</strong></div><div><small class="latestLabel">Today</small><strong id="mNow">—</strong></div></div>
         <p class="res" id="mDiff"></p>
         <p class="fine" id="mFine"></p>
       </div>
@@ -326,7 +326,7 @@ footer p{margin:0 0 10px;max-width:56em}
 </main>
 
 <footer><div class="wrap">
-  <p><b>Concept preview.</b> All prices, rates and payments on this page are illustrative placeholders for design review. They are not actual market statistics for Circle C, Avana, Meridian or any ZIP code.</p>
+  <p><b>Circle C · Growing family.</b> ATTOM estimated market prices — not verified closing prices. The monthly estimate applies the median estimated price per square foot of 2,400–2,800 sq ft single-family homes to 2,600 sq ft. The 2023 amounts appear loan-derived. Other neighborhoods, sizes and ZIP previews use illustrative demonstration data.</p>
   <p>Payments show principal and interest only at the stated assumptions. Property taxes, insurance and HOA dues are extra. Seller concessions are not guaranteed. This is not an offer of credit or a commitment to lend. Rates and terms vary.</p>
   <p>Ivan Diaz, NMLS 501968 · Assurance Financial Group, LLC, NMLS 70876 · Equal Housing Opportunity</p>
 </div></footer>
@@ -358,7 +358,22 @@ let D,S={hood:'circle-c',cat:'growing',sel:0,followPeak:true,demoZip:null,reveal
 const N=()=>D.months.length;
 const catO=()=>D.categories.find(c=>c.id===S.cat);
 const hoodO=()=>D.neighborhoods.find(h=>h.id===S.hood);
-const prices=(h=S.hood,c=S.cat)=>{const sq=D.categories.find(x=>x.id===c).sqft;return D.ppsf[h][c].map(p=>p*sq)};
+let observations;
+const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip;
+const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
+function prices(){
+  const sqft=catO().sqft;
+  if(!isPilot())return D.ppsf[S.hood][S.cat].map(p=>p*sqft);
+  return D.months.map(month=>{
+    const row=observations.get(month);
+    return row ? row.medianEstimatedPricePerSqft*sqft : null;
+  });
+}
+function samples(i){
+  const row=observations.get(D.months[i]);
+  return row ? `${row.pricedSales} priced / ${row.recordedSales} recorded` : 'No estimate';
+}
+const latest=()=>S.disp.findLastIndex(Number.isFinite);
 const peakIdx=a=>a.reduce((b,v,i)=>v>a[b]?i:b,0);
 const pmt=(price,rate,downPct)=>{const L=price*(1-downPct/100),r=rate/1200,n=D.assumptions.termYears*12;return L*r/(1-Math.pow(1+r,-n))};
 
@@ -394,13 +409,13 @@ function buildSelectors(){
   hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{S.cat=b.dataset.c;
     hm.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
     refreshAll(true);T.send('home_size_change',{cat:S.cat});}));
-  $('#zipbox').addEventListener('submit',e=>{
+  $('#zipbox').onsubmit=e=>{
     e.preventDefault();const z=$('#zip').value.trim();
     if(!/^\d{5}$/.test(z)){$('#zipmsg').textContent='Enter a 5-digit ZIP code.';return}
     $('#zipmsg').textContent=z==='78739'?'78739 includes Circle C, Avana and Meridian. Pick one above.':`Demo preview: ${z} will use real local data once it’s connected. For now the chart shows Circle C’s illustrative shape, not ${z}.`;
     if(z!=='78739'){S.demoZip=z;S.hood='circle-c';buildSelectors();$('#zipbox').hidden=false;$('#zipmsg').textContent=`Demo preview: ${z} will use real local data once it’s connected. For now the chart shows Circle C’s illustrative shape, not ${z}.`;refreshAll(true)}
     T.send('try_zip',{});   // the ZIP itself is never sent
-  });
+  };
 }
 function setHood(id){S.hood=id;buildSelectors();refreshAll(true)}
 
@@ -410,24 +425,34 @@ let W=0,H=0,yMin=0,yMax=1;const M={l:48,r:16,t:52,b:30};
 const X=i=>M.l+(W-M.l-M.r)*i/(N()-1);
 const Y=v=>M.t+(H-M.t-M.b)*(1-(v-yMin)/(yMax-yMin));
 function size(){W=$('#plot').clientWidth;H=W<520?270:350;svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`)}
-function domain(){const lo=Math.min(...S.disp),hi=Math.max(...S.disp),span=hi-lo;const step=span>150000?50000:25000;
+function domain(){const lo=Math.min(...S.disp.filter(Number.isFinite)),hi=Math.max(...S.disp.filter(Number.isFinite)),span=hi-lo;const step=span>150000?50000:25000;
   yMin=Math.floor((lo-span*.5)/step)*step;yMax=Math.ceil((hi+span*.25)/step)*step;return step}
 function smooth(p){let d=`M${p[0][0]},${p[0][1]}`;for(let i=0;i<p.length-1;i++){const a=p[i-1]||p[i],b=p[i],c=p[i+1],e=p[i+2]||c;
   d+=`C${b[0]+(c[0]-a[0])/6},${b[1]+(c[1]-a[1])/6} ${c[0]-(e[0]-b[0])/6},${c[1]-(e[1]-b[1])/6} ${c[0]},${c[1]}`}return d}
 function draw(){
   if(!W||!S.disp.length)return;
-  const step=domain(),pts=S.disp.map((v,i)=>[X(i),Y(v)]),line=smooth(pts),base=H-M.b,n=N();
-  const area=line+`L${X(n-1)},${base}L${X(0)},${base}Z`;
+  const step=domain(),base=H-M.b,n=N(),segments=[];
+  S.disp.forEach((value,i)=>{
+    if(value===null)return;
+    if(i===0||S.disp[i-1]===null)segments.push([]);
+    segments[segments.length-1].push([X(i),Y(value)]);
+  });
   let g=`<clipPath id="cp"><rect x="0" y="0" width="${(M.l+(W-M.l-M.r)*S.reveal)+(S.reveal>=1?M.r:0)}" height="${H}"/></clipPath>`;
   for(let v=yMin;v<=yMax;v+=step)g+=`<line class="gl" x1="${M.l}" x2="${W-M.r}" y1="${Y(v)}" y2="${Y(v)}"/><text class="gt" x="${M.l-8}" y="${Y(v)+4}" text-anchor="end">${fmtK(v)}</text>`;
   D.months.forEach((m,i)=>{if(m.endsWith('-01'))g+=`<text class="gt" x="${X(i)}" y="${H-8}" text-anchor="${i===0?'start':'middle'}">${m.slice(0,4)}</text>`});
-  g+=`<text class="wm" style="font-size:${Math.min(46,Math.floor((W-M.l-M.r)/11.5))}px" x="${(M.l+W-M.r)/2}" y="${(M.t+base)/2+12}" text-anchor="middle">ILLUSTRATIVE</text>`;
+  g+=`<text class="wm" style="font-size:${Math.min(46,Math.floor((W-M.l-M.r)/11.5))}px" x="${(M.l+W-M.r)/2}" y="${(M.t+base)/2+12}" text-anchor="middle">${isPilot()?'ESTIMATES':'ILLUSTRATIVE'}</text>`;
   g+=`<rect x="${X(n-3)}" y="${M.t-6}" width="${W-M.r-X(n-3)+6}" height="${base-M.t+6}" fill="rgba(143,185,242,.10)" rx="6"/>`;
-  g+=`<g clip-path="url(#cp)"><path d="${area}" fill="url(#ag)"/><path d="${line}" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+  for(const points of segments){
+    const line=isPilot()?'M'+points.join(' L'):smooth(points);
+    const area=line+`L${points.at(-1)[0]},${base}L${points[0][0]},${base}Z`;
+    g+=`<g clip-path="url(#cp)"><path d="${area}" fill="url(#ag)"/><path d="${line}" fill="none" stroke="#fff" stroke-width="2.6"/>`;
+    if(isPilot())for(const [x,y] of points)g+=`<circle cx="${x}" cy="${y}" r="3" fill="#fff"/>`;
+    g+='</g>';
+  }
   if(S.revealed){
     const pi=peakIdx(S.disp),px=X(pi),py=Y(S.disp[pi]),right=px+110>W;
     g+=`<circle cx="${px}" cy="${py}" r="5" fill="#0E1E38" stroke="#fff" stroke-width="2"/><text x="${right?px-10:px+10}" y="${py-10}" text-anchor="${right?'end':'start'}" fill="#fff" font-size="12" font-weight="700">Peak · ${lab(D.months[pi])}</text>`;
-    const tx=X(n-1),ty=Y(S.disp[n-1]);
+    const last=latest(),tx=X(last),ty=Y(S.disp[last]);
     g+=`<circle class="pulse" cx="${tx}" cy="${ty}" r="5"/><circle cx="${tx}" cy="${ty}" r="5.5" fill="#8FB9F2" stroke="#0E1E38" stroke-width="2"/>`;
   }
   gMain.innerHTML=g;
@@ -436,17 +461,20 @@ function drawScrub(){
   if(!S.revealed||!W){gScrub.innerHTML='';tip.style.opacity=0;return}
   const i=S.sel,n=N(),x=X(i),y=Y(S.disp[i]),base=H-M.b,ty=Y(S.disp[n-1]);
   let g=`<line x1="${x}" x2="${x}" y1="${M.t-8}" y2="${base}" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>`;
-  if(i<n-1){
+  if(!isPilot() && i<n-1){
     g+=`<line x1="${x}" x2="${X(n-1)}" y1="${y}" y2="${y}" stroke="#8FB9F2" stroke-width="1.5" stroke-dasharray="4 5"/>`+
        `<line x1="${X(n-1)}" x2="${X(n-1)}" y1="${y}" y2="${ty}" stroke="#8FB9F2" stroke-width="2.5"/>`;
     const dv=S.disp[n-1]-S.disp[i];
     if(Math.abs(ty-y)>26)g+=`<text x="${X(n-1)-9}" y="${(y+ty)/2+4}" text-anchor="end" fill="#8FB9F2" font-size="12.5" font-weight="700">${dv<0?'−':'+'}${fmtK(Math.abs(dv))}</text>`;
   }
-  g+=`<circle cx="${x}" cy="${y}" r="7" fill="#fff" stroke="#0E1E38" stroke-width="3"/>`;
+  if(S.disp[i]!==null)g+=`<circle cx="${x}" cy="${y}" r="7" fill="#fff" stroke="#0E1E38" stroke-width="3"/>`;
   gScrub.innerHTML=g;
-  tip.innerHTML=`${lab(D.months[i])}<b>${fmt$(S.disp[i])}</b>`;
-  tip.style.left=Math.max(58,Math.min(W-58,x))+'px';tip.style.opacity=1;
-  svg.setAttribute('aria-valuenow',i);svg.setAttribute('aria-valuetext',`${lab(D.months[i])}, ${fmt$(S.disp[i])}`);
+  const value=S.disp[i]===null?'Unavailable':fmt$(S.disp[i]);
+  const count=isPilot() && S.disp[i]!==null?samples(i):'';
+  tip.innerHTML=`${lab(D.months[i])}<b>${value}</b>${count}`;
+  const halfTip=tip.offsetWidth/2;
+  tip.style.left=Math.max(halfTip,Math.min(W-halfTip,x))+'px';tip.style.opacity=1;
+  svg.setAttribute('aria-valuenow',i);svg.setAttribute('aria-valuetext',`${lab(D.months[i])}, ${value} ${count}`);
 }
 function tweenTo(target,ms=480){
   cancelAnimationFrame(S.raf);const from=S.disp.length===target.length?S.disp.slice():target.slice(),t0=performance.now(),dur=REDUCED?0:ms;
@@ -471,43 +499,57 @@ svg.addEventListener('keydown',e=>{const k={ArrowLeft:-1,ArrowRight:1}[e.key];
   if(k){e.preventDefault();pick(Math.max(0,Math.min(N()-1,S.sel+k)))}
   else if(e.key==='Home'){e.preventDefault();pick(0)}else if(e.key==='End'){e.preventDefault();pick(N()-1)}});
 document.querySelectorAll('.jump button').forEach(b=>b.addEventListener('click',()=>{
-  const j=b.dataset.j;pick(j==='peak'?peakIdx(prices()):j==='start'?0:N()-1);T.send('chart_jump',{to:j})}));
+  const j=b.dataset.j;pick(j==='peak'?peakIdx(prices()):j==='start'?0:latest());T.send('chart_jump',{to:j})}));
 addEventListener('resize',()=>{size();draw();drawScrub()});
 
 /* ---------- results ---------- */
 function setText(sel,val){const el=$(sel);if(el.textContent!==val)el.textContent=val}
 function renderResults(){
-  const p=prices(),n=N(),i=S.sel,then=p[i],now=p[n-1],r0=D.rates[i],r1=D.rates[n-1],dp=D.assumptions.downPct;
+  const p=prices(),last=latest(),n=last+1,i=S.sel,then=p[i],now=p[last],r0=D.rates[i],r1=D.rates[last],dp=D.assumptions.downPct;
   const c=catO(),h=S.demoZip?`ZIP ${S.demoZip} (demo)`:hoodO().name,L0=lab(D.months[i]);
-  const diff=now-then,pct=diff/then*100,abs=Math.abs(diff);
+  const pilot=isPilot(),available=then!==null,end=pilot?lab(D.months[last]):'Today';
+  document.querySelectorAll('.latestLabel').forEach(el=>el.textContent=end);
+  setText('[data-j="now"]',end);
+  setText('.hint',pilot?'Drag across the chart to select a month. Gaps have no estimate. Data for 2024–2025 was not retrieved. The vertical axis starts above $0.':'Drag across the chart to travel through time. The vertical axis starts above $0.');
+  setText('.chip-il',pilot?'ATTOM estimates':'Illustrative demo');
+  setText('#sourceLabel',pilot?estimateLabel:'Illustrative demonstration prices');
+  setText('#priceNote',pilot?`Monthly sample · ${L0}: ${samples(i)}.${i===last?'':` ${end}: ${samples(last)}.`}`:'Illustrative demonstration data for comparable homes.');
+  const diff=available?now-then:null,pct=available?diff/then*100:null,abs=Math.abs(diff);
   // chart header + readout
   setText('#cTitle',`${h} · ${c.name}`);
-  setText('#sLabel',i===n-1?'Today':L0);setText('#sVal',fmt$(then));setText('#nVal',fmt$(now));
-  $('#dSent').innerHTML=i===n-1?'You’re looking at today.':
-    `Today vs. ${L0}: <b>${fmtR(abs)} ${diff<0?'lower':'higher'}</b> (${pct<0?'−':'+'}${Math.abs(pct).toFixed(1)}%)`;
+  setText('#sLabel',L0);setText('#sVal',available?fmt$(then):'—');setText('#nVal',fmt$(now));
+  $('#dSent').innerHTML=!available?'No estimate for this month. Comparison unavailable.':i===last?'Latest available month.':
+    `${end} vs. ${L0}: <b>${fmtR(abs)} ${diff<0?'lower':'higher'}</b> (${pct<0?'−':'+'}${Math.abs(pct).toFixed(1)}%)`;
   // headline
-  setText('#rHead',i===n-1?'Drag the chart to pick a “then.”':
-    abs<500?'About the same as '+L0+'.':`The same home costs about ${fmtK(abs)} ${diff<0?'less':'more'} than in ${L0}.`);
-  setText('#rSub',`${h} · ${c.name}, about ${c.label} sq ft · ${L0} vs. today. Illustrative figures.`);
+  setText('#rHead',!available?`No estimate for ${L0}.`:i===n-1?'Drag the chart to pick a “then.”':
+    abs<500?'About the same as '+L0+'.':`The ${pilot?'estimated':'illustrative'} price is about ${fmtK(abs)} ${diff<0?'less':'more'} than in ${L0}.`);
+  setText('#rSub',`${h} · ${c.name}, about ${c.label} sq ft · ${L0} vs. ${end}. ${pilot?'Circle C, Austin, TX 78739 · ATTOM estimates.':'Illustrative figures.'}`);
   // price
-  setText('#pThenL',L0);setText('#pThen',fmt$(then));setText('#pNow',fmt$(now));
-  setText('#pDiff',i===n-1?'Choose an earlier month on the chart.':`${fmtR(abs)} ${diff<0?'lower':'higher'} today (${pct<0?'−':'+'}${Math.abs(pct).toFixed(1)}%)`);
+  setText('#pThenL',L0);setText('#pThen',available?fmt$(then):'—');setText('#pNow',fmt$(now));
+  setText('#pDiff',!available?'Comparison unavailable.':i===n-1?'Choose an earlier month on the chart.':`${fmtR(abs)} ${diff<0?'lower':'higher'} in ${end} (${pct<0?'−':'+'}${Math.abs(pct).toFixed(1)}%)`);
   // budget buys
-  const sqThen=c.sqft,sqNow=sqThen*(D.ppsf[S.hood][S.cat][i]/D.ppsf[S.hood][S.cat][n-1]),gain=Math.round(sqNow-sqThen);
-  const k=260/Math.sqrt(3500),w0=k*Math.sqrt(sqThen),w1=k*Math.sqrt(sqNow),base=186,cx=160;
-  $('#houseSvg').innerHTML=`<line x1="20" x2="300" y1="${base}" y2="${base}" stroke="#D5D9E0" stroke-width="2" stroke-linecap="round"/>`+
-    `<path class="hh" d="${housePath(cx,base,w1,w1*.8)}" stroke="#004288" stroke-width="3.2" fill="rgba(0,66,136,.06)"/>`+
-    `<path class="hh" d="${housePath(cx,base,w0,w0*.8)}" stroke="#9A9AA0" stroke-width="2.4" stroke-dasharray="6 6"/>`+
-    (i===n-1?'':`<text x="${cx}" y="${base-44}" text-anchor="middle" font-size="26" font-weight="800" fill="#004288" style="letter-spacing:-.03em">${Math.abs(gain)<10?'≈ same':(gain>0?'+':'−')+Math.abs(gain).toLocaleString()+' sq ft'}</text>`);
-  setText('#hThen',`${L0} · ${sqThen.toLocaleString()} sq ft`);setText('#hNow',`Same budget today · ${Math.round(sqNow).toLocaleString()} sq ft`);
-  setText('#hRes',i===n-1?'Pick an earlier month on the chart.':Math.abs(gain)<10?'About the same space.':gain>0?`About ${Math.abs(gain).toLocaleString()} more square feet for the same budget.`:`About ${Math.abs(gain).toLocaleString()} fewer square feet for the same budget.`);
+  $('#houseSvg').parentElement.hidden=pilot;
+  $('#hThen').closest('.legend').hidden=pilot;
+  setText('#budgetNote',pilot?'The 2023 figures appear loan-derived. Most priced 2026 transactions were flagged as estimates. Differences can reflect how ATTOM produced the figures.':'Drawn to scale. Square feet are the budget divided by today’s illustrative price per square foot.');
+  if(pilot){
+    setText('#hRes','These estimates cannot establish how much space the same budget would buy.');
+  }else{
+    const sqThen=c.sqft,sqNow=sqThen*(then/now),gain=Math.round(sqNow-sqThen);
+    const k=260/Math.sqrt(3500),w0=k*Math.sqrt(sqThen),w1=k*Math.sqrt(sqNow),base=186,cx=160;
+    $('#houseSvg').innerHTML=`<line x1="20" x2="300" y1="${base}" y2="${base}" stroke="#D5D9E0" stroke-width="2" stroke-linecap="round"/>`+
+      `<path class="hh" d="${housePath(cx,base,w1,w1*.8)}" stroke="#004288" stroke-width="3.2" fill="rgba(0,66,136,.06)"/>`+
+      `<path class="hh" d="${housePath(cx,base,w0,w0*.8)}" stroke="#9A9AA0" stroke-width="2.4" stroke-dasharray="6 6"/>`+
+      (i===n-1?'':`<text x="${cx}" y="${base-44}" text-anchor="middle" font-size="26" font-weight="800" fill="#004288" style="letter-spacing:-.03em">${Math.abs(gain)<10?'≈ same':(gain>0?'+':'−')+Math.abs(gain).toLocaleString()+' sq ft'}</text>`);
+    setText('#hThen',`${L0} · ${sqThen.toLocaleString()} sq ft`);setText('#hNow',`Same budget today · ${Math.round(sqNow).toLocaleString()} sq ft`);
+    setText('#hRes',i===n-1?'Pick an earlier month on the chart.':Math.abs(gain)<10?'About the same space.':gain>0?`About ${Math.abs(gain).toLocaleString()} more square feet for the same budget.`:`About ${Math.abs(gain).toLocaleString()} fewer square feet for the same budget.`);
+  }
   // payment
-  const m0=pmt(then,r0,dp),m1=pmt(now,r1,dp),md=m1-m0;
-  setText('#mThenL',`${L0} · ${r0.toFixed(2)}%`);setText('#mThen',fmt$(m0));setText('#mNow',fmt$(m1));
+  const m0=available?pmt(then,r0,dp):null,m1=pmt(now,r1,dp),md=m1-m0;
+  setText('#mThenL',`${L0} · ${r0.toFixed(2)}%`);setText('#mThen',available?fmt$(m0):'—');setText('#mNow',fmt$(m1));
   $('#mThenL').parentNode.querySelector('small').textContent=`${L0} · ${r0.toFixed(2)}%`;
-  $('#mNow').parentNode.querySelector('small').textContent=`Today · ${r1.toFixed(2)}%`;
-  setText('#mDiff',i===n-1?'Choose an earlier month on the chart.':`${fmt$(Math.abs(md))} a month ${md<0?'lower':'higher'} today`);
-  setText('#mFine',(md>0&&i<n-1?'A lower price doesn’t always mean a lower payment. Rates matter, and the payment is what has to work today. ':'')+
+  $('#mNow').parentNode.querySelector('small').textContent=`${end} · ${r1.toFixed(2)}%`;
+  setText('#mDiff',!available?'Comparison unavailable.':i===n-1?'Choose an earlier month on the chart.':`${fmt$(Math.abs(md))} a month ${md<0?'lower':'higher'} in ${end}`);
+  setText('#mFine',(available&&md>0&&i<n-1?'A lower price doesn’t always mean a lower payment. Rates matter, and the payment is what has to work today. ':'')+
     `Assumes ${dp}% down, a ${D.assumptions.termYears}-year fixed loan, principal and interest only, at illustrative rates. Taxes, insurance and HOA are extra.`);
   // concession
   const pc=+$('#cRange').value;setText('#cRes',pc===0?'No concession in this illustration.':`A seller paying ${pc}% would put about ${fmtR(now*pc/100)} toward closing costs.`);
@@ -518,7 +560,8 @@ function refreshAll(animate){
   const p=prices();
   if(S.followPeak)S.sel=peakIdx(p);
   S.sel=Math.min(S.sel,N()-1);
-  if(!S.disp.length||!animate){S.disp=p.slice();draw();drawScrub()}else tweenTo(p);
+  cancelAnimationFrame(S.raf);
+  if(isPilot()||S.disp.includes(null)||!S.disp.length||!animate){S.disp=p.slice();draw();drawScrub()}else tweenTo(p);
   renderResults();
 }
 
@@ -526,7 +569,7 @@ function refreshAll(animate){
 const SK=[
  ['Rates are too high.','For many buyers they feel that way, and nobody can say where rates go next. So nothing here assumes they’ll fall. The payment shown uses one stated rate; what matters is whether it works for your budget today.'],
  ['Home prices are still expensive.','They can be. That’s why this compares similar homes in the same neighborhood, then and now, instead of a citywide headline. A shift in which homes sell can move an average without any one home getting cheaper.'],
- ['I’m waiting for prices to drop.','Waiting can be a perfectly reasonable choice. This isn’t a prediction that prices will fall or rise. It shows what’s different today, so any decision you make rests on real numbers.'],
+ ['I’m waiting for prices to drop.','Waiting can be a perfectly reasonable choice. This isn’t a prediction that prices will fall or rise. It shows what’s different today, using the data source labeled above.'],
  ['I don’t know if it’s the right time.','Nobody does, and no one can time the market. A better question is whether a home you’d actually want works at today’s terms. That’s the one worth answering.']
 ];
 function buildSk(){
@@ -556,7 +599,12 @@ function observe(){
   const cio=new IntersectionObserver(es=>{if(es[0].isIntersecting){cio.disconnect();revealChart();T.send('chart_view')}},{threshold:.35});
   cio.observe($('#chartPanel'));
 }
-fetch('/mortgage/explorer/data.json').then(r=>r.json()).then(d=>{
+Promise.all(['data.json','attom-circle-c-pilot.json'].map(async file=>{
+  const response=await fetch('/mortgage/explorer/'+file);
+  if(!response.ok)throw new Error(file);
+  return response.json();
+})).then(([d,pilot])=>{
+  observations=new Map(pilot.observations.map(row=>[row.month,row]));
   D=d;S.sel=peakIdx(prices());S.disp=prices();
   buildHero();buildSelectors();buildSk();size();draw();renderResults();observe();T.send('page_view');
 }).catch(()=>{document.querySelector('main').innerHTML='<div class="wrap err">The preview data couldn’t load. Please refresh.</div>'});
