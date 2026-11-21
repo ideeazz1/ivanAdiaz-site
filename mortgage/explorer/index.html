@@ -345,7 +345,21 @@ const fmtR=n=>fmt$(Math.round(n/100)*100);
 const T={log:[],timers:{},
   send(name,props={}){
     this.log.push({name,props});
-    if(typeof window.clarity==='function'){try{window.clarity('event',name)}catch(e){}}   // Microsoft Clarity hook (not loaded in this concept)
+    // Aggregated explorer interaction events only. No ZIP input, contact, budget or down-payment values.
+    const safeNames=new Set(['page_view','chart_view','graph_scrub','chart_jump','neighborhood_change','home_size_change','skeptic_open','concession_toggle','invite_open','try_zip','cta_take_another_look']);
+    if(safeNames.has(name)){
+      const safe={};
+      if(name==='graph_scrub'&&/^\\d{4}-\\d{2}$/.test(String(props.month||'')))safe.month=props.month;
+      if(name==='neighborhood_change'&&['circle-c','avana','meridian'].includes(props.hood))safe.neighborhood=props.hood;
+      if(name==='home_size_change'&&['starter','growing','moveup','larger'].includes(props.cat))safe.home_size=props.cat;
+      if(name==='chart_jump'&&['peak','start','now'].includes(props.to))safe.jump=props.to;
+      if(name==='skeptic_open'&&Number.isInteger(props.i)&&props.i>=0&&props.i<4)safe.question=props.i;
+      if(name==='concession_toggle'&&typeof props.on==='boolean')safe.enabled=props.on;
+      const eventName=name==='page_view'?'explorer_view':name;
+      if(Array.isArray(window.dataLayer))window.dataLayer.push({event:'explorer_'+eventName,...safe});
+      else if(typeof window.gtag==='function')window.gtag('event','explorer_'+eventName,safe);
+    }
+    if(typeof window.clarity==='function'){try{window.clarity('event',name)}catch(e){}} // Requires separate Clarity installation
     if(DEBUG){const d=$('#dbg');if(d){d.textContent=name+' '+JSON.stringify(props)+'\n'+d.textContent}}
   },
   debounced(name,props,ms=700){clearTimeout(this.timers[name]);this.timers[name]=setTimeout(()=>this.send(name,props),ms)}
