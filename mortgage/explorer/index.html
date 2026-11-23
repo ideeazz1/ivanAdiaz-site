@@ -534,7 +534,7 @@ function clearMarket(){
   $('#marketRows').replaceChildren();
   $('#zipCompare').hidden=true;
   $('#zipTimeline').replaceChildren();
-  $('#zipTimeline').hidden=true;
+  $('#zipTimeline').setAttribute('hidden','');
   $('#zipChartNote').hidden=true;$('#zipChartNote').textContent='';
 }
 function setZipPending(zip,sizesLoaded=false){
@@ -605,7 +605,7 @@ function isValidZipMarket(d,z,choice){
 }
 function renderZipTimeline(data){
   const graph=$('#zipTimeline'),note=$('#zipChartNote');
-  graph.replaceChildren();graph.hidden=true;
+  graph.replaceChildren();graph.setAttribute('hidden','');
   const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
   const comp=$('#zipCompare');
   if(available.length<2){
@@ -658,7 +658,7 @@ function renderZipTimeline(data){
     const t=append('text',{x:pos,y:227,fill:'#52657C','font-size':13,'text-anchor':align});
     t.textContent=lab(value);
   }
-  graph.hidden=false;
+  graph.removeAttribute('hidden');
   graph.setAttribute('aria-label','Calculated estimated home values from '+lab(first.month)+' to '+lab(last.month)+'. Gaps are not interpolated.');
   note.hidden=false;note.textContent='Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
 }
