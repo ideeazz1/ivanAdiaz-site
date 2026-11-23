@@ -806,6 +806,8 @@ function selectZipObservation(index,sendEvent=true){
       (go==='start'&&i===0)||(go==='peak'&&i===peak)||
       (go==='latest'&&i===zipChartPoints.length-1)));
   });
+  if(currentZipMarket&&!$('#marketState').hidden)
+    renderZipStory(currentZipMarket,i);
   if(sendEvent)T.debounced('graph_scrub',{month:item.month});
 }
 function pickZipObservation(e){
@@ -971,82 +973,101 @@ function renderZipTimeline(data){
     'Drag between supported dated survey observations. Missing months are not calculated.';
 }
 /* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
-function renderZipStory(data){
+function renderZipStory(data,selectedIndex=0){
   currentZipMarket=data;
   const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
-  if(available.length<2){
-    $('#results').hidden=true;
-    return;
-  }
-  const earlier=available[0],later=available.at(-1);
+  if(available.length<2){$('#results').hidden=true;return}
+  const index=Math.min(available.length-1,Math.max(0,selectedIndex));
+  const earlier=available[index],later=available.at(-1);
   const then=earlier.calculated_home_value_usd,now=later.calculated_home_value_usd;
-  if(earlier.month===later.month||then<=0||now<=0){
-    $('#results').hidden=true;
-    return;
-  }
+  if(then<=0||now<=0){$('#results').hidden=true;return}
+  const monthly=data.calculation_method==='acs_size_fhfa_monthly_estimate';
+  const modeled=data.geography==='zcta_approximation';
   const firstLabel=lab(earlier.month),lastLabel=lab(later.month);
-  // Census's latest 5-year survey is not today's housing market.
-  const labelIsCurrent=later.month===new Date().toISOString().slice(0,7);
-  $('#results .eyebrow').textContent=labelIsCurrent?'Then vs. now':'Then vs. latest dated estimate';
-  const diff=now-then,pct=100*diff/then,abs=Math.abs(diff);
+  const latestLabel=monthly?'Modeled '+lastLabel:lastLabel;
+  const delta=now-then,pct=100*delta/then,abs=Math.abs(delta),isLatest=index===available.length-1;
   const choice=zipProfile?.size_profile?.options.find(o=>o.id===S.cat);
-  if(!choice||choice.sqft!==data.representative_sqft){
-    $('#results').hidden=true;
-    return;
-  }
-  const sqft=choice.sqft,spaceToday=sqft*then/now;
-  const deltaSpace=Math.round(spaceToday-sqft);
-  const rate=D.rates.at(-1),down=D.assumptions.downPct,years=D.assumptions.termYears;
-  const payThen=pmt(then,rate,down),payNow=pmt(now,rate,down);
-  const payDiff=payNow-payThen;
-  document.querySelectorAll('.latestLabel').forEach(el=>el.textContent=lastLabel);
-  setText('#zipValueLabel','Calculated home values');
-  setText('#rHead','What changed for a '+sqft.toLocaleString()+' sq ft home?');
-  setText('#rSub','ZIP '+data.zip+' · '+firstLabel+' versus '+lastLabel+' · illustrative survey estimates');
+  if(!choice||choice.sqft!==data.representative_sqft){$('#results').hidden=true;return}
+  const sqft=choice.sqft;
+  const rate=Number($('#mRate').value)||D.rates.at(-1);
+  const down=Number($('#mDown').value)||D.assumptions.downPct;
+  const years=D.assumptions.termYears;
+  $('#mRateV').textContent=rate.toFixed(2)+'%';
+  $('#mDownV').textContent=down+'%';
+  $('#financeControls').hidden=false;
+  document.querySelectorAll('.latestLabel').forEach(el=>el.textContent=latestLabel);
+  setText('#zipThenDate','Compared · '+firstLabel);
+  setText('#zipThenValue',fmt$(then));
+  setText('#zipNowDate',latestLabel);
+  setText('#zipNowValue',fmt$(now));
+  setText('#zipComparisonNote',isLatest?'Drag backward to compare a prior month.':
+    fmt$(abs)+(delta>0?' higher':delta<0?' lower':' unchanged')+
+    ' in the '+lastLabel+' model · not sale-price savings');
+  setText('#zipValueLabel','Modeled home value');
+  setText('#rHead',isLatest?'Explore how your buying power changed':
+    'What changed for a '+sqft.toLocaleString()+' sq ft home?');
+  setText('#rSub','ZIP '+data.zip+' · '+firstLabel+' versus '+latestLabel+
+    (monthly?' · regional FHFA-indexed model':' · illustrative ZIP survey estimates'));
   setText('#pThenL',firstLabel);setText('#pThen',fmt$(then));setText('#pNow',fmt$(now));
-  setText('#pDiff',fmt$(abs)+(diff<0?' lower':diff>0?' higher':' unchanged')+
-    ' ('+(pct>0?'+':'')+pct.toFixed(1)+'%) · modeled difference, not savings');
-  const isModeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
-  setText('#priceNote',isModeled?
-    'Illustrative value = ACS owner-reported median home value × ('+sqft.toLocaleString()+
-    ' modeled sq ft ÷ '+data.benchmark_sqft.toLocaleString()+
-    ' modeled typical sq ft). '+data.estimated_housing_units.toLocaleString()+
-    ' survey-estimated owner-occupied housing units; NOT individual property samples. '+
+  setText('#pDiff',isLatest?'Drag to another month to compare.':
+    fmt$(abs)+(delta>0?' higher':delta<0?' lower':' unchanged')+
+    ' ('+(pct>0?'+':'')+pct.toFixed(1)+'%) · modeled difference');
+  setText('#priceNote',monthly?
+    'ZIP 2024 ACS owner-reported median value scaled to '+sqft.toLocaleString()+
+    ' modeled sq ft. Published monthly FHFA '+data.fhfa_index_geography+
+    ' movements shape the curve through '+lab(data.latest_observed_month)+
+    '. Later months are explicit modeled scenarios using the published trailing 12-month regional trend. '+
     data.limitations.join(' '):
-    'Estimated value = '+sqft.toLocaleString()+
-    ' sq ft × local median estimated value per sq ft. Samples: '+earlier.sample_count+
-    ' / '+later.sample_count+'. '+data.limitations.join(' '));
+    modeled?
+    'ZIP-area Census median owner-occupied value × ('+sqft.toLocaleString()+
+    ' modeled square feet ÷ '+data.benchmark_sqft.toLocaleString()+
+    ' typical modeled square feet). '+data.limitations.join(' '):
+    'Estimated value = selected home square footage × local median estimated value per sq ft. '+
+    data.limitations.join(' '));
+  // Same budget adjusts *both* home-outline sizes. Visitor edits in the
+  // existing optional calculator are reflected without claiming listings.
+  const typedBudget=Number($('#cBudget').value);
+  const budget=($('#cBudget').dataset.touched&&Number.isFinite(typedBudget)&&
+    typedBudget>=100000&&typedBudget<=5000000)?typedBudget:now;
+  const sizeThen=Math.max(100,Math.round(sqft*budget/then));
+  const sizeLatest=Math.max(100,Math.round(sqft*budget/now));
+  const gap=sizeLatest-sizeThen;
   $('#houseSvg').parentElement.hidden=false;
   $('#hThen').closest('.legend').hidden=false;
-  const k=260/Math.sqrt(Math.max(3500,sqft,spaceToday)),cx=160,base=186;
-  const w0=k*Math.sqrt(sqft),w1=k*Math.sqrt(spaceToday);
+  const scale=260/Math.sqrt(Math.max(3500,sizeThen,sizeLatest)),cx=160,base=186;
+  const wThen=scale*Math.sqrt(sizeThen),wLatest=scale*Math.sqrt(sizeLatest);
   $('#houseSvg').innerHTML='<line x1="20" x2="300" y1="'+base+'" y2="'+base+
     '" stroke="#D5D9E0" stroke-width="2"/>'+
-    '<path class="hh" d="'+housePath(cx,base,w1,w1*.8)+'" stroke="#004288" stroke-width="3.2" fill="rgba(0,66,136,.06)"/>'+
-    '<path class="hh" d="'+housePath(cx,base,w0,w0*.8)+'" stroke="#9A9AA0" stroke-width="2.4" stroke-dasharray="6 6"/>';
-  setText('#hThen',firstLabel+' · '+sqft.toLocaleString()+' sq ft');
-  setText('#hNow','Same modeled budget · '+Math.round(spaceToday).toLocaleString()+' sq ft');
-  setText('#hRes',Math.abs(deltaSpace)<10?'About the same space at the same modeled budget.':
-    Math.abs(deltaSpace).toLocaleString()+(deltaSpace>0?' more':' fewer')+' sq ft at the same modeled budget.');
-  setText('#budgetNote','A visual illustration at the same budget—not a listing or available home.');
+    '<path class="hh" d="'+housePath(cx,base,wLatest,wLatest*.8)+'" stroke="#004288" stroke-width="3.2" fill="rgba(0,66,136,.06)"/>'+
+    '<path class="hh" d="'+housePath(cx,base,wThen,wThen*.8)+'" stroke="#9A9AA0" stroke-width="2.4" stroke-dasharray="6 6"/>';
+  setText('#hThen',firstLabel+' · '+sizeThen.toLocaleString()+' sq ft');
+  setText('#hNow',lastLabel+' · '+sizeLatest.toLocaleString()+' sq ft');
+  setText('#hRes',isLatest?'Drag backward to compare home size at the same budget.':
+    Math.abs(gap)<10?'About the same space for the same budget.':
+    Math.abs(gap).toLocaleString()+(gap>0?' more':' fewer')+
+    ' sq ft at the same modeled budget.');
+  setText('#budgetNote','Illustration holding a '+fmt$(budget)+
+    ' budget constant, not an available listing. Change your budget below to explore.');
+  const payThen=pmt(then,rate,down),payLatest=pmt(now,rate,down);
+  const payGap=payLatest-payThen;
   setText('#mThenL',firstLabel+' · '+rate.toFixed(2)+'%');
-  $('#mNow').parentNode.querySelector('small').textContent=lastLabel+' · '+rate.toFixed(2)+'%';
-  setText('#mThen',fmt$(payThen));setText('#mNow',fmt$(payNow));
-  setText('#mDiff',fmt$(Math.abs(payDiff))+(payDiff<0?' less':payDiff>0?' more':' unchanged')+' monthly at the same illustrative rate');
-  setText('#mFine',down+'% down · '+years+'-year fixed · illustrative '+
-    rate.toFixed(2)+'% rate at both dates · principal & interest only.');
-  const percent=+$('#cRange').value;
-  setText('#cRes',percent===0?'No concession in this illustration.':
+  $('#mNow').parentNode.querySelector('small').textContent=
+    lastLabel+' · '+rate.toFixed(2)+'%';
+  setText('#mThen',fmt$(payThen));setText('#mNow',fmt$(payLatest));
+  setText('#mDiff',isLatest?'Drag backward for a monthly-payment comparison.':
+    fmt$(Math.abs(payGap))+(payGap<0?' less':payGap>0?' more':' unchanged')+
+    ' per month at the same assumed rate.');
+  setText('#mFine',down+'% down · '+years+'-year fixed · same illustrative '+
+    rate.toFixed(2)+'% rate at both dates · P&I only. Taxes, insurance, MI and HOA extra.');
+  const percent=Number($('#cRange').value);
+  setText('#cRes',percent===0?'No seller concession in this illustration.':
     'An illustrative seller contribution of '+percent+'% would be about '+
-    fmt$(now*percent/100)+' toward closing costs, if negotiated and permitted.');
+    fmt$(now*percent/100)+' toward closing costs, if negotiated and allowed.');
   $('#cBudget').placeholder=fmtR(now);
-  if(!$('#cBudget').dataset.touched)
-    $('#cBudget').value=Math.round(now/5000)*5000;
-  // Keep the displayed payment synchronized even after editing the budget.
+  if(!$('#cBudget').dataset.touched)$('#cBudget').value=Math.round(now/5000)*5000;
   calc();
   $('#results').hidden=false;
 }
-
 function renderZipMarket(data){
   const modeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
   $('#emptyState').hidden=true;
