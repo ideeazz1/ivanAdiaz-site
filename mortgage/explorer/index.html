@@ -100,6 +100,7 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .home svg{height:44px;width:auto;display:block}
 .home b{font-size:15px;letter-spacing:-.01em}
 .home span{font-size:13px;color:var(--ink2);margin-top:-8px}
+.home .sizeEvidence{font-size:11.5px;color:var(--ink2);line-height:1.45;margin-top:-4px}
 
 /* chart panel (the one dark object) */
 .panel{background:var(--dark);color:#fff;border-radius:var(--radius);padding:clamp(20px,3.4vw,34px);box-shadow:0 24px 60px rgba(14,30,56,.28)}
@@ -483,9 +484,13 @@ function buildSelectors(){
   hm.innerHTML=options.map(o=>{
     const w=Math.max(27,Math.min(55,Math.round(30+(Math.sqrt(o.sqft)-Math.sqrt(900))/
       (Math.sqrt(4000)-Math.sqrt(900))*24)));
+    const evidence=isZip&&zipProfile?
+      '<small class="sizeEvidence">'+o.sample_count.toLocaleString()+' sampled '+
+      (zipProfile.size_profile.population==='active_listings'?'listings':'homes')+
+      ' · '+o.size_band_sqft.min.toLocaleString()+'–'+o.size_band_sqft.max.toLocaleString()+' sq ft band</small>':'';
     return '<button class="home" type="button" aria-pressed="'+(o.id===S.cat)+'" data-c="'+o.id+'">'+
       '<svg viewBox="0 0 64 44" aria-hidden="true"><path class="hh" d="'+housePath(32,41,w,w*.72)+'" stroke="#004288" stroke-width="2.4"/></svg>'+
-      '<b>'+o.name+'</b><span>'+o.sqft.toLocaleString()+' sq ft</span></button>';
+      '<b>'+o.name+'</b><span>'+o.sqft.toLocaleString()+' sq ft</span>'+evidence+'</button>';
   }).join('');
   hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
     S.cat=b.dataset.c;
