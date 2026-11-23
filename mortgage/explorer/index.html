@@ -85,6 +85,18 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .zip-compare p{grid-column:1/-1;margin:2px 0 0;color:var(--ink2);font-size:13px}
 .zip-timeline{width:100%;max-height:280px;display:block;margin:8px 0;overflow:visible}
 .zip-timeline[hidden]{display:none}
+.zip-timeline[role=slider]{cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.zip-timeline[role=slider]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
+.zip-scrub{margin:6px 0 14px;padding:14px 16px;background:var(--acT);border-radius:var(--radius)}
+.zip-scrub[hidden]{display:none}
+.zip-scrub-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 15px}
+.zip-scrub-head span{color:var(--ink2);font-size:13px;font-weight:600}
+.zip-scrub-head strong{font-size:clamp(21px,4.5vw,30px);letter-spacing:-.025em}
+.zip-scrub p{font-size:13px;color:var(--ink2);margin:5px 0 0}
+.zip-scrub-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.zip-scrub-buttons button{border:1.5px solid #cad9ea;background:#fff;color:var(--ink);border-radius:99px;padding:8px 15px;font-size:13px;font-weight:700}
+.zip-scrub-buttons button[aria-pressed=true]{background:var(--ac);color:#fff;border-color:var(--ac)}
+.zip-scrub-buttons button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 .zip-chart-note{font-size:12px;color:var(--ink2);margin:6px 0 18px}
 .market-observation{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #e6e8ed}
 .market-observation:last-child{border-bottom:none}
@@ -258,7 +270,19 @@ footer p{margin:0 0 10px;max-width:56em}
         <div><small id="zipNowDate">Now</small><strong id="zipNowValue"></strong></div>
         <p id="zipComparisonNote"></p>
       </div>
-      <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 244" role="img" aria-label="Calculated ZIP home-value observations across time" hidden></svg>
+      <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 244" role="img" tabindex="-1" aria-label="Calculated ZIP home-value observations across time" hidden></svg>
+      <div id="zipScrub" class="zip-scrub" hidden>
+        <div class="zip-scrub-head" aria-live="polite" aria-atomic="true">
+          <span id="zipScrubDate">Selected survey date</span>
+          <strong id="zipScrubValue">—</strong>
+        </div>
+        <p id="zipScrubContext"></p>
+        <div class="zip-scrub-buttons" role="group" aria-label="Explore dated ZIP estimates">
+          <button type="button" data-zip-go="start" aria-pressed="true">Start</button>
+          <button type="button" data-zip-go="peak" aria-pressed="false">Peak</button>
+          <button type="button" data-zip-go="latest" aria-pressed="false">Latest</button>
+        </div>
+      </div>
       <p id="zipChartNote" class="zip-chart-note" hidden></p>
       <div id="marketRows" aria-live="polite"></div>
       <p class="fine">Modeled value comparisons are planning illustrations, not a particular home's price, a listing, or a promise of savings.</p>
@@ -426,6 +450,7 @@ let observations;
 const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database2/explorer/market/zip';
 const SIZE_NAMES={starter:'Starter home',growing:'Typical home',moveup:'More space',larger:'Larger home'};
 let zipProfile=null,zipLookupToken=0,zipLookupController=null,currentZipMarket=null;
+let zipChartPoints=[],zipChartCoords=[],zipChartSelected=0,zipChartDragging=false;
 const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip && observations?.size>0;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
@@ -562,6 +587,10 @@ function clearMarket(){
   $('#zipCompare').hidden=true;
   $('#zipTimeline').replaceChildren();
   $('#zipTimeline').setAttribute('hidden','');
+  $('#zipTimeline').setAttribute('role','img');
+  $('#zipTimeline').setAttribute('tabindex','-1');
+  $('#zipScrub').hidden=true;
+  zipChartPoints=[];zipChartCoords=[];zipChartSelected=0;zipChartDragging=false;
   $('#zipChartNote').hidden=true;$('#zipChartNote').textContent='';
 }
 function setZipPending(zip,sizesLoaded=false){
@@ -671,9 +700,94 @@ function isValidZipMarket(d,z,choice){
   }
   return actual>0;
 }
+// Draggable X/Y selector: selects ONLY dated observations actually provided
+// for this ZIP. Months without a published point are never interpolated.
+function selectZipObservation(index,sendEvent=true){
+  if(!zipChartPoints.length||!zipChartCoords.length)return;
+  const i=Math.max(0,Math.min(zipChartPoints.length-1,Math.round(index)));
+  zipChartSelected=i;
+  const item=zipChartPoints[i],point=zipChartCoords[i],last=zipChartPoints.at(-1);
+  const graph=$('#zipTimeline'),overlay=$('#zipScrubOverlay');
+  if(!overlay)return;
+  overlay.replaceChildren();
+  const NS='http://www.w3.org/2000/svg';
+  const add=(tag,attrs)=>{
+    const el=document.createElementNS(NS,tag);
+    for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));
+    overlay.append(el);
+  };
+  add('line',{x1:point.x,y1:28,x2:point.x,y2:195,stroke:'#004288',
+    'stroke-width':2,'stroke-dasharray':'5 6'});
+  add('line',{x1:46,y1:point.y,x2:point.x,y2:point.y,stroke:'#004288',
+    'stroke-width':1.5,'stroke-dasharray':'4 6'});
+  add('circle',{cx:point.x,cy:point.y,r:12,fill:'rgba(0,66,136,.12)'});
+  add('circle',{cx:point.x,cy:point.y,r:7,fill:'#004288',stroke:'#fff','stroke-width':2.5});
+  $('#zipScrubDate').textContent='Selected · '+lab(item.month);
+  $('#zipScrubValue').textContent=fmt$(item.calculated_home_value_usd);
+  const difference=last.calculated_home_value_usd-item.calculated_home_value_usd;
+  $('#zipScrubContext').textContent=i===zipChartPoints.length-1?
+    'Latest dated survey observation. Drag toward an earlier dot to compare.':
+    'Latest dated ('+lab(last.month)+') is '+fmt$(Math.abs(difference))+
+    (difference<0?' lower':difference>0?' higher':' unchanged')+
+    ' than this observation. Not a current selling-price quote.';
+  graph.setAttribute('aria-valuenow',String(i));
+  graph.setAttribute('aria-valuetext',lab(item.month)+', '+fmt$(item.calculated_home_value_usd));
+  document.querySelectorAll('[data-zip-go]').forEach(button=>{
+    const go=button.dataset.zipGo,peak=zipChartPoints.reduce((best,p,j)=>
+      p.calculated_home_value_usd>zipChartPoints[best].calculated_home_value_usd?j:best,0);
+    button.setAttribute('aria-pressed',String(
+      (go==='start'&&i===0)||(go==='peak'&&i===peak)||
+      (go==='latest'&&i===zipChartPoints.length-1)));
+  });
+  if(sendEvent)T.debounced('graph_scrub',{month:item.month});
+}
+function pickZipObservation(e){
+  const graph=$('#zipTimeline'),rect=graph.getBoundingClientRect();
+  if(!zipChartCoords.length||!rect.width)return;
+  const x=(e.clientX-rect.left)/rect.width*700;
+  let best=0;
+  for(let i=1;i<zipChartCoords.length;i++)
+    if(Math.abs(zipChartCoords[i].x-x)<Math.abs(zipChartCoords[best].x-x))best=i;
+  if(best!==zipChartSelected)selectZipObservation(best);
+}
+const zipGraph=$('#zipTimeline');
+zipGraph.addEventListener('pointerdown',e=>{
+  if($('#zipScrub').hidden)return;
+  zipChartDragging=true;
+  try{zipGraph.setPointerCapture(e.pointerId)}catch(_){}
+  pickZipObservation(e);
+  e.preventDefault();
+});
+zipGraph.addEventListener('pointermove',e=>{
+  if(!$('#zipScrub').hidden&&(zipChartDragging||e.pointerType==='mouse'))
+    pickZipObservation(e);
+});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])
+  zipGraph.addEventListener(event,()=>{zipChartDragging=false});
+zipGraph.addEventListener('keydown',e=>{
+  if($('#zipScrub').hidden)return;
+  let next=null;
+  if(e.key==='ArrowLeft'||e.key==='ArrowDown')next=zipChartSelected-1;
+  if(e.key==='ArrowRight'||e.key==='ArrowUp')next=zipChartSelected+1;
+  if(e.key==='Home')next=0;
+  if(e.key==='End')next=zipChartPoints.length-1;
+  if(next!==null){e.preventDefault();selectZipObservation(next)}
+});
+document.querySelectorAll('[data-zip-go]').forEach(button=>
+  button.addEventListener('click',()=>{
+    if($('#zipScrub').hidden||!zipChartPoints.length)return;
+    const action=button.dataset.zipGo;
+    const peak=zipChartPoints.reduce((best,p,i)=>
+      p.calculated_home_value_usd>zipChartPoints[best].calculated_home_value_usd?i:best,0);
+    selectZipObservation(action==='start'?0:action==='peak'?peak:zipChartPoints.length-1);
+    T.send('chart_jump',{to:action==='latest'?'now':action});
+  })
+);
 function renderZipTimeline(data){
   const graph=$('#zipTimeline'),note=$('#zipChartNote');
   graph.replaceChildren();graph.setAttribute('hidden','');
+  $('#zipScrub').hidden=true;
+  zipChartPoints=[];zipChartCoords=[];zipChartSelected=0;zipChartDragging=false;
   const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
   const comp=$('#zipCompare');
   if(available.length<2){
@@ -722,13 +836,37 @@ function renderZipTimeline(data){
     append('circle',{cx:x(p.month),cy:y(p.calculated_home_value_usd),r:4.7,fill:'#004288'});
   }
   flush();
+  // Two separately dated survey points get a dashed visual connector;
+  // the path does not assert measured or interpolated values in between.
+  if(available.length===2&&month1-month0>1){
+    append('line',{x1:x(first.month),y1:y(first.calculated_home_value_usd),
+      x2:x(last.month),y2:y(last.calculated_home_value_usd),
+      stroke:'#97B8DC','stroke-width':2,'stroke-dasharray':'4 9'});
+  }
   for(const [value,pos,align] of [[first.month,left,'start'],[last.month,right,'end']]){
     const t=append('text',{x:pos,y:227,fill:'#52657C','font-size':13,'text-anchor':align});
     t.textContent=lab(value);
   }
+  append('g',{id:'zipScrubOverlay'});
+  zipChartPoints=available;
+  zipChartCoords=available.map(p=>({x:x(p.month),y:y(p.calculated_home_value_usd)}));
+  $('#zipScrub').hidden=false;
+  const buttons=$('#zipScrub').querySelectorAll('[data-zip-go]');
+  buttons.forEach(button=>{
+    if(button.dataset.zipGo==='start')button.textContent='Start · '+lab(first.month);
+    if(button.dataset.zipGo==='latest')button.textContent='Latest · '+lab(last.month);
+  });
+  graph.setAttribute('role','slider');
+  graph.setAttribute('tabindex','0');
+  graph.setAttribute('aria-valuemin','0');
+  graph.setAttribute('aria-valuemax',String(available.length-1));
+  graph.setAttribute('aria-label','Historical ZIP estimates: drag left or right to inspect actual dated survey observations, or use arrow keys.');
   graph.removeAttribute('hidden');
-  graph.setAttribute('aria-label','Calculated estimated home values from '+lab(first.month)+' to '+lab(last.month)+'. Gaps are not interpolated.');
-  note.hidden=false;note.textContent=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size'?'Points represent the latest year of each Census five-year survey period, not actual market sales. Do not interpret as a current market quote.':'Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
+  selectZipObservation(0,false);
+  note.hidden=false;note.textContent=
+    'Drag across the X/Y graph to inspect each actual dated estimate; use Start, Peak or Latest. '+
+    'Horizontal axis: survey date. Vertical axis: modeled owner-reported value (not $0-based). '+
+    'Dots are observed survey vintages; dashed guides do not fill missing months or represent sale prices.';
 }
 
 /* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
