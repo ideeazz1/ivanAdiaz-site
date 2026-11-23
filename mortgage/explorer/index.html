@@ -220,8 +220,9 @@ footer p{margin:0 0 10px;max-width:56em}
       </form>
       <p class="lbl">Or explore an example neighborhood</p>
       <div class="pills" id="hoods" role="group" aria-label="Example neighborhoods"></div>
-      <p class="lbl">Now the home you pictured</p>
+      <p class="lbl" id="sizePrompt">Select a ZIP code or example to discover home sizes</p>
       <div class="homes" id="homes" role="group" aria-label="Home size"></div>
+      <p class="fine" id="sizeSource" hidden></p>
     </div>
   </div>
 </section>
@@ -406,13 +407,8 @@ const catO=()=>D.categories.find(c=>c.id===S.cat);
 const hoodO=()=>D.neighborhoods.find(h=>h.id===S.hood);
 let observations;
 const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database2/explorer/market/zip';
-const ZIP_SIZE_BANDS=Object.freeze({
-  starter:{min:1800,max:2200},
-  growing:{min:2400,max:2800},
-  moveup:{min:3000,max:3400},
-  larger:{min:3500,max:4000}
-});
-let zipLookupToken=0,zipLookupController=null;
+const SIZE_NAMES={starter:'Starter home',growing:'Typical home',moveup:'More space',larger:'Larger home'};
+let zipProfile=null,zipLookupToken=0,zipLookupController=null;
 const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
@@ -448,39 +444,62 @@ function buildHero(){
 /* ---------- selectors ---------- */
 function buildSelectors(){
   const h=$('#hoods');
-  h.innerHTML=D.neighborhoods.map(n=>`<button class="pill" type="button" aria-pressed="${n.id===S.hood}" data-h="${n.id}">${n.name}</button>`).join('');
+  h.innerHTML=D.neighborhoods.map(n=>'<button class="pill" type="button" aria-pressed="'+(n.id===S.hood)+'" data-h="'+n.id+'">'+n.name+'</button>').join('');
   h.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
-    $('#zip').value='';$('#zipmsg').textContent='Example neighborhood selected — see the clearly labeled sample data below.';
+    $('#zip').value='';
+    $('#zipmsg').textContent='Example neighborhood selected — numbers below are labeled estimates or illustrations.';
     setHood(b.dataset.h);T.send('neighborhood_change',{hood:b.dataset.h});
   }));
+  const isZip=Boolean(S.demoZip);
+  const options=S.hood?D.categories.map(c=>({id:c.id,name:c.name,sqft:c.sqft})):
+    isZip&&zipProfile?zipProfile.size_profile.options.map(o=>({...o,name:SIZE_NAMES[o.id]})):[];
+  const heading=$('#sizePrompt'),source=$('#sizeSource');
+  heading.textContent=S.hood?'Now the home you pictured':
+    isZip?(zipProfile?'Home sizes represented in ZIP '+S.demoZip:
+      'Local home sizes will appear when inventory is available'):
+      'Choose a ZIP code or an example to see home sizes';
+  source.hidden=!(isZip&&zipProfile);
+  if(!source.hidden){
+    const p=zipProfile.size_profile;
+    source.textContent='Sizes based on '+(p.population==='single_family_stock'?'single-family housing stock':'active for-sale listings')+
+      ' · '+p.sample_count.toLocaleString()+' observations · '+p.source+' · '+p.as_of+'.';
+  }else source.textContent='';
   const hm=$('#homes');
-  hm.innerHTML=D.categories.map(c=>{
-    const w=Math.round(30+ (Math.sqrt(c.sqft)-Math.sqrt(2000))/(Math.sqrt(3500)-Math.sqrt(2000))*24);
-    return `<button class="home" type="button" aria-pressed="${c.id===S.cat}" data-c="${c.id}">
-      <svg viewBox="0 0 64 44" aria-hidden="true"><path class="hh" d="${housePath(32,41,w,w*.72)}" stroke="#004288" stroke-width="2.4"/></svg>
-      <b>${c.name}</b><span>${c.label} sq ft</span></button>`}).join('');
-  hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{S.cat=b.dataset.c;
+  hm.innerHTML=options.map(o=>{
+    const w=Math.max(27,Math.min(55,Math.round(30+(Math.sqrt(o.sqft)-Math.sqrt(900))/
+      (Math.sqrt(4000)-Math.sqrt(900))*24)));
+    return '<button class="home" type="button" aria-pressed="'+(o.id===S.cat)+'" data-c="'+o.id+'">'+
+      '<svg viewBox="0 0 64 44" aria-hidden="true"><path class="hh" d="'+housePath(32,41,w,w*.72)+'" stroke="#004288" stroke-width="2.4"/></svg>'+
+      '<b>'+o.name+'</b><span>'+o.sqft.toLocaleString()+' sq ft</span></button>';
+  }).join('');
+  hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    S.cat=b.dataset.c;
     hm.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
     if(S.hood)refreshAll(true);
-    else if(S.demoZip){const z=S.demoZip;cancelZipLookup();clearMarket();showResults(false);setZipPending(z);requestZipMarket(z,S.cat,zipLookupToken)}
-    T.send('home_size_change',{cat:S.cat});}));
+    else if(S.demoZip&&zipProfile){
+      const z=S.demoZip;cancelZipLookup();clearMarket();showResults(false);
+      setZipPending(z,true);requestZipPrices(z,S.cat,zipLookupToken);
+    }
+    T.send('home_size_change',{cat:S.cat});
+  }));
   $('#zipbox').onsubmit=e=>{
     e.preventDefault();const z=$('#zip').value.trim();
-    cancelZipLookup();clearMarket();
-    S.hood=null;S.demoZip=null;clearResults();showResults(false);
+    cancelZipLookup();clearMarket();zipProfile=null;
+    S.hood=null;S.demoZip=null;S.cat=null;clearResults();showResults(false);
     if(!/^\d{5}$/.test(z)){
       $('#zipmsg').textContent='Enter a valid five-digit ZIP code.';
       $('#emptyTitle').textContent='Enter a valid ZIP code';
-      $('#emptyHelp').textContent='No market estimates are shown without a valid location.';
+      $('#emptyHelp').textContent='No local estimates are shown without a valid location.';
       buildSelectors();T.send('try_zip',{});return;
     }
-    S.demoZip=z;buildSelectors();setZipPending(z);
-    requestZipMarket(z,S.cat,zipLookupToken);
-    T.send('try_zip',{});   // the ZIP itself is never sent to analytics
+    S.demoZip=z;buildSelectors();setZipPending(z,false);
+    requestZipSizes(z,zipLookupToken);
+    T.send('try_zip',{}); // Never pass ZIP through analytics.
   };
 }
 function setHood(id){
-  cancelZipLookup();clearMarket();
+  cancelZipLookup();clearMarket();zipProfile=null;
+  if(!D.categories.some(c=>c.id===S.cat))S.cat='growing';
   S.hood=id;S.demoZip=null;clearResults();showResults(true);size();buildSelectors();refreshAll(false);
 }
 function showResults(ready){
@@ -499,17 +518,48 @@ function clearMarket(){
   $('#marketLimitations').textContent='';
   $('#marketRows').replaceChildren();
 }
-function setZipPending(zip){
+function setZipPending(zip,sizesLoaded=false){
   $('#emptyState').hidden=false;
-  $('#emptyTitle').textContent='Checking local coverage for ZIP '+zip;
-  $('#emptyHelp').textContent='Only matching, source-labeled market observations will appear.';
+  $('#emptyTitle').textContent=(sizesLoaded?'Checking prices for ZIP ':'Checking housing sizes for ZIP ')+zip;
+  $('#emptyHelp').textContent=sizesLoaded?
+    'This size group is selected from local inventory. Prices appear only when matching data is available.':
+    'Local housing-stock data determines the available size choices.';
   $('#zipmsg').textContent='Checking available local data…';
 }
 function setZipUnavailable(zip){
   $('#emptyState').hidden=false;clearMarket();
-  $('#emptyTitle').textContent='Market data for ZIP '+zip+' is not available yet';
-  $('#emptyHelp').textContent='We will not substitute figures from another ZIP. You can select a labeled example neighborhood above.';
-  $('#zipmsg').textContent='No approved local market observations are available for this ZIP.';
+  $('#emptyTitle').textContent=zipProfile?'Market prices for ZIP '+zip+' are not available yet':
+    'Market data for ZIP '+zip+' is not available yet';
+  $('#emptyHelp').textContent=zipProfile?
+    'Local home-size choices are available above. Historical sale prices for the selected size have not been verified.':
+    'No approved local home-size distribution is connected yet. We will not substitute sizes or prices from another ZIP.';
+  $('#zipmsg').textContent=zipProfile?'Select a different home size or an example neighborhood.':
+    'No approved local housing-stock data is available for this ZIP.';
+}
+function isValidZipSizes(d,zip){
+  if(!d||d.status!=='sizes_available'||d.zip!==zip||d.geography!=='postal_code')return false;
+  const p=d.size_profile;
+  if(!p||typeof p.source!=='string'||!p.source.trim()||p.source.length>180||
+      !/^\d{4}-\d{2}-\d{2}$/.test(p.as_of||'')||
+      !['single_family_stock','active_listings'].includes(p.population)||
+      !Number.isInteger(p.sample_count)||p.sample_count<1||p.sample_count>10000000||
+      !Array.isArray(p.options)||p.options.length<1||p.options.length>4)return false;
+  let lastMax=0,lastId=-1;
+  const order=['starter','growing','moveup','larger'];
+  for(const o of p.options){
+    if(!o||!order.includes(o.id)||order.indexOf(o.id)<=lastId||
+        !Number.isInteger(o.sqft)||!o.size_band_sqft||
+        !Number.isInteger(o.size_band_sqft.min)||!Number.isInteger(o.size_band_sqft.max)||
+        o.size_band_sqft.min<500||o.size_band_sqft.max>8000||
+        o.sqft<o.size_band_sqft.min||o.sqft>o.size_band_sqft.max||
+        o.size_band_sqft.max-o.size_band_sqft.min<150||
+        o.size_band_sqft.max-o.size_band_sqft.min>1400||
+        o.size_band_sqft.min<=lastMax||
+        !Number.isInteger(o.sample_count)||o.sample_count<1||
+        o.sample_count>p.sample_count)return false;
+    lastMax=o.size_band_sqft.max;lastId=order.indexOf(o.id);
+  }
+  return true;
 }
 function isValidZipMarket(d,z,band){
   if(!d||d.status!=='available'||d.zip!==z||d.geography!=='postal_code')return false;
@@ -552,30 +602,49 @@ function renderZipMarket(data){
     info.append(amount,count);row.append(month,info);target.append(row);
   }
 }
-async function requestZipMarket(zip,cat,token){
-  const band=ZIP_SIZE_BANDS[cat];
-  if(!band){setZipUnavailable(zip);return}
+async function requestZipSizes(zip,token){
   const controller=new AbortController();zipLookupController=controller;
   try{
     const response=await fetch(MARKET_ZIP_API,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({zip}),signal:controller.signal,
+      cache:'no-store',credentials:'omit'
+    });
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip)return;
+    if(!response.ok){setZipUnavailable(zip);return}
+    const data=await response.json();
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip)return;
+    if(!isValidZipSizes(data,zip)){setZipUnavailable(zip);return}
+    zipProfile=data;
+    S.cat=data.size_profile.options.find(o=>o.id==='growing')?.id||
+      data.size_profile.options[Math.min(1,data.size_profile.options.length-1)].id;
+    buildSelectors();setZipPending(zip,true);
+    requestZipPrices(zip,S.cat,token);
+  }catch(_){
+    if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip)setZipUnavailable(zip);
+  }finally{if(zipLookupController===controller)zipLookupController=null}
+}
+async function requestZipPrices(zip,cat,token){
+  const choice=zipProfile?.size_profile?.options.find(o=>o.id===cat);
+  if(!choice){setZipUnavailable(zip);return}
+  const band=choice.size_band_sqft;
+  const controller=new AbortController();zipLookupController=controller;
+  try{
+    const response=await fetch(MARKET_ZIP_API,{
+      method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({zip,size_band_sqft:band}),
-      signal:controller.signal,
-      cache:'no-store',
-      credentials:'omit'
+      signal:controller.signal,cache:'no-store',credentials:'omit'
     });
     if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
     if(!response.ok){setZipUnavailable(zip);return}
-    const result=await response.json();
+    const data=await response.json();
     if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
-    if(!isValidZipMarket(result,zip,band)){setZipUnavailable(zip);return}
-    renderZipMarket(result);
+    if(!isValidZipMarket(data,zip,band)){setZipUnavailable(zip);return}
+    renderZipMarket(data);
   }catch(_){
-    if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip&&S.cat===cat)setZipUnavailable(zip);
-  }finally{
-    if(zipLookupController===controller)zipLookupController=null;
-  }
+    if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip&&S.cat===cat)
+      setZipUnavailable(zip);
+  }finally{if(zipLookupController===controller)zipLookupController=null}
 }
 function clearResults(){
   cancelAnimationFrame(S.raf);S.disp=[];S.sel=0;S.drag=false;S.followPeak=true;
