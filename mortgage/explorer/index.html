@@ -492,6 +492,9 @@ function buildSelectors(){
     hm.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
     if(S.hood)refreshAll(true);
     else if(S.demoZip&&zipProfile){
+      // A newly selected ZIP size needs its own modeled budget, not a prior
+      // size's or neighborhood's manually entered calculator amount.
+      resetZipCalculatorContext();
       const z=S.demoZip;cancelZipLookup();clearMarket();showResults(false);
       setZipPending(z,true);requestZipPrices(z,S.cat,zipLookupToken);
     }
@@ -501,6 +504,7 @@ function buildSelectors(){
     e.preventDefault();const z=$('#zip').value.trim();
     cancelZipLookup();clearMarket();zipProfile=null;
     S.hood=null;S.demoZip=null;S.cat=null;clearResults();showResults(false);
+    resetZipCalculatorContext();
     if(!/^\d{5}$/.test(z)){
       $('#zipmsg').textContent='Enter a valid five-digit ZIP code.';
       $('#emptyTitle').textContent='Enter a valid ZIP code';
@@ -513,6 +517,7 @@ function buildSelectors(){
   };
 }
 function setHood(id){
+  if(S.demoZip)resetZipCalculatorContext();
   cancelZipLookup();clearMarket();zipProfile=null;
   if(!D.categories.some(c=>c.id===S.cat))S.cat='growing';
   S.hood=id;S.demoZip=null;clearResults();showResults(true);size();buildSelectors();refreshAll(false);
@@ -521,6 +526,11 @@ function showResults(ready){
   $('#chartPanel').closest('section').hidden=!ready;
   $('#results').hidden=!ready;
   $('#emptyState').hidden=ready;
+}
+function resetZipCalculatorContext(){
+  const budget=$('#cBudget');
+  delete budget.dataset.touched;
+  budget.value='';
 }
 function cancelZipLookup(){
   zipLookupToken++;
@@ -733,10 +743,10 @@ function renderZipStory(data){
     'An illustrative seller contribution of '+percent+'% would be about '+
     fmt$(now*percent/100)+' toward closing costs, if negotiated and permitted.');
   $('#cBudget').placeholder=fmtR(now);
-  if(!$('#cBudget').dataset.touched){
+  if(!$('#cBudget').dataset.touched)
     $('#cBudget').value=Math.round(now/5000)*5000;
-    calc();
-  }
+  // Keep the displayed payment synchronized even after editing the budget.
+  calc();
   $('#results').hidden=false;
 }
 
