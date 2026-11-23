@@ -78,6 +78,20 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .zipbox input:focus{outline:2px solid var(--ac);outline-offset:1px}
 .zipbox button{border:0;background:var(--ink);color:#fff;border-radius:var(--radius);padding:11px 16px;font-weight:600}
 .zipmsg{flex-basis:100%;font-size:13px;color:var(--ink2);margin:0}
+.zip-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.zip-compare>div{border:1px solid #e5e8ef;border-radius:12px;padding:14px;min-width:0}
+.zip-compare small{display:block;color:var(--ink2);font-size:12px;margin-bottom:6px}
+.zip-compare strong{display:block;font-size:clamp(18px,4.8vw,29px);letter-spacing:-.03em;font-weight:800}
+.zip-compare p{grid-column:1/-1;margin:2px 0 0;color:var(--ink2);font-size:13px}
+.zip-timeline{width:100%;max-height:280px;display:block;margin:8px 0;overflow:visible}
+.zip-timeline[hidden]{display:none}
+.zip-chart-note{font-size:12px;color:var(--ink2);margin:6px 0 18px}
+.market-observation{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #e6e8ed}
+.market-observation:last-child{border-bottom:none}
+.market-observation strong{display:block;text-align:right}
+.market-observation small{display:block;text-align:right;color:var(--ink2)}
+.market-observation .month{font-weight:600}
+@media(max-width:420px){.market-observation{gap:8px}.market-observation strong{font-size:14px}}
 .homes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(min-width:760px){.homes{grid-template-columns:repeat(4,1fr)}}
 .home{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;border:1.5px solid #E3E5EA;background:#fff;border-radius:var(--radius);padding:16px;transition:all .3s var(--ease)}
@@ -86,6 +100,7 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .home svg{height:44px;width:auto;display:block}
 .home b{font-size:15px;letter-spacing:-.01em}
 .home span{font-size:13px;color:var(--ink2);margin-top:-8px}
+.home .sizeEvidence{font-size:11.5px;color:var(--ink2);line-height:1.45;margin-top:-4px}
 
 /* chart panel (the one dark object) */
 .panel{background:var(--dark);color:#fff;border-radius:var(--radius);padding:clamp(20px,3.4vw,34px);box-shadow:0 24px 60px rgba(14,30,56,.28)}
@@ -214,8 +229,9 @@ footer p{margin:0 0 10px;max-width:56em}
       </form>
       <p class="lbl">Or explore an example neighborhood</p>
       <div class="pills" id="hoods" role="group" aria-label="Example neighborhoods"></div>
-      <p class="lbl">Now the home you pictured</p>
+      <p class="lbl" id="sizePrompt">Select a ZIP code or example to discover home sizes</p>
       <div class="homes" id="homes" role="group" aria-label="Home size"></div>
+      <p class="fine" id="sizeSource" hidden></p>
     </div>
   </div>
 </section>
@@ -225,7 +241,28 @@ footer p{margin:0 0 10px;max-width:56em}
     <div class="card">
       <p class="eyebrow">Your location</p>
       <h2 id="emptyTitle">Start with a ZIP code</h2>
-      <p class="sub" id="emptyHelp">No neighborhood is selected. We’ll show market comparisons only when reliable data is available for that location.</p>
+      <p class="sub" id="emptyHelp">Enter your ZIP to explore estimated home sizes, values, and financing possibilities. These are illustrations—not listings or appraisals.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="marketState" hidden>
+  <div class="wrap">
+    <div class="card">
+      <p class="eyebrow">Your ZIP opportunity estimator</p>
+      <h2 id="marketTitle"></h2>
+      <p class="sub" id="marketMeta"></p>
+      <p class="fine" id="marketLimitations"></p>
+      <div id="zipCompare" class="zip-compare" hidden>
+        <div><small id="zipThenDate">Then</small><strong id="zipThenValue"></strong></div>
+        <div><small id="zipNowDate">Now</small><strong id="zipNowValue"></strong></div>
+        <p id="zipComparisonNote"></p>
+      </div>
+      <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 244" role="img" aria-label="Calculated ZIP home-value observations across time" hidden></svg>
+      <p id="zipChartNote" class="zip-chart-note" hidden></p>
+      <div id="marketRows" aria-live="polite"></div>
+      <p class="fine">Modeled value comparisons are planning illustrations, not a particular home's price, a listing, or a promise of savings.</p>
+      <p class="fine">This product uses publicly available Census Bureau statistics but is not endorsed or certified by the Census Bureau. Home-size, value, and financing calculations are independent illustrations.</p>
     </div>
   </div>
 </section>
@@ -270,7 +307,7 @@ footer p{margin:0 0 10px;max-width:56em}
 
     <div class="grid">
       <div class="card rv" style="--d:0">
-        <p class="k">The price</p>
+        <p class="k" id="zipValueLabel">The price</p>
         <div class="two"><div class="dim"><small id="pThenL">Then</small><strong id="pThen">—</strong></div><div><small class="latestLabel">Today</small><strong id="pNow">—</strong></div></div>
         <p class="res" id="pDiff"></p>
         <p class="fine"><span id="priceNote"></span></p>
@@ -334,7 +371,7 @@ footer p{margin:0 0 10px;max-width:56em}
           <p class="fine" id="cFine"></p>
         </div>
       </div>
-      <p class="contact" id="contact">Want to talk it through? Ivan Diaz · (415) 271-7740 · ivanadiaz.com</p>
+      <p class="contact" id="contact">Interested in actual homes? I can introduce you to a local real estate agent. Ivan Diaz · (415) 271-7740 · ivanadiaz.com</p>
     </div>
   </div>
 </section>
@@ -386,7 +423,10 @@ const N=()=>D.months.length;
 const catO=()=>D.categories.find(c=>c.id===S.cat);
 const hoodO=()=>D.neighborhoods.find(h=>h.id===S.hood);
 let observations;
-const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip;
+const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database2/explorer/market/zip';
+const SIZE_NAMES={starter:'Starter home',growing:'Typical home',moveup:'More space',larger:'Larger home'};
+let zipProfile=null,zipLookupToken=0,zipLookupController=null,currentZipMarket=null;
+const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip && observations?.size>0;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
   const sqft=catO().sqft;
@@ -421,43 +461,428 @@ function buildHero(){
 /* ---------- selectors ---------- */
 function buildSelectors(){
   const h=$('#hoods');
-  h.innerHTML=D.neighborhoods.map(n=>`<button class="pill" type="button" aria-pressed="${n.id===S.hood}" data-h="${n.id}">${n.name}</button>`).join('');
+  h.innerHTML=D.neighborhoods.map(n=>'<button class="pill" type="button" aria-pressed="'+(n.id===S.hood)+'" data-h="'+n.id+'">'+n.name+'</button>').join('');
   h.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
-    $('#zip').value='';$('#zipmsg').textContent='Example neighborhood selected — see the clearly labeled sample data below.';
+    $('#zip').value='';
+    $('#zipmsg').textContent='Example neighborhood selected — numbers below are labeled estimates or illustrations.';
     setHood(b.dataset.h);T.send('neighborhood_change',{hood:b.dataset.h});
   }));
+  const isZip=Boolean(S.demoZip);
+  const options=S.hood?D.categories.map(c=>({id:c.id,name:c.name,sqft:c.sqft})):
+    isZip&&zipProfile?zipProfile.size_profile.options.map(o=>({...o,name:SIZE_NAMES[o.id]})):[];
+  const heading=$('#sizePrompt'),source=$('#sizeSource');
+  heading.textContent=S.hood?'Now the home you pictured':
+    isZip?(zipProfile?'Home sizes represented in ZIP '+S.demoZip:
+      'Local home sizes will appear when inventory is available'):
+      'Choose a ZIP code or an example to see home sizes';
+  source.hidden=!(isZip&&zipProfile);
+  if(!source.hidden){
+    const p=zipProfile.size_profile;
+    if(p.population==='modeled_owner_occupied_housing'){
+      source.textContent='Illustrative sizes derived from ZIP-area owner-occupied room counts · '+
+        p.estimated_housing_units.toLocaleString()+' survey-estimated housing units (not individual property samples) · '+
+        p.source+' · '+p.as_of+' · '+p.modeled_sqft_per_room+' assumed sq ft per room.';
+    }else{
+      source.textContent='Sizes based on '+(p.population==='single_family_stock'?'single-family housing stock':'active for-sale listings')+
+        ' · '+p.sample_count.toLocaleString()+' observations · '+p.source+' · '+p.as_of+'.';
+    }
+  }else source.textContent='';
   const hm=$('#homes');
-  hm.innerHTML=D.categories.map(c=>{
-    const w=Math.round(30+ (Math.sqrt(c.sqft)-Math.sqrt(2000))/(Math.sqrt(3500)-Math.sqrt(2000))*24);
-    return `<button class="home" type="button" aria-pressed="${c.id===S.cat}" data-c="${c.id}">
-      <svg viewBox="0 0 64 44" aria-hidden="true"><path class="hh" d="${housePath(32,41,w,w*.72)}" stroke="#004288" stroke-width="2.4"/></svg>
-      <b>${c.name}</b><span>${c.label} sq ft</span></button>`}).join('');
-  hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{S.cat=b.dataset.c;
+  hm.innerHTML=options.map(o=>{
+    const w=Math.max(27,Math.min(55,Math.round(30+(Math.sqrt(o.sqft)-Math.sqrt(900))/
+      (Math.sqrt(4000)-Math.sqrt(900))*24)));
+    const modeled=isZip&&zipProfile?.size_profile?.population==='modeled_owner_occupied_housing';
+    const evidence=modeled?
+      '<small class="sizeEvidence">Modeled size scenario · not an actual listing</small>':
+      isZip&&zipProfile?
+      '<small class="sizeEvidence">'+o.sample_count.toLocaleString()+' sampled '+
+      (zipProfile.size_profile.population==='active_listings'?'listings':'homes')+
+      ' · '+o.size_band_sqft.min.toLocaleString()+'–'+o.size_band_sqft.max.toLocaleString()+' sq ft band</small>':'';
+    return '<button class="home" type="button" aria-pressed="'+(o.id===S.cat)+'" data-c="'+o.id+'">'+
+      '<svg viewBox="0 0 64 44" aria-hidden="true"><path class="hh" d="'+housePath(32,41,w,w*.72)+'" stroke="#004288" stroke-width="2.4"/></svg>'+
+      '<b>'+o.name+'</b><span>'+o.sqft.toLocaleString()+' sq ft</span>'+evidence+'</button>';
+  }).join('');
+  hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    S.cat=b.dataset.c;
     hm.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
-    if(S.hood)refreshAll(true);T.send('home_size_change',{cat:S.cat});}));
+    if(S.hood)refreshAll(true);
+    else if(S.demoZip&&zipProfile){
+      // A newly selected ZIP size needs its own modeled budget, not a prior
+      // size's or neighborhood's manually entered calculator amount.
+      resetZipCalculatorContext();
+      const z=S.demoZip;cancelZipLookup();clearMarket();showResults(false);
+      setZipPending(z,true);requestZipPrices(z,S.cat,zipLookupToken);
+    }
+    T.send('home_size_change',{cat:S.cat});
+  }));
   $('#zipbox').onsubmit=e=>{
     e.preventDefault();const z=$('#zip').value.trim();
-    S.hood=null;S.demoZip=null;clearResults();showResults(false);
+    cancelZipLookup();clearMarket();zipProfile=null;
+    S.hood=null;S.demoZip=null;S.cat=null;clearResults();showResults(false);
+    resetZipCalculatorContext();
     if(!/^\d{5}$/.test(z)){
       $('#zipmsg').textContent='Enter a valid five-digit ZIP code.';
       $('#emptyTitle').textContent='Enter a valid ZIP code';
-      $('#emptyHelp').textContent='No market estimates are shown without a valid location.';
+      $('#emptyHelp').textContent='No local estimates are shown without a valid location.';
       buildSelectors();T.send('try_zip',{});return;
     }
-    S.demoZip=z;buildSelectors();
-    $('#zipmsg').textContent='No local market data is connected for this ZIP yet.';
-    $('#emptyTitle').textContent='Market data for ZIP '+z+' is not available yet';
-    $('#emptyHelp').textContent='We will not substitute numbers from a different ZIP. You can explore a labeled example neighborhood below.';
-    T.send('try_zip',{});   // the ZIP itself is never sent
+    S.demoZip=z;buildSelectors();setZipPending(z,false);
+    requestZipSizes(z,zipLookupToken);
+    T.send('try_zip',{}); // Never pass ZIP through analytics.
   };
 }
 function setHood(id){
+  if(S.demoZip)resetZipCalculatorContext();
+  cancelZipLookup();clearMarket();zipProfile=null;
+  if(!D.categories.some(c=>c.id===S.cat))S.cat='growing';
   S.hood=id;S.demoZip=null;clearResults();showResults(true);size();buildSelectors();refreshAll(false);
 }
 function showResults(ready){
   $('#chartPanel').closest('section').hidden=!ready;
   $('#results').hidden=!ready;
   $('#emptyState').hidden=ready;
+}
+function resetZipCalculatorContext(){
+  const budget=$('#cBudget');
+  delete budget.dataset.touched;
+  budget.value='';
+}
+function cancelZipLookup(){
+  zipLookupToken++;
+  if(zipLookupController){zipLookupController.abort();zipLookupController=null}
+}
+function clearMarket(){
+  currentZipMarket=null;
+  $('#results').hidden=true;
+  $('#marketState').hidden=true;
+  $('#marketTitle').textContent='';
+  $('#marketMeta').textContent='';
+  $('#marketLimitations').textContent='';
+  $('#marketRows').replaceChildren();
+  $('#zipCompare').hidden=true;
+  $('#zipTimeline').replaceChildren();
+  $('#zipTimeline').setAttribute('hidden','');
+  $('#zipChartNote').hidden=true;$('#zipChartNote').textContent='';
+}
+function setZipPending(zip,sizesLoaded=false){
+  $('#emptyState').hidden=false;
+  $('#emptyTitle').textContent=(sizesLoaded?'Checking calculated values for ZIP ':'Checking housing sizes for ZIP ')+zip;
+  $('#emptyHelp').textContent=sizesLoaded?
+    'This size group is selected from local inventory. Prices appear only when matching data is available.':
+    'Local housing-stock data determines the available size choices.';
+  $('#zipmsg').textContent='Checking available local data…';
+}
+function setZipUnavailable(zip){
+  $('#emptyState').hidden=false;clearMarket();clearResults();
+  $('#emptyTitle').textContent=zipProfile?'Calculated values for ZIP '+zip+' are not available yet':
+    'Market data for ZIP '+zip+' is not available yet';
+  $('#emptyHelp').textContent=zipProfile?
+    'Local home-size choices are available above. Matching dated calculated home-value estimates are not yet approved for this size.':
+    'No approved local home-size distribution is connected yet. We will not substitute sizes or prices from another ZIP.';
+  $('#zipmsg').textContent=zipProfile?'Select a different home size or an example neighborhood.':
+    'No approved local housing-stock data is available for this ZIP.';
+}
+function isValidObservedDay(day){
+  return typeof day==='string' && /^\d{4}-\d{2}-\d{2}$/.test(day) &&
+    Number.isFinite(Date.parse(day)) &&
+    new Date(day).toISOString().slice(0,10)===day &&
+    day<=new Date().toISOString().slice(0,10);
+}
+function isValidZipSizes(d,zip){
+  if(!d||d.status!=='sizes_available'||d.zip!==zip)return false;
+  const p=d.size_profile;
+  const modeled=d.geography==='zcta_approximation'&&
+    p?.population==='modeled_owner_occupied_housing';
+  const observed=d.geography==='postal_code'&&
+    ['single_family_stock','active_listings'].includes(p?.population);
+  if(!modeled&&!observed)return false;
+  if(typeof p.source!=='string'||!p.source.trim()||p.source.length>180||
+      !isValidObservedDay(p.as_of)||!Array.isArray(p.options)||
+      p.options.length<1||p.options.length>4)return false;
+  if(modeled){
+    if(p.options.length!==4||!Number.isInteger(p.estimated_housing_units)||
+       p.estimated_housing_units<=0||
+       !Number.isFinite(p.modeled_sqft_per_room)||
+       p.modeled_sqft_per_room<150||p.modeled_sqft_per_room>500||
+       typeof p.method!=='string'||!p.method.trim())return false;
+  }else{
+    if(!Number.isInteger(p.sample_count)||p.sample_count<1||
+       p.sample_count>10000000)return false;
+  }
+  let lastMax=0,lastId=-1,total=0;
+  const order=['starter','growing','moveup','larger'];
+  for(const o of p.options){
+    if(!o||!order.includes(o.id)||order.indexOf(o.id)<=lastId||
+        !Number.isInteger(o.sqft)||!o.size_band_sqft||
+        !Number.isInteger(o.size_band_sqft.min)||
+        !Number.isInteger(o.size_band_sqft.max)||
+        o.size_band_sqft.min<500||o.size_band_sqft.max>8000||
+        o.sqft<o.size_band_sqft.min||o.sqft>o.size_band_sqft.max||
+        o.size_band_sqft.max-o.size_band_sqft.min<150||
+        o.size_band_sqft.max-o.size_band_sqft.min>1400||
+        o.size_band_sqft.min<=lastMax)return false;
+    if(!modeled){
+      if(!Number.isInteger(o.sample_count)||o.sample_count<1||
+        o.sample_count>p.sample_count)return false;
+      total+=o.sample_count;
+    }
+    lastMax=o.size_band_sqft.max;
+    lastId=order.indexOf(o.id);
+  }
+  return modeled?true:total<=p.sample_count;
+}
+function isValidZipMarket(d,z,choice){
+  const band=choice.size_band_sqft;
+  if(!d||d.status!=='available'||d.zip!==z)return false;
+  const modeled=d.geography==='zcta_approximation'&&
+    d.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+  const observed=d.geography==='postal_code'&&
+    d.calculation_method==='median_estimated_value_per_sqft_x_representative_sqft';
+  if(!modeled&&!observed)return false;
+  if(!d.size_band_sqft||d.size_band_sqft.min!==band.min||
+      d.size_band_sqft.max!==band.max)return false;
+  if(typeof d.source!=='string'||!d.source.trim()||d.source.length>300||
+      !isValidObservedDay(d.as_of)||d.price_basis!=='calculated'||
+      d.representative_sqft!==choice.sqft)return false;
+  if(!Array.isArray(d.limitations)||d.limitations.length>12||
+      d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250)||
+      !d.limitations.length)return false;
+  if(modeled && (!Number.isInteger(d.benchmark_sqft)||d.benchmark_sqft<=0||
+      !Number.isInteger(d.estimated_housing_units)||
+      d.estimated_housing_units<=0||!Number.isFinite(d.modeled_sqft_per_room)||
+      d.modeled_sqft_per_room<150||d.modeled_sqft_per_room>500))return false;
+  if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
+  let last='',actual=0;
+  for(const p of d.periods){
+    if(!p||typeof p.month!=='string'||
+        !/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||
+        p.month<=last||p.month>d.as_of.slice(0,7))return false;
+    last=p.month;
+    if(!modeled && (!Number.isInteger(p.sample_count)||
+        p.sample_count<0||p.sample_count>100000||
+        p.sample_count>choice.sample_count))return false;
+    if(modeled && p.sample_count!==null)return false;
+    if(p.calculated_home_value_usd!==null){
+      if(!Number.isFinite(p.calculated_home_value_usd)||
+          p.calculated_home_value_usd<=0||
+          (!modeled&&p.sample_count<3))return false;
+      actual++;
+    }else if(p.sample_count!==0&&p.sample_count!==null)return false;
+  }
+  return actual>0;
+}
+function renderZipTimeline(data){
+  const graph=$('#zipTimeline'),note=$('#zipChartNote');
+  graph.replaceChildren();graph.setAttribute('hidden','');
+  const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
+  const comp=$('#zipCompare');
+  if(available.length<2){
+    comp.hidden=true;
+    note.hidden=false;note.textContent='More than one observation month is needed for a Then vs Now comparison.';
+    return;
+  }
+  const first=available[0],last=available.at(-1),diff=last.calculated_home_value_usd-first.calculated_home_value_usd;
+  const monthIndex=m=>Number(m.slice(0,4))*12+Number(m.slice(5,7))-1;
+  if(monthIndex(last.month)===monthIndex(first.month)){comp.hidden=true;return}
+  comp.hidden=false;
+  $('#zipThenDate').textContent=lab(first.month)+' (earliest supported)';
+  $('#zipThenValue').textContent=fmt$(first.calculated_home_value_usd);
+  $('#zipNowDate').textContent=lab(last.month)+' (latest supported)';
+  $('#zipNowValue').textContent=fmt$(last.calculated_home_value_usd);
+  $('#zipComparisonNote').textContent='The calculated home-value estimate is '+fmt$(Math.abs(diff))+
+    (diff<0?' lower':diff>0?' higher':' unchanged')+
+    ' between the selected observations. This is not an actual selling-price or guaranteed-savings comparison.';
+  const minV=Math.min(...available.map(p=>p.calculated_home_value_usd));
+  const maxV=Math.max(...available.map(p=>p.calculated_home_value_usd));
+  const spread=Math.max(10000,maxV-minV);
+  const bottom=minV-spread*.22,top=maxV+spread*.22;
+  const left=46,right=670,yTop=28,yBottom=195,month0=monthIndex(first.month),month1=monthIndex(last.month);
+  const x=m=>left+(monthIndex(m)-month0)/(month1-month0)*(right-left);
+  const y=v=>yBottom-(v-bottom)/(top-bottom)*(yBottom-yTop);
+  const NS='http://www.w3.org/2000/svg';
+  const append=(tag,attrs,parent=graph)=>{const el=document.createElementNS(NS,tag);for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));parent.append(el);return el};
+  for(const [value,label] of [[minV,fmtK(minV)],[maxV,fmtK(maxV)]]){
+    append('line',{x1:left,y1:y(value),x2:right,y2:y(value),stroke:'#DCE5EF','stroke-dasharray':'4 6'});
+    const t=append('text',{x:2,y:y(value)+4,fill:'#65758A','font-size':13});t.textContent=label;
+  }
+  let segment=[],lastValidMonth=null;
+  const flush=()=>{
+    if(!segment.length)return;
+    if(segment.length>1)append('path',{d:segment.map((p,i)=>(i?'L':'M')+p[0].toFixed(2)+' '+p[1].toFixed(2)).join(' '),
+      fill:'none',stroke:'#004288','stroke-width':3.3,'stroke-linecap':'round','stroke-linejoin':'round'});
+    segment=[];
+  };
+  for(const p of data.periods){
+    if(!Number.isFinite(p.calculated_home_value_usd)){
+      flush();lastValidMonth=null;continue;
+    }
+    if(lastValidMonth!==null&&monthIndex(p.month)-lastValidMonth!==1)flush();
+    segment.push([x(p.month),y(p.calculated_home_value_usd)]);
+    lastValidMonth=monthIndex(p.month);
+    append('circle',{cx:x(p.month),cy:y(p.calculated_home_value_usd),r:4.7,fill:'#004288'});
+  }
+  flush();
+  for(const [value,pos,align] of [[first.month,left,'start'],[last.month,right,'end']]){
+    const t=append('text',{x:pos,y:227,fill:'#52657C','font-size':13,'text-anchor':align});
+    t.textContent=lab(value);
+  }
+  graph.removeAttribute('hidden');
+  graph.setAttribute('aria-label','Calculated estimated home values from '+lab(first.month)+' to '+lab(last.month)+'. Gaps are not interpolated.');
+  note.hidden=false;note.textContent=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size'?'Points represent the latest year of each Census five-year survey period, not actual market sales. Do not interpret as a current market quote.':'Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
+}
+
+/* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
+function renderZipStory(data){
+  currentZipMarket=data;
+  const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
+  if(available.length<2){
+    $('#results').hidden=true;
+    return;
+  }
+  const earlier=available[0],later=available.at(-1);
+  const then=earlier.calculated_home_value_usd,now=later.calculated_home_value_usd;
+  if(earlier.month===later.month||then<=0||now<=0){
+    $('#results').hidden=true;
+    return;
+  }
+  const firstLabel=lab(earlier.month),lastLabel=lab(later.month);
+  // Census's latest 5-year survey is not today's housing market.
+  const labelIsCurrent=later.month===new Date().toISOString().slice(0,7);
+  $('#results .eyebrow').textContent=labelIsCurrent?'Then vs. now':'Then vs. latest dated estimate';
+  const diff=now-then,pct=100*diff/then,abs=Math.abs(diff);
+  const choice=zipProfile?.size_profile?.options.find(o=>o.id===S.cat);
+  if(!choice||choice.sqft!==data.representative_sqft){
+    $('#results').hidden=true;
+    return;
+  }
+  const sqft=choice.sqft,spaceToday=sqft*then/now;
+  const deltaSpace=Math.round(spaceToday-sqft);
+  const rate=D.rates.at(-1),down=D.assumptions.downPct,years=D.assumptions.termYears;
+  const payThen=pmt(then,rate,down),payNow=pmt(now,rate,down);
+  const payDiff=payNow-payThen;
+  document.querySelectorAll('.latestLabel').forEach(el=>el.textContent=lastLabel);
+  setText('#zipValueLabel','Calculated home values');
+  setText('#rHead','What changed for a '+sqft.toLocaleString()+' sq ft home?');
+  setText('#rSub','ZIP '+data.zip+' · Calculated local estimates, '+firstLabel+' versus '+lastLabel+
+    '. Source: '+data.source+' (as of '+data.as_of+').');
+  setText('#pThenL',firstLabel);setText('#pThen',fmt$(then));setText('#pNow',fmt$(now));
+  setText('#pDiff',fmt$(abs)+(diff<0?' lower':diff>0?' higher':' unchanged')+
+    ' ('+(pct>0?'+':'')+pct.toFixed(1)+'%) · modeled difference, not savings');
+  const isModeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+  setText('#priceNote',isModeled?
+    'Illustrative value = ACS owner-reported median home value × ('+sqft.toLocaleString()+
+    ' modeled sq ft ÷ '+data.benchmark_sqft.toLocaleString()+
+    ' modeled typical sq ft). '+data.estimated_housing_units.toLocaleString()+
+    ' survey-estimated owner-occupied housing units; NOT individual property samples. '+
+    data.limitations.join(' '):
+    'Estimated value = '+sqft.toLocaleString()+
+    ' sq ft × local median estimated value per sq ft. Samples: '+earlier.sample_count+
+    ' / '+later.sample_count+'. '+data.limitations.join(' '));
+  $('#houseSvg').parentElement.hidden=false;
+  $('#hThen').closest('.legend').hidden=false;
+  const k=260/Math.sqrt(Math.max(3500,sqft,spaceToday)),cx=160,base=186;
+  const w0=k*Math.sqrt(sqft),w1=k*Math.sqrt(spaceToday);
+  $('#houseSvg').innerHTML='<line x1="20" x2="300" y1="'+base+'" y2="'+base+
+    '" stroke="#D5D9E0" stroke-width="2"/>'+
+    '<path class="hh" d="'+housePath(cx,base,w1,w1*.8)+'" stroke="#004288" stroke-width="3.2" fill="rgba(0,66,136,.06)"/>'+
+    '<path class="hh" d="'+housePath(cx,base,w0,w0*.8)+'" stroke="#9A9AA0" stroke-width="2.4" stroke-dasharray="6 6"/>';
+  setText('#hThen',firstLabel+' · '+sqft.toLocaleString()+' sq ft');
+  setText('#hNow','Same modeled budget · '+Math.round(spaceToday).toLocaleString()+' sq ft');
+  setText('#hRes',Math.abs(deltaSpace)<10?'About the same space at the same modeled budget.':
+    Math.abs(deltaSpace).toLocaleString()+(deltaSpace>0?' more':' fewer')+' sq ft at the same modeled budget.');
+  setText('#budgetNote','Illustration holding the home-value budget fixed. Assumes equal modeled value per sq ft across sizes; not a verified available listing.');
+  setText('#mThenL',firstLabel+' · '+rate.toFixed(2)+'%');
+  $('#mNow').parentNode.querySelector('small').textContent=lastLabel+' · '+rate.toFixed(2)+'%';
+  setText('#mThen',fmt$(payThen));setText('#mNow',fmt$(payNow));
+  setText('#mDiff',fmt$(Math.abs(payDiff))+(payDiff<0?' less':payDiff>0?' more':' unchanged')+' monthly at the same illustrative rate');
+  setText('#mFine',down+'% down · '+years+'-year fixed · identical illustrative '+
+    rate.toFixed(2)+'% rate for both dates to isolate modeled value changes. NOT historical mortgage rates. Principal and interest only; taxes, insurance, HOA and mortgage insurance excluded.');
+  const percent=+$('#cRange').value;
+  setText('#cRes',percent===0?'No concession in this illustration.':
+    'An illustrative seller contribution of '+percent+'% would be about '+
+    fmt$(now*percent/100)+' toward closing costs, if negotiated and permitted.');
+  $('#cBudget').placeholder=fmtR(now);
+  if(!$('#cBudget').dataset.touched)
+    $('#cBudget').value=Math.round(now/5000)*5000;
+  // Keep the displayed payment synchronized even after editing the budget.
+  calc();
+  $('#results').hidden=false;
+}
+
+function renderZipMarket(data){
+  const modeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+  $('#emptyState').hidden=true;
+  $('#marketState').hidden=false;
+  $('#zipmsg').textContent='Illustrative ZIP estimates calculated.';
+  $('#marketTitle').textContent='ZIP '+data.zip+' · Calculated home values';
+  $('#marketMeta').textContent=modeled?
+    'Formula: area median owner-reported value × (modeled home size ÷ modeled typical size)'+
+    ' · '+data.representative_sqft.toLocaleString()+' sq ft scenario'+
+    ' · '+data.estimated_housing_units.toLocaleString()+' Census-estimated owner-occupied housing units'+
+    ' (not a sample of measured home sizes) · Source: '+data.source+' · As of '+data.as_of:
+    'Calculation: '+data.representative_sqft.toLocaleString()+' sq ft × median estimated value per sq ft'+
+    ' · Source: '+data.source+' · As of '+data.as_of+
+    ' · Comparison band: '+data.size_band_sqft.min.toLocaleString()+'–'+
+    data.size_band_sqft.max.toLocaleString()+' sq ft';
+  $('#marketLimitations').textContent='Planning estimates, NOT actual selling prices. '+data.limitations.join(' ');
+  renderZipTimeline(data);
+  renderZipStory(data);
+  const target=$('#marketRows');
+  for(const p of data.periods){
+    const row=document.createElement('div');row.className='market-observation';
+    const month=document.createElement('span');month.className='month';month.textContent=lab(p.month);
+    const info=document.createElement('span');
+    const amount=document.createElement('strong');
+    amount.textContent=p.calculated_home_value_usd===null?'No value estimate':fmt$(p.calculated_home_value_usd);
+    const count=document.createElement('small');
+    count.textContent=modeled?'ACS five-year period estimate · no individual-property sample':
+      p.sample_count+' valuation observation'+(p.sample_count===1?'':'s');
+    info.append(amount,count);row.append(month,info);target.append(row);
+  }
+}
+async function requestZipSizes(zip,token){
+  const controller=new AbortController();zipLookupController=controller;
+  try{
+    const response=await fetch(MARKET_ZIP_API,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({zip}),signal:controller.signal,
+      cache:'no-store',credentials:'omit'
+    });
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip)return;
+    if(!response.ok){setZipUnavailable(zip);return}
+    const data=await response.json();
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip)return;
+    if(!isValidZipSizes(data,zip)){setZipUnavailable(zip);return}
+    zipProfile=data;
+    S.cat=data.size_profile.options.find(o=>o.id==='growing')?.id||
+      data.size_profile.options[Math.min(1,data.size_profile.options.length-1)].id;
+    buildSelectors();setZipPending(zip,true);
+    requestZipPrices(zip,S.cat,token);
+  }catch(_){
+    if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip)setZipUnavailable(zip);
+  }finally{if(zipLookupController===controller)zipLookupController=null}
+}
+async function requestZipPrices(zip,cat,token){
+  const choice=zipProfile?.size_profile?.options.find(o=>o.id===cat);
+  if(!choice){setZipUnavailable(zip);return}
+  const band=choice.size_band_sqft;
+  const controller=new AbortController();zipLookupController=controller;
+  try{
+    const response=await fetch(MARKET_ZIP_API,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({zip,size_band_sqft:band}),
+      signal:controller.signal,cache:'no-store',credentials:'omit'
+    });
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
+    if(!response.ok){setZipUnavailable(zip);return}
+    const data=await response.json();
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
+    if(!isValidZipMarket(data,zip,choice)){setZipUnavailable(zip);return}
+    renderZipMarket(data);
+  }catch(_){
+    if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip&&S.cat===cat)
+      setZipUnavailable(zip);
+  }finally{if(zipLookupController===controller)zipLookupController=null}
 }
 function clearResults(){
   cancelAnimationFrame(S.raf);S.disp=[];S.sel=0;S.drag=false;S.followPeak=true;
@@ -563,6 +988,7 @@ function renderResults(){
   setText('#priceNote',pilot?`Monthly sample · ${L0}: ${samples(i)}.${i===last?'':` ${end}: ${samples(last)}.`}`:'Illustrative demonstration data for comparable homes.');
   const diff=available?now-then:null,pct=available?diff/then*100:null,abs=Math.abs(diff);
   // chart header + readout
+  setText('#zipValueLabel','The price');
   setText('#cTitle',`${h} · ${c.name}`);
   setText('#sLabel',L0);setText('#sVal',available?fmt$(then):'—');setText('#nVal',fmt$(now));
   $('#dSent').innerHTML=!available?'No estimate for this month. Comparison unavailable.':i===last?'Latest available month.':
@@ -637,8 +1063,8 @@ function calc(){
 $('#invBtn').addEventListener('click',e=>{const o=e.target.getAttribute('aria-expanded')==='true';e.target.setAttribute('aria-expanded',!o);$('#calc').hidden=o;if(!o){calc();T.send('invite_open')}});
 $('#cBudget').addEventListener('input',e=>{e.target.dataset.touched=1;calc()});
 $('#cDown').addEventListener('input',calc);
-$('#cToggle').addEventListener('change',e=>{$('#conc').hidden=!e.target.checked;T.send('concession_toggle',{on:e.target.checked});renderResults()});
-$('#cRange').addEventListener('input',renderResults);
+$('#cToggle').addEventListener('change',e=>{$('#conc').hidden=!e.target.checked;T.send('concession_toggle',{on:e.target.checked});if(S.hood)renderResults();else if(currentZipMarket)renderZipStory(currentZipMarket)});
+$('#cRange').addEventListener('input',()=>{if(S.hood)renderResults();else if(currentZipMarket)renderZipStory(currentZipMarket)});
 
 /* ---------- boot ---------- */
 function observe(){
@@ -648,13 +1074,19 @@ function observe(){
   cio.observe($('#chartPanel'));
 }
 Promise.all(['data.json','attom-circle-c-pilot.json'].map(async file=>{
-  const response=await fetch('/mortgage/explorer/'+file);
-  if(!response.ok)throw new Error(file);
-  return response.json();
+  try {
+    const response=await fetch('/mortgage/explorer/'+file);
+    if(!response.ok)throw new Error(file);
+    return await response.json();
+  } catch (error) {
+    // A missing optional Circle C pilot must not disable arbitrary ZIP lookup.
+    if(file==='attom-circle-c-pilot.json')return {observations:[]};
+    throw error;
+  }
 })).then(([d,pilot])=>{
-  observations=new Map(pilot.observations.map(row=>[row.month,row]));
+  observations=new Map((Array.isArray(pilot?.observations)?pilot.observations:[]).map(row=>[row.month,row]));
   D=d;
-  buildHero();buildSelectors();buildSk();size();clearResults();showResults(false);observe();T.send('page_view');
+  buildHero();buildSelectors();buildSk();size();clearResults();clearMarket();showResults(false);observe();T.send('page_view');
 }).catch(()=>{document.querySelector('main').innerHTML='<div class="wrap err">The preview data couldn’t load. Please refresh.</div>'});
 </script>
 </body>
