@@ -541,7 +541,7 @@ function clearMarket(){
 }
 function setZipPending(zip,sizesLoaded=false){
   $('#emptyState').hidden=false;
-  $('#emptyTitle').textContent=(sizesLoaded?'Checking prices for ZIP ':'Checking housing sizes for ZIP ')+zip;
+  $('#emptyTitle').textContent=(sizesLoaded?'Checking calculated values for ZIP ':'Checking housing sizes for ZIP ')+zip;
   $('#emptyHelp').textContent=sizesLoaded?
     'This size group is selected from local inventory. Prices appear only when matching data is available.':
     'Local housing-stock data determines the available size choices.';
@@ -549,10 +549,10 @@ function setZipPending(zip,sizesLoaded=false){
 }
 function setZipUnavailable(zip){
   $('#emptyState').hidden=false;clearMarket();clearResults();
-  $('#emptyTitle').textContent=zipProfile?'Market prices for ZIP '+zip+' are not available yet':
+  $('#emptyTitle').textContent=zipProfile?'Calculated values for ZIP '+zip+' are not available yet':
     'Market data for ZIP '+zip+' is not available yet';
   $('#emptyHelp').textContent=zipProfile?
-    'Local home-size choices are available above. Historical sale prices for the selected size have not been verified.':
+    'Local home-size choices are available above. Matching dated calculated home-value estimates are not yet approved for this size.':
     'No approved local home-size distribution is connected yet. We will not substitute sizes or prices from another ZIP.';
   $('#zipmsg').textContent=zipProfile?'Select a different home size or an example neighborhood.':
     'No approved local housing-stock data is available for this ZIP.';
