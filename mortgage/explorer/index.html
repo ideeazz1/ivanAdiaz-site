@@ -219,7 +219,12 @@ footer{padding:40px 0 64px;color:var(--ink3);font-size:12.5px;line-height:1.6}
 footer p{margin:0 0 10px;max-width:56em}
 #dbg{position:fixed;left:8px;bottom:8px;max-width:min(360px,92vw);max-height:30vh;overflow:auto;background:#000c;color:#9f9;font:11px/1.4 ui-monospace,monospace;padding:8px 10px;border-radius:8px;z-index:50}
 .err{padding:60px 0;text-align:center;color:var(--ink2)}
- .mini-details{margin-top:12px}.mini-details summary{cursor:pointer;color:var(--ink2);font-size:12px;font-weight:650}.mini-details[open] summary{margin-bottom:8px}
+ .finance-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:18px 0 12px;padding-top:16px;border-top:1px solid #E9EEF6}
+.finance-controls label{display:flex;justify-content:space-between;gap:6px;font-size:13px;color:var(--ink2);font-weight:650}
+.finance-controls label strong{color:var(--ac)}
+.finance-controls input[type=range]{width:100%;margin:12px 0 2px}
+@media(max-width:440px){.finance-controls{gap:12px}}
+.mini-details{margin-top:12px}.mini-details summary{cursor:pointer;color:var(--ink2);font-size:12px;font-weight:650}.mini-details[open] summary{margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -379,6 +384,12 @@ footer p{margin:0 0 10px;max-width:56em}
         <p class="k">The monthly payment</p>
         <div class="two"><div class="dim"><small id="mThenL">Then</small><strong id="mThen">—</strong></div><div><small class="latestLabel">Today</small><strong id="mNow">—</strong></div></div>
         <p class="res" id="mDiff"></p>
+        <div class="finance-controls" id="financeControls">
+          <div><label for="mRate">Illustrative rate <strong id="mRateV">6.25%</strong></label>
+            <input type="range" id="mRate" min="3" max="10" step="0.125" value="6.25" aria-label="Illustrative mortgage interest rate"></div>
+          <div><label for="mDown">Down payment <strong id="mDownV">10%</strong></label>
+            <input type="range" id="mDown" min="3" max="30" step="1" value="10" aria-label="Down payment percentage for comparisons"></div>
+        </div>
         <p class="fine" id="mFine"></p>
       </div>
 
@@ -693,8 +704,10 @@ function isValidZipSizes(d,zip){
 function isValidZipMarket(d,z,choice){
   const band=choice.size_band_sqft;
   if(!d||d.status!=='available'||d.zip!==z)return false;
+  const monthly=d.geography==='zcta_approximation'&&
+    d.calculation_method==='acs_size_fhfa_monthly_estimate';
   const modeled=d.geography==='zcta_approximation'&&
-    d.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+    (monthly||d.calculation_method==='acs_median_value_scaled_by_modeled_room_size');
   const observed=d.geography==='postal_code'&&
     d.calculation_method==='median_estimated_value_per_sqft_x_representative_sqft';
   if(!modeled&&!observed)return false;
@@ -703,24 +716,47 @@ function isValidZipMarket(d,z,choice){
   if(typeof d.source!=='string'||!d.source.trim()||d.source.length>300||
       !isValidObservedDay(d.as_of)||d.price_basis!=='calculated'||
       d.representative_sqft!==choice.sqft)return false;
-  if(!Array.isArray(d.limitations)||d.limitations.length>12||
-      d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250)||
-      !d.limitations.length)return false;
+  if(!Array.isArray(d.limitations)||!d.limitations.length||
+      d.limitations.length>12||d.limitations.some(x=>
+      typeof x!=='string'||!x.trim()||x.length>250))return false;
   if(modeled && (!Number.isInteger(d.benchmark_sqft)||d.benchmark_sqft<=0||
       !Number.isInteger(d.estimated_housing_units)||
       d.estimated_housing_units<=0||!Number.isFinite(d.modeled_sqft_per_room)||
       d.modeled_sqft_per_room<150||d.modeled_sqft_per_room>500))return false;
-  if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
+  if(monthly){
+    const vMonth=m=>typeof m==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(m);
+    if(!vMonth(d.latest_observed_month)||!vMonth(d.modeled_through)||
+       d.latest_observed_month!==d.as_of.slice(0,7)||
+       d.modeled_through<d.latest_observed_month||
+       d.modeled_through>new Date().toISOString().slice(0,7)||
+       !isValidObservedDay(d.acs_as_of)||
+       !isValidObservedDay(d.fhfa_published_on)||
+       !['census_division','national_fallback'].includes(d.fhfa_index_precision)||
+       typeof d.fhfa_index_geography!=='string'||
+       !d.fhfa_index_geography.trim()||d.fhfa_index_geography.length>120||
+       d.fhfa_source_url!=='https://www.fhfa.gov/hpi/download/monthly/hpi_master.csv'||
+       !Number.isFinite(d.modeled_projection_annual_change_pct)||
+       Math.abs(d.modeled_projection_annual_change_pct)>12.01)return false;
+  }
+  if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60||
+      monthly&&d.periods.length<24)return false;
   let last='',actual=0;
   for(const p of d.periods){
     if(!p||typeof p.month!=='string'||
         !/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||
-        p.month<=last||p.month>d.as_of.slice(0,7))return false;
+        p.month<=last||
+        p.month>(monthly?d.modeled_through:d.as_of.slice(0,7)))return false;
     last=p.month;
     if(!modeled && (!Number.isInteger(p.sample_count)||
         p.sample_count<0||p.sample_count>100000||
         p.sample_count>choice.sample_count))return false;
     if(modeled && p.sample_count!==null)return false;
+    if(monthly){
+      if(!['blended_survey_model','survey_anchor','fhfa_index_model',
+        'forward_scenario'].includes(p.estimate_kind))return false;
+      if((p.month>d.latest_observed_month)!==
+         (p.estimate_kind==='forward_scenario'))return false;
+    }
     if(p.calculated_home_value_usd!==null){
       if(!Number.isFinite(p.calculated_home_value_usd)||
           p.calculated_home_value_usd<=0||
@@ -728,7 +764,7 @@ function isValidZipMarket(d,z,choice){
       actual++;
     }else if(p.sample_count!==0&&p.sample_count!==null)return false;
   }
-  return actual>0;
+  return actual>0 && (!monthly||d.periods.at(-1).month===d.modeled_through);
 }
 // Draggable X/Y selector: selects ONLY dated observations actually provided
 // for this ZIP. Months without a published point are never interpolated.
