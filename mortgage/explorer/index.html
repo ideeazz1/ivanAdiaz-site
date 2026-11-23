@@ -757,10 +757,10 @@ function selectZipObservation(index,sendEvent=true){
   $('#zipScrubValue').textContent=fmt$(item.calculated_home_value_usd);
   const difference=last.calculated_home_value_usd-item.calculated_home_value_usd;
   $('#zipScrubContext').textContent=i===zipChartPoints.length-1?
-    'Latest dated survey observation. Drag toward an earlier dot to compare.':
-    'Latest dated ('+lab(last.month)+') is '+fmt$(Math.abs(difference))+
+    'Latest dated survey · drag left to compare.':
+    fmt$(Math.abs(difference))+
     (difference<0?' lower':difference>0?' higher':' unchanged')+
-    ' than this observation. Not a current selling-price quote.';
+    ' by '+lab(last.month)+' in this model.';
   graph.setAttribute('aria-valuenow',String(i));
   graph.setAttribute('aria-valuetext',lab(item.month)+', '+fmt$(item.calculated_home_value_usd));
   document.querySelectorAll('[data-zip-go]').forEach(button=>{
@@ -837,7 +837,7 @@ function renderZipTimeline(data){
   $('#zipNowDate').textContent='Latest · '+lab(last.month);
   $('#zipNowValue').textContent=fmt$(last.calculated_home_value_usd);
   $('#zipComparisonNote').textContent=(diff<0?'↓ ':diff>0?'↑ ':'≈ ')+
-    fmt$(Math.abs(diff))+' between dated surveys · modeled difference, not savings';
+    fmt$(Math.abs(diff))+' · modeled change between dated surveys';
   const width=Math.max(310,Math.round(graph.parentElement.clientWidth||700));
   const height=310,left=62,right=width-25,topY=44,bottomY=252;
   graph.setAttribute('viewBox','0 0 '+width+' '+height);
@@ -903,7 +903,7 @@ function renderZipTimeline(data){
   graph.removeAttribute('hidden');
   selectZipObservation(0,false);
   note.hidden=false;
-  note.textContent='Drag to explore · X = survey date · Y = modeled value. Dots are actual survey years; no months or sale prices are invented.';
+  note.textContent='Drag to compare the real dated observations · X = year · Y = modeled value · no invented monthly prices.';
 }
 /* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
 function renderZipStory(data){
@@ -1049,7 +1049,7 @@ async function requestZipPrices(zip,cat,token){
     if(lastZipVisualized!==zip){
       lastZipVisualized=zip;
       requestAnimationFrame(()=>$('#marketState').scrollIntoView({
-        behavior:REDUCED?'instant':'smooth',block:'start'
+        behavior:REDUCED?'auto':'smooth',block:'start'
       }));
     }
   }catch(_){
