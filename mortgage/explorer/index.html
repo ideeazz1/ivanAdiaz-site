@@ -423,7 +423,7 @@ const hoodO=()=>D.neighborhoods.find(h=>h.id===S.hood);
 let observations;
 const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database2/explorer/market/zip';
 const SIZE_NAMES={starter:'Starter home',growing:'Typical home',moveup:'More space',larger:'Larger home'};
-let zipProfile=null,zipLookupToken=0,zipLookupController=null;
+let zipProfile=null,zipLookupToken=0,zipLookupController=null,currentZipMarket=null;
 const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
@@ -527,6 +527,8 @@ function cancelZipLookup(){
   if(zipLookupController){zipLookupController.abort();zipLookupController=null}
 }
 function clearMarket(){
+  currentZipMarket=null;
+  $('#results').hidden=true;
   $('#marketState').hidden=true;
   $('#marketTitle').textContent='';
   $('#marketMeta').textContent='';
@@ -546,7 +548,7 @@ function setZipPending(zip,sizesLoaded=false){
   $('#zipmsg').textContent='Checking available local data…';
 }
 function setZipUnavailable(zip){
-  $('#emptyState').hidden=false;clearMarket();
+  $('#emptyState').hidden=false;clearMarket();clearResults();
   $('#emptyTitle').textContent=zipProfile?'Market prices for ZIP '+zip+' are not available yet':
     'Market data for ZIP '+zip+' is not available yet';
   $('#emptyHelp').textContent=zipProfile?
@@ -578,7 +580,7 @@ function isValidZipSizes(d,zip){
         o.sample_count>p.sample_count)return false;
     lastMax=o.size_band_sqft.max;lastId=order.indexOf(o.id);
   }
-  return true;
+  return p.options.reduce((sum,o)=>sum+o.sample_count,0)<=p.sample_count;
 }
 function isValidZipMarket(d,z,choice){
   const band=choice.size_band_sqft;
@@ -588,12 +590,12 @@ function isValidZipMarket(d,z,choice){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(d.as_of||''))return false;
   if(d.price_basis!=='calculated'||d.calculation_method!=='median_estimated_value_per_sqft_x_representative_sqft'||
       d.representative_sqft!==choice.sqft)return false;
-  if(!Array.isArray(d.limitations)||d.limitations.length>12||d.limitations.some(x=>typeof x!=='string'||x.length>250))return false;
+  if(!Array.isArray(d.limitations)||d.limitations.length>12||d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250))return false;
   if(!d.limitations.length)return false;
   if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
   let last='';let actual=0;
   for(const p of d.periods){
-    if(!p||typeof p.month!=='string'||!/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||p.month<=last)return false;
+    if(!p||typeof p.month!=='string'||!/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||p.month<=last||p.month>d.as_of.slice(0,7))return false;
     last=p.month;
     if(!Number.isInteger(p.sample_count)||p.sample_count<0||p.sample_count>100000)return false;
     if(p.calculated_home_value_usd!==null){
@@ -662,6 +664,74 @@ function renderZipTimeline(data){
   graph.setAttribute('aria-label','Calculated estimated home values from '+lab(first.month)+' to '+lab(last.month)+'. Gaps are not interpolated.');
   note.hidden=false;note.textContent='Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
 }
+
+/* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
+function renderZipStory(data){
+  currentZipMarket=data;
+  const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
+  if(available.length<2){
+    $('#results').hidden=true;
+    return;
+  }
+  const earlier=available[0],later=available.at(-1);
+  const then=earlier.calculated_home_value_usd,now=later.calculated_home_value_usd;
+  if(earlier.month===later.month||then<=0||now<=0){
+    $('#results').hidden=true;
+    return;
+  }
+  const firstLabel=lab(earlier.month),lastLabel=lab(later.month);
+  const diff=now-then,pct=100*diff/then,abs=Math.abs(diff);
+  const choice=zipProfile?.size_profile?.options.find(o=>o.id===S.cat);
+  if(!choice||choice.sqft!==data.representative_sqft){
+    $('#results').hidden=true;
+    return;
+  }
+  const sqft=choice.sqft,spaceToday=sqft*then/now;
+  const deltaSpace=Math.round(spaceToday-sqft);
+  const rate=D.rates.at(-1),down=D.assumptions.downPct,years=D.assumptions.termYears;
+  const payThen=pmt(then,rate,down),payNow=pmt(now,rate,down);
+  const payDiff=payNow-payThen;
+  document.querySelectorAll('.latestLabel').forEach(el=>el.textContent=lastLabel);
+  setText('#rHead','What changed for a '+sqft.toLocaleString()+' sq ft home?');
+  setText('#rSub','ZIP '+data.zip+' · Calculated local estimates, '+firstLabel+' versus '+lastLabel+
+    '. Source: '+data.source+' (as of '+data.as_of+').');
+  setText('#pThenL',firstLabel);setText('#pThen',fmt$(then));setText('#pNow',fmt$(now));
+  setText('#pDiff',fmt$(abs)+(diff<0?' lower':diff>0?' higher':' unchanged')+
+    ' ('+(pct>0?'+':'')+pct.toFixed(1)+'%) · modeled difference, not savings');
+  setText('#priceNote','Estimated value = '+sqft.toLocaleString()+
+    ' sq ft × local median estimated value per sq ft. Samples: '+earlier.sample_count+
+    ' / '+later.sample_count+'. '+data.limitations.join(' '));
+  $('#houseSvg').parentElement.hidden=false;
+  $('#hThen').closest('.legend').hidden=false;
+  const k=260/Math.sqrt(Math.max(3500,sqft,spaceToday)),cx=160,base=186;
+  const w0=k*Math.sqrt(sqft),w1=k*Math.sqrt(spaceToday);
+  $('#houseSvg').innerHTML='<line x1="20" x2="300" y1="'+base+'" y2="'+base+
+    '" stroke="#D5D9E0" stroke-width="2"/>'+
+    '<path class="hh" d="'+housePath(cx,base,w1,w1*.8)+'" stroke="#004288" stroke-width="3.2" fill="rgba(0,66,136,.06)"/>'+
+    '<path class="hh" d="'+housePath(cx,base,w0,w0*.8)+'" stroke="#9A9AA0" stroke-width="2.4" stroke-dasharray="6 6"/>';
+  setText('#hThen',firstLabel+' · '+sqft.toLocaleString()+' sq ft');
+  setText('#hNow','Same modeled budget · '+Math.round(spaceToday).toLocaleString()+' sq ft');
+  setText('#hRes',Math.abs(deltaSpace)<10?'About the same space at the same modeled budget.':
+    Math.abs(deltaSpace).toLocaleString()+(deltaSpace>0?' more':' fewer')+' sq ft at the same modeled budget.');
+  setText('#budgetNote','Illustration holding the home-value budget fixed. Assumes equal modeled value per sq ft across sizes; not a verified available listing.');
+  setText('#mThenL',firstLabel+' · '+rate.toFixed(2)+'%');
+  $('#mNow').parentNode.querySelector('small').textContent=lastLabel+' · '+rate.toFixed(2)+'%';
+  setText('#mThen',fmt$(payThen));setText('#mNow',fmt$(payNow));
+  setText('#mDiff',fmt$(Math.abs(payDiff))+(payDiff<0?' less':payDiff>0?' more':' unchanged')+' monthly at the same illustrative rate');
+  setText('#mFine',down+'% down · '+years+'-year fixed · identical illustrative '+
+    rate.toFixed(2)+'% rate for both dates to isolate modeled value changes. NOT historical mortgage rates. Principal and interest only; taxes, insurance, HOA and mortgage insurance excluded.');
+  const percent=+$('#cRange').value;
+  setText('#cRes',percent===0?'No concession in this illustration.':
+    'An illustrative seller contribution of '+percent+'% would be about '+
+    fmt$(now*percent/100)+' toward closing costs, if negotiated and permitted.');
+  $('#cBudget').placeholder=fmtR(now);
+  if(!$('#cBudget').dataset.touched){
+    $('#cBudget').value=Math.round(now/5000)*5000;
+    calc();
+  }
+  $('#results').hidden=false;
+}
+
 function renderZipMarket(data){
   $('#emptyState').hidden=true;
   $('#marketState').hidden=false;
@@ -672,6 +742,7 @@ function renderZipMarket(data){
     ' · Comparison band: '+data.size_band_sqft.min.toLocaleString()+'–'+data.size_band_sqft.max.toLocaleString()+' sq ft';
   $('#marketLimitations').textContent='Modeled estimates, not observed selling prices. '+data.limitations.join(' ');
   renderZipTimeline(data);
+  renderZipStory(data);
   const target=$('#marketRows');
   for(const p of data.periods){
     const row=document.createElement('div');row.className='market-observation';
@@ -906,8 +977,8 @@ function calc(){
 $('#invBtn').addEventListener('click',e=>{const o=e.target.getAttribute('aria-expanded')==='true';e.target.setAttribute('aria-expanded',!o);$('#calc').hidden=o;if(!o){calc();T.send('invite_open')}});
 $('#cBudget').addEventListener('input',e=>{e.target.dataset.touched=1;calc()});
 $('#cDown').addEventListener('input',calc);
-$('#cToggle').addEventListener('change',e=>{$('#conc').hidden=!e.target.checked;T.send('concession_toggle',{on:e.target.checked});renderResults()});
-$('#cRange').addEventListener('input',renderResults);
+$('#cToggle').addEventListener('change',e=>{$('#conc').hidden=!e.target.checked;T.send('concession_toggle',{on:e.target.checked});if(S.hood)renderResults();else if(currentZipMarket)renderZipStory(currentZipMarket)});
+$('#cRange').addEventListener('input',()=>{if(S.hood)renderResults();else if(currentZipMarket)renderZipStory(currentZipMarket)});
 
 /* ---------- boot ---------- */
 function observe(){
