@@ -219,7 +219,8 @@ footer{padding:40px 0 64px;color:var(--ink3);font-size:12.5px;line-height:1.6}
 footer p{margin:0 0 10px;max-width:56em}
 #dbg{position:fixed;left:8px;bottom:8px;max-width:min(360px,92vw);max-height:30vh;overflow:auto;background:#000c;color:#9f9;font:11px/1.4 ui-monospace,monospace;padding:8px 10px;border-radius:8px;z-index:50}
 .err{padding:60px 0;text-align:center;color:var(--ink2)}
- .finance-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:18px 0 12px;padding-top:16px;border-top:1px solid #E9EEF6}
+ .finance-controls[hidden]{display:none}
+.finance-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:18px 0 12px;padding-top:16px;border-top:1px solid #E9EEF6}
 .finance-controls label{display:flex;justify-content:space-between;gap:6px;font-size:13px;color:var(--ink2);font-weight:650}
 .finance-controls label strong{color:var(--ac)}
 .finance-controls input[type=range]{width:100%;margin:12px 0 2px}
@@ -601,7 +602,9 @@ function setHood(id){
   if(S.demoZip)resetZipCalculatorContext();
   cancelZipLookup();clearMarket();zipProfile=null;
   if(!D.categories.some(c=>c.id===S.cat))S.cat='growing';
-  S.hood=id;S.demoZip=null;clearResults();showResults(true);size();buildSelectors();refreshAll(false);
+  S.hood=id;S.demoZip=null;clearResults();showResults(true);
+  $('#financeControls').hidden=true;
+  size();buildSelectors();refreshAll(false);
 }
 function showResults(ready){
   $('#chartPanel').closest('section').hidden=!ready;
@@ -792,8 +795,11 @@ function selectZipObservation(index,sendEvent=true){
   $('#zipScrubDate').textContent='Selected · '+lab(item.month);
   $('#zipScrubValue').textContent=fmt$(item.calculated_home_value_usd);
   const difference=last.calculated_home_value_usd-item.calculated_home_value_usd;
+  const monthly=currentZipMarket?.calculation_method==='acs_size_fhfa_monthly_estimate';
   $('#zipScrubContext').textContent=i===zipChartPoints.length-1?
-    'Latest dated survey · drag left to compare.':
+    (monthly?'Modeled current scenario · published FHFA index ends '+
+       lab(currentZipMarket.latest_observed_month)+'.':'Latest dated survey estimate.')+
+       ' Drag left to compare.':
     fmt$(Math.abs(difference))+
     (difference<0?' lower':difference>0?' higher':' unchanged')+
     ' by '+lab(last.month)+' in this model.';
@@ -1069,28 +1075,45 @@ function renderZipStory(data,selectedIndex=0){
   $('#results').hidden=false;
 }
 function renderZipMarket(data){
-  const modeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+  const monthly=data.calculation_method==='acs_size_fhfa_monthly_estimate';
+  const modeled=data.geography==='zcta_approximation';
   $('#emptyState').hidden=true;
   $('#marketState').hidden=false;
-  $('#zipmsg').textContent='Explore the chart below ↓';
-  $('#marketTitle').textContent='ZIP '+data.zip+' · Explore the difference';
-  $('#marketMeta').textContent=data.representative_sqft.toLocaleString()+
-    ' sq ft modeled home · '+data.as_of.slice(0,4)+
-    ' dated estimates · not a current listing or appraisal';
-  $('#marketLimitations').textContent='Source: '+data.source+' (as of '+data.as_of+'). '+(modeled?'Modeled '+data.representative_sqft.toLocaleString()+' sq ft home, based on '+data.estimated_housing_units.toLocaleString()+' weighted housing unit estimates. ':'')+data.limitations.join(' ');
+  $('#zipmsg').textContent='Drag the monthly graph below ↓';
+  $('#marketTitle').textContent='ZIP '+data.zip+' · Your buying opportunity';
+  $('#marketMeta').textContent=monthly?
+    data.representative_sqft.toLocaleString()+' sq ft modeled home · '+
+    lab(data.periods[0].month)+' to '+lab(data.modeled_through)+
+    ' · price-index data through '+lab(data.latest_observed_month):
+    data.representative_sqft.toLocaleString()+' sq ft modeled home · '+
+    data.as_of.slice(0,4)+' dated estimate';
+  $('#marketLimitations').textContent=monthly?
+    'Census ZIP-area anchors: '+data.acs_as_of+
+    '. FHFA regional purchase-only monthly index: '+data.fhfa_index_geography+
+    ', published '+data.fhfa_published_on+
+    ', observations through '+data.latest_observed_month+
+    '. ZIP-to-region lookup © GeoNames, CC BY 4.0. '+
+    data.limitations.join(' '):
+    'Source: '+data.source+' (as of '+data.as_of+'). '+data.limitations.join(' ');
+  $('#zipMethod').open=false;
   renderZipTimeline(data);
-  renderZipStory(data);
+  renderZipStory(data,0);
   const target=$('#marketRows');
+  target.replaceChildren();
   for(const p of data.periods){
     const row=document.createElement('div');row.className='market-observation';
     const month=document.createElement('span');month.className='month';month.textContent=lab(p.month);
     const info=document.createElement('span');
     const amount=document.createElement('strong');
-    amount.textContent=p.calculated_home_value_usd===null?'No value estimate':fmt$(p.calculated_home_value_usd);
-    const count=document.createElement('small');
-    count.textContent=modeled?'ACS five-year period estimate · no individual-property sample':
-      p.sample_count+' valuation observation'+(p.sample_count===1?'':'s');
-    info.append(amount,count);row.append(month,info);target.append(row);
+    amount.textContent=p.calculated_home_value_usd===null?'No model value':fmt$(p.calculated_home_value_usd);
+    const details=document.createElement('small');
+    details.textContent=monthly?
+      p.estimate_kind==='forward_scenario'?'Forward modeled scenario':
+      p.estimate_kind==='survey_anchor'?'2024 Census benchmark anchor':
+      'Monthly regional FHFA-indexed model':
+      modeled?'ZIP-area modeled value, not a sale':
+      p.sample_count+' aggregate valuation observations';
+    info.append(amount,details);row.append(month,info);target.append(row);
   }
 }
 async function requestZipSizes(zip,token){
