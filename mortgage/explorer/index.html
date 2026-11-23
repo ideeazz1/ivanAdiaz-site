@@ -746,6 +746,9 @@ function renderZipStory(data){
     return;
   }
   const firstLabel=lab(earlier.month),lastLabel=lab(later.month);
+  // Census's latest 5-year survey is not today's housing market.
+  const labelIsCurrent=later.month===new Date().toISOString().slice(0,7);
+  $('#results .eyebrow').textContent=labelIsCurrent?'Then vs. now':'Then vs. latest dated estimate';
   const diff=now-then,pct=100*diff/then,abs=Math.abs(diff);
   const choice=zipProfile?.size_profile?.options.find(o=>o.id===S.cat);
   if(!choice||choice.sqft!==data.representative_sqft){
