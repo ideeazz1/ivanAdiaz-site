@@ -557,11 +557,17 @@ function setZipUnavailable(zip){
   $('#zipmsg').textContent=zipProfile?'Select a different home size or an example neighborhood.':
     'No approved local housing-stock data is available for this ZIP.';
 }
+function isValidObservedDay(day){
+  return typeof day==='string' && /^\d{4}-\d{2}-\d{2}$/.test(day) &&
+    Number.isFinite(Date.parse(day)) &&
+    new Date(day).toISOString().slice(0,10)===day &&
+    day<=new Date().toISOString().slice(0,10);
+}
 function isValidZipSizes(d,zip){
   if(!d||d.status!=='sizes_available'||d.zip!==zip||d.geography!=='postal_code')return false;
   const p=d.size_profile;
   if(!p||typeof p.source!=='string'||!p.source.trim()||p.source.length>180||
-      !/^\d{4}-\d{2}-\d{2}$/.test(p.as_of||'')||
+      !isValidObservedDay(p.as_of)||
       !['single_family_stock','active_listings'].includes(p.population)||
       !Number.isInteger(p.sample_count)||p.sample_count<1||p.sample_count>10000000||
       !Array.isArray(p.options)||p.options.length<1||p.options.length>4)return false;
@@ -587,7 +593,7 @@ function isValidZipMarket(d,z,choice){
   if(!d||d.status!=='available'||d.zip!==z||d.geography!=='postal_code')return false;
   if(!d.size_band_sqft||d.size_band_sqft.min!==band.min||d.size_band_sqft.max!==band.max)return false;
   if(typeof d.source!=='string'||!d.source.trim()||d.source.length>180)return false;
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(d.as_of||''))return false;
+  if(!isValidObservedDay(d.as_of))return false;
   if(d.price_basis!=='calculated'||d.calculation_method!=='median_estimated_value_per_sqft_x_representative_sqft'||
       d.representative_sqft!==choice.sqft)return false;
   if(!Array.isArray(d.limitations)||d.limitations.length>12||d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250))return false;
