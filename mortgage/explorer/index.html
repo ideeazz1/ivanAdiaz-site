@@ -189,8 +189,8 @@ footer p{margin:0 0 10px;max-width:56em}
   <div class="wrap">
     <div>
       <p class="eyebrow rv">Home Opportunity Explorer</p>
-      <h1 class="rv" style="--d:1">Remember the neighborhood you couldn’t afford in <em>2023</em>?</h1>
-      <p class="sub rv" style="--d:2">See what’s changed in the neighborhoods you’ve always wanted to call home.</p>
+      <h1 class="rv" style="--d:1">Explore your <em>next neighborhood.</em></h1>
+      <p class="sub rv" style="--d:2">Start with a ZIP code. We’ll show local comparisons only when matching market data is available.</p>
       <a class="cta rv" style="--d:3" href="#explore" data-t="cta_take_another_look">Take another look <span aria-hidden="true">↓</span></a>
     </div>
     <div class="heroviz rv" style="--d:2" aria-hidden="true">
@@ -206,20 +206,31 @@ footer p{margin:0 0 10px;max-width:56em}
     <div class="card rv">
       <p class="eyebrow">Start here</p>
       <h2>Where did you want to live?</h2>
-      <p class="lbl">Pick a neighborhood</p>
-      <div class="pills" id="hoods" role="group" aria-label="Neighborhood"></div>
-      <form class="zipbox" id="zipbox" hidden>
+      <p class="lbl">Enter a ZIP code</p>
+      <form class="zipbox" id="zipbox">
         <input id="zip" inputmode="numeric" maxlength="5" placeholder="ZIP code" aria-label="ZIP code">
-        <button type="submit">Preview</button>
+        <button type="submit">Check ZIP</button>
         <p class="zipmsg" id="zipmsg"></p>
       </form>
+      <p class="lbl">Or explore an example neighborhood</p>
+      <div class="pills" id="hoods" role="group" aria-label="Example neighborhoods"></div>
       <p class="lbl">Now the home you pictured</p>
       <div class="homes" id="homes" role="group" aria-label="Home size"></div>
     </div>
   </div>
 </section>
 
-<section class="sec" style="padding-top:0">
+<section class="sec" id="emptyState" style="padding-top:0">
+  <div class="wrap">
+    <div class="card">
+      <p class="eyebrow">Your location</p>
+      <h2 id="emptyTitle">Start with a ZIP code</h2>
+      <p class="sub" id="emptyHelp">No neighborhood is selected. We’ll show market comparisons only when reliable data is available for that location.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0" hidden>
   <div class="wrap">
     <div class="panel rv" id="chartPanel">
       <div class="top">
@@ -251,7 +262,7 @@ footer p{margin:0 0 10px;max-width:56em}
   </div>
 </section>
 
-<section class="sec" id="results">
+<section class="sec" id="results" hidden>
   <div class="wrap">
     <p class="eyebrow rv">Then vs. now</p>
     <h2 class="rv" id="rHead" aria-live="polite">—</h2>
@@ -330,7 +341,7 @@ footer p{margin:0 0 10px;max-width:56em}
 </main>
 
 <footer><div class="wrap">
-  <p><b>Circle C · Growing family.</b> ATTOM estimated market prices — not verified closing prices. The monthly estimate applies the median estimated price per square foot of 2,400–2,800 sq ft single-family homes to 2,600 sq ft. The 2023 amounts appear loan-derived. Other neighborhoods, sizes and ZIP previews use illustrative demonstration data.</p>
+  <p>Example neighborhoods only. Circle C’s 2,600-sq-ft example uses ATTOM estimates, not verified closing prices; its 2023 prices appear loan-derived. Other example neighborhoods and sizes use illustrative figures. ZIP searches without matching local market coverage display no prices or savings.</p>
   <p>Payments show principal and interest only at the stated assumptions. Property taxes, insurance and HOA dues are extra. Seller concessions are not guaranteed. This is not an offer of credit or a commitment to lend. Rates and terms vary.</p>
   <p>Ivan Diaz, NMLS 501968 · Assurance Financial Group, LLC, NMLS 70876 · Equal Housing Opportunity</p>
 </div></footer>
@@ -370,7 +381,7 @@ const DEBUG=new URLSearchParams(location.search).has('debug');
 if(DEBUG){const d=document.createElement('div');d.id='dbg';d.textContent='events (debug)';document.body.appendChild(d)}
 
 /* ---------- state ---------- */
-let D,S={hood:'circle-c',cat:'growing',sel:0,followPeak:true,demoZip:null,reveal:0,revealed:false,disp:[],raf:0,drag:false};
+let D,S={hood:null,cat:'growing',sel:0,followPeak:true,demoZip:null,reveal:0,revealed:false,disp:[],raf:0,drag:false};
 const N=()=>D.months.length;
 const catO=()=>D.categories.find(c=>c.id===S.cat);
 const hoodO=()=>D.neighborhoods.find(h=>h.id===S.hood);
@@ -410,11 +421,10 @@ function buildHero(){
 /* ---------- selectors ---------- */
 function buildSelectors(){
   const h=$('#hoods');
-  h.innerHTML=D.neighborhoods.map(n=>`<button class="pill" type="button" aria-pressed="${n.id===S.hood&&!S.demoZip}" data-h="${n.id}">${n.name}</button>`).join('')+
-    `<button class="pill try" type="button" aria-pressed="${!!S.demoZip}" data-h="try">Try your neighborhood</button>`;
+  h.innerHTML=D.neighborhoods.map(n=>`<button class="pill" type="button" aria-pressed="${n.id===S.hood}" data-h="${n.id}">${n.name}</button>`).join('');
   h.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
-    if(b.dataset.h==='try'){$('#zipbox').hidden=false;$('#zip').focus();return}
-    S.demoZip=null;$('#zipbox').hidden=true;$('#zipmsg').textContent='';setHood(b.dataset.h);T.send('neighborhood_change',{hood:b.dataset.h});
+    $('#zip').value='';$('#zipmsg').textContent='Example neighborhood selected — see the clearly labeled sample data below.';
+    setHood(b.dataset.h);T.send('neighborhood_change',{hood:b.dataset.h});
   }));
   const hm=$('#homes');
   hm.innerHTML=D.categories.map(c=>{
@@ -424,17 +434,38 @@ function buildSelectors(){
       <b>${c.name}</b><span>${c.label} sq ft</span></button>`}).join('');
   hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{S.cat=b.dataset.c;
     hm.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
-    refreshAll(true);T.send('home_size_change',{cat:S.cat});}));
+    if(S.hood)refreshAll(true);T.send('home_size_change',{cat:S.cat});}));
   $('#zipbox').onsubmit=e=>{
     e.preventDefault();const z=$('#zip').value.trim();
-    if(!/^\d{5}$/.test(z)){$('#zipmsg').textContent='Enter a 5-digit ZIP code.';return}
-    $('#zipmsg').textContent=z==='78739'?'78739 includes Circle C, Avana and Meridian. Pick one above.':`Demo preview: ${z} will use real local data once it’s connected. For now the chart shows Circle C’s illustrative shape, not ${z}.`;
-    if(z!=='78739'){S.demoZip=z;S.hood='circle-c';buildSelectors();$('#zipbox').hidden=false;$('#zipmsg').textContent=`Demo preview: ${z} will use real local data once it’s connected. For now the chart shows Circle C’s illustrative shape, not ${z}.`;refreshAll(true)}
+    S.hood=null;S.demoZip=null;clearResults();showResults(false);
+    if(!/^\d{5}$/.test(z)){
+      $('#zipmsg').textContent='Enter a valid five-digit ZIP code.';
+      $('#emptyTitle').textContent='Enter a valid ZIP code';
+      $('#emptyHelp').textContent='No market estimates are shown without a valid location.';
+      buildSelectors();T.send('try_zip',{});return;
+    }
+    S.demoZip=z;buildSelectors();
+    $('#zipmsg').textContent='No local market data is connected for this ZIP yet.';
+    $('#emptyTitle').textContent='Market data for ZIP '+z+' is not available yet';
+    $('#emptyHelp').textContent='We will not substitute numbers from a different ZIP. You can explore a labeled example neighborhood below.';
     T.send('try_zip',{});   // the ZIP itself is never sent
   };
 }
-function setHood(id){S.hood=id;buildSelectors();refreshAll(true)}
-
+function setHood(id){
+  S.hood=id;S.demoZip=null;clearResults();showResults(true);buildSelectors();refreshAll(false);
+}
+function showResults(ready){
+  $('#chartPanel').closest('section').hidden=!ready;
+  $('#results').hidden=!ready;
+  $('#emptyState').hidden=ready;
+}
+function clearResults(){
+  cancelAnimationFrame(S.raf);S.disp=[];S.sel=0;S.drag=false;S.followPeak=true;
+  ['#cTitle','#sourceLabel','#sVal','#nVal','#dSent','#rHead','#rSub','#pThen','#pNow','#pDiff','#hRes','#hThen','#hNow','#mThen','#mNow','#mDiff','#mFine','#cRes','#cPay','#cFine'].forEach(id=>{const el=$(id);if(el)el.textContent='';});
+  $('#gMain').replaceChildren();$('#gScrub').replaceChildren();
+  $('#conc').hidden=true;$('#cToggle').checked=false;
+  $('#calc').hidden=true;$('#invBtn').setAttribute('aria-expanded','false');
+}
 /* ---------- chart ---------- */
 const svg=$('#chart'),gMain=$('#gMain'),gScrub=$('#gScrub'),tip=$('#tip');
 let W=0,H=0,yMin=0,yMax=1;const M={l:48,r:16,t:52,b:30};
@@ -573,6 +604,7 @@ function renderResults(){
   if(!$('#cBudget').dataset.touched){$('#cBudget').value=Math.round(now/5000)*5000;calc()}
 }
 function refreshAll(animate){
+  if(!S.hood)return;
   const p=prices();
   if(S.followPeak)S.sel=peakIdx(p);
   S.sel=Math.min(S.sel,N()-1);
@@ -621,8 +653,8 @@ Promise.all(['data.json','attom-circle-c-pilot.json'].map(async file=>{
   return response.json();
 })).then(([d,pilot])=>{
   observations=new Map(pilot.observations.map(row=>[row.month,row]));
-  D=d;S.sel=peakIdx(prices());S.disp=prices();
-  buildHero();buildSelectors();buildSk();size();draw();renderResults();observe();T.send('page_view');
+  D=d;
+  buildHero();buildSelectors();buildSk();size();clearResults();showResults(false);observe();T.send('page_view');
 }).catch(()=>{document.querySelector('main').innerHTML='<div class="wrap err">The preview data couldn’t load. Please refresh.</div>'});
 </script>
 </body>
