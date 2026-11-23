@@ -241,7 +241,7 @@ footer p{margin:0 0 10px;max-width:56em}
     <div class="card">
       <p class="eyebrow">Your location</p>
       <h2 id="emptyTitle">Start with a ZIP code</h2>
-      <p class="sub" id="emptyHelp">No neighborhood is selected. We’ll show market comparisons only when reliable data is available for that location.</p>
+      <p class="sub" id="emptyHelp">Enter your ZIP to explore estimated home sizes, values, and financing possibilities. These are illustrations—not listings or appraisals.</p>
     </div>
   </div>
 </section>
@@ -249,7 +249,7 @@ footer p{margin:0 0 10px;max-width:56em}
 <section class="sec" id="marketState" hidden>
   <div class="wrap">
     <div class="card">
-      <p class="eyebrow">Local market observations</p>
+      <p class="eyebrow">Your ZIP opportunity estimator</p>
       <h2 id="marketTitle"></h2>
       <p class="sub" id="marketMeta"></p>
       <p class="fine" id="marketLimitations"></p>
@@ -261,7 +261,7 @@ footer p{margin:0 0 10px;max-width:56em}
       <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 244" role="img" aria-label="Calculated ZIP home-value observations across time" hidden></svg>
       <p id="zipChartNote" class="zip-chart-note" hidden></p>
       <div id="marketRows" aria-live="polite"></div>
-      <p class="fine">Historical groups represent different homes, not changes to a particular property. These observations are not a promise of savings or future prices.</p>
+      <p class="fine">Modeled value comparisons are planning illustrations, not a particular home's price, a listing, or a promise of savings.</p>
     </div>
   </div>
 </section>
@@ -370,7 +370,7 @@ footer p{margin:0 0 10px;max-width:56em}
           <p class="fine" id="cFine"></p>
         </div>
       </div>
-      <p class="contact" id="contact">Want to talk it through? Ivan Diaz · (415) 271-7740 · ivanadiaz.com</p>
+      <p class="contact" id="contact">Interested in actual homes? I can introduce you to a local real estate agent. Ivan Diaz · (415) 271-7740 · ivanadiaz.com</p>
     </div>
   </div>
 </section>
@@ -759,7 +759,7 @@ function renderZipStory(data){
 function renderZipMarket(data){
   $('#emptyState').hidden=true;
   $('#marketState').hidden=false;
-  $('#zipmsg').textContent='Matching local observations found.';
+  $('#zipmsg').textContent='Illustrative ZIP estimates calculated.';
   $('#marketTitle').textContent='ZIP '+data.zip+' · Calculated home values';
   $('#marketMeta').textContent='Calculation: '+data.representative_sqft.toLocaleString()+' sq ft × median estimated value per sq ft'+
     ' · Source: '+data.source+' · As of '+data.as_of+
