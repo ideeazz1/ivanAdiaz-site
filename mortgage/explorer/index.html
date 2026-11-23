@@ -856,32 +856,32 @@ function renderZipTimeline(data){
   $('#zipScrub').hidden=true;
   zipChartPoints=[];zipChartCoords=[];zipChartSelected=0;zipChartDragging=false;
   const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
+  const monthly=data.calculation_method==='acs_size_fhfa_monthly_estimate';
   const comp=$('#zipCompare');
   if(available.length<2){
-    comp.hidden=true;
-    note.hidden=false;note.textContent='Only one dated estimate is available for this ZIP.';
+    comp.hidden=true;note.hidden=false;
+    note.textContent='Only one estimated period is available for this ZIP.';
     return;
   }
   const first=available[0],last=available.at(-1);
   const monthIndex=m=>Number(m.slice(0,4))*12+Number(m.slice(5,7))-1;
   const month0=monthIndex(first.month),month1=monthIndex(last.month);
-  if(month0===month1){comp.hidden=true;return}
+  if(month1===month0){comp.hidden=true;return}
   const diff=last.calculated_home_value_usd-first.calculated_home_value_usd;
   comp.hidden=false;
   $('#zipThenDate').textContent='Then · '+lab(first.month);
   $('#zipThenValue').textContent=fmt$(first.calculated_home_value_usd);
-  $('#zipNowDate').textContent='Latest · '+lab(last.month);
+  $('#zipNowDate').textContent=(monthly?'Modeled ':'Latest · ')+lab(last.month);
   $('#zipNowValue').textContent=fmt$(last.calculated_home_value_usd);
   $('#zipComparisonNote').textContent=(diff<0?'↓ ':diff>0?'↑ ':'≈ ')+
-    fmt$(Math.abs(diff))+' · modeled change between dated surveys';
+    fmt$(Math.abs(diff))+' · illustrative difference, not a sale-price change';
   const width=Math.max(310,Math.round(graph.parentElement.clientWidth||700));
   const height=310,left=62,right=width-25,topY=44,bottomY=252;
   graph.setAttribute('viewBox','0 0 '+width+' '+height);
   zipChartBounds={left,top:topY,bottom:bottomY,width};
   const values=available.map(p=>p.calculated_home_value_usd);
-  const minV=Math.min(...values),maxV=Math.max(...values);
-  const spread=Math.max(10000,maxV-minV);
-  const lower=Math.max(0,minV-spread*.65),upper=maxV+spread*.42;
+  const minV=Math.min(...values),maxV=Math.max(...values),spread=Math.max(10000,maxV-minV);
+  const lower=Math.max(0,minV-spread*.55),upper=maxV+spread*.42;
   const x=m=>left+(monthIndex(m)-month0)/(month1-month0)*(right-left);
   const y=v=>bottomY-(v-lower)/(upper-lower)*(bottomY-topY);
   const NS='http://www.w3.org/2000/svg';
@@ -890,38 +890,65 @@ function renderZipTimeline(data){
     for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));
     parent.append(el);return el;
   };
-  for(let i=0;i<=4;i++){
-    const value=lower+(upper-lower)*i/4,py=y(value);
+  const defs=append('defs',{});
+  const gradient=append('linearGradient',{id:'zipValueArea',x1:'0',y1:'0',x2:'0',y2:'1'},defs);
+  append('stop',{offset:'0%', 'stop-color':'#8FB9F2','stop-opacity':'.30'},gradient);
+  append('stop',{offset:'100%', 'stop-color':'#8FB9F2','stop-opacity':'0'},gradient);
+  for(let tick=0;tick<=4;tick++){
+    const value=lower+(upper-lower)*tick/4,py=y(value);
     append('line',{x1:left,y1:py,x2:right,y2:py,stroke:'rgba(255,255,255,.12)',
       'stroke-width':1});
     const label=append('text',{x:left-9,y:py+4,fill:'rgba(255,255,255,.58)',
       'font-size':11.5,'text-anchor':'end'});
     label.textContent=fmtK(value);
   }
-  const watermark=append('text',{x:(left+right)/2,y:166,'text-anchor':'middle',
+  const watermark=append('text',{x:(left+right)/2,y:165,'text-anchor':'middle',
     'font-size':Math.min(42,Math.floor(width/10)),
     'font-weight':800,fill:'rgba(255,255,255,.052)','letter-spacing':'3px'});
-  watermark.textContent='ESTIMATED';
-  // A dashed connection shows only the direction between real survey points;
-  // it is NEVER a fabricated monthly value series.
-  for(let i=1;i<available.length;i++){
-    const a=available[i-1],b=available[i];
-    const gap=monthIndex(b.month)-monthIndex(a.month);
-    append('line',{x1:x(a.month),y1:y(a.calculated_home_value_usd),
-      x2:x(b.month),y2:y(b.calculated_home_value_usd),
-      stroke:gap===1?'#C9E2FF':'rgba(201,226,255,.77)',
-      'stroke-width':gap===1?3:2.5,
-      'stroke-dasharray':gap===1?'none':'6 9','stroke-linecap':'round'});
+  watermark.textContent='MODELED';
+  const observedMonths=monthly?available.filter(p=>p.month<=data.latest_observed_month):available;
+  if(monthly&&observedMonths.length&&observedMonths.length<available.length){
+    const edge=x(data.latest_observed_month);
+    append('rect',{x:edge,y:topY,width:Math.max(0,right-edge),height:bottomY-topY,
+      fill:'rgba(143,185,242,.07)',rx:4});
+    const tag=append('text',{x:right,y:topY-16,'text-anchor':'end',
+      fill:'rgba(201,226,255,.72)','font-size':10.5,'font-weight':700});
+    tag.textContent='SCENARIO';
   }
-  for(const p of available){
+  const pathFor=points=>points.map((p,i)=>(i?'L':'M')+
+    x(p.month).toFixed(2)+' '+y(p.calculated_home_value_usd).toFixed(2)).join(' ');
+  if(observedMonths.length>1){
+    const area=pathFor(observedMonths)+' L'+x(observedMonths.at(-1).month)+
+      ' '+bottomY+' L'+x(observedMonths[0].month)+' '+bottomY+' Z';
+    append('path',{d:area,fill:'url(#zipValueArea)'});
+    append('path',{d:pathFor(observedMonths),fill:'none',stroke:'#fff',
+      'stroke-width':2.9,'stroke-linecap':'round','stroke-linejoin':'round'});
+  }
+  if(monthly&&observedMonths.length&&observedMonths.length<available.length){
+    const projected=[observedMonths.at(-1),...available.filter(p=>p.month>data.latest_observed_month)];
+    append('path',{d:pathFor(projected),fill:'none',stroke:'#8FB9F2',
+      'stroke-width':2.6,'stroke-dasharray':'6 7','stroke-linecap':'round'});
+  }
+  const lastObserved=monthly?data.latest_observed_month:null;
+  for(const [index,p] of available.entries()){
+    const atEdge=index===0||index===available.length-1||
+      p.month===lastObserved||p.month.endsWith('-01')||
+      p.estimate_kind==='survey_anchor';
+    if(!atEdge)continue;
     const px=x(p.month),py=y(p.calculated_home_value_usd);
-    append('circle',{cx:px,cy:py,r:13,fill:'rgba(143,185,242,.15)'});
-    append('circle',{cx:px,cy:py,r:5.5,fill:'#fff',stroke:'#8FB9F2','stroke-width':3});
+    append('circle',{cx:px,cy:py,r:atEdge?8:4,fill:'rgba(143,185,242,.13)'});
+    append('circle',{cx:px,cy:py,r:atEdge?4.5:3,fill:'#fff',
+      stroke:'#8FB9F2','stroke-width':2});
   }
-  for(const [month,position,align] of [[first.month,left,'start'],[last.month,right,'end']]){
-    const label=append('text',{x:position,y:290,'text-anchor':align,
-      fill:'rgba(255,255,255,.72)','font-size':13,'font-weight':700});
-    label.textContent=lab(month);
+  const labelMonths=available.length>=18?
+    available.filter(p=>p.month.endsWith('-01')).map(p=>p.month):[first.month];
+  if(!labelMonths.includes(last.month))labelMonths.push(last.month);
+  for(const month of labelMonths){
+    const pos=x(month);
+    const label=append('text',{x:pos,y:291,
+      'text-anchor':month===first.month?'start':month===last.month?'end':'middle',
+      fill:'rgba(255,255,255,.7)','font-size':11.7,'font-weight':700});
+    label.textContent=month===first.month||month===last.month?lab(month):month.slice(0,4);
   }
   append('g',{id:'zipScrubOverlay'});
   zipChartPoints=available;
@@ -929,17 +956,19 @@ function renderZipTimeline(data){
   $('#zipScrub').hidden=false;
   $('#zipScrub').querySelectorAll('[data-zip-go]').forEach(button=>{
     if(button.dataset.zipGo==='start')button.textContent='Start · '+lab(first.month);
-    if(button.dataset.zipGo==='latest')button.textContent='Latest · '+lab(last.month);
+    if(button.dataset.zipGo==='latest')button.textContent=(monthly?'Model now · ':'Latest · ')+lab(last.month);
   });
   graph.setAttribute('role','slider');
   graph.setAttribute('tabindex','0');
   graph.setAttribute('aria-valuemin','0');
   graph.setAttribute('aria-valuemax',String(available.length-1));
-  graph.setAttribute('aria-label','Drag the chart to explore dated ZIP home-value estimates. Use arrow keys for each available survey date.');
+  graph.setAttribute('aria-label','Drag the ZIP estimated home value graph across months. Use keyboard arrow keys.');
   graph.removeAttribute('hidden');
   selectZipObservation(0,false);
   note.hidden=false;
-  note.textContent='Drag to compare the real dated observations · X = year · Y = modeled value · no invented monthly prices.';
+  note.textContent=monthly?
+    'Drag month by month · white line = FHFA regional monthly trend applied to a ZIP benchmark · dashed = scenario after '+lab(data.latest_observed_month)+'.':
+    'Drag between supported dated survey observations. Missing months are not calculated.';
 }
 /* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
 function renderZipStory(data){
