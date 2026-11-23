@@ -78,26 +78,42 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .zipbox input:focus{outline:2px solid var(--ac);outline-offset:1px}
 .zipbox button{border:0;background:var(--ink);color:#fff;border-radius:var(--radius);padding:11px 16px;font-weight:600}
 .zipmsg{flex-basis:100%;font-size:13px;color:var(--ink2);margin:0}
-.zip-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
-.zip-compare>div{border:1px solid #e5e8ef;border-radius:12px;padding:14px;min-width:0}
-.zip-compare small{display:block;color:var(--ink2);font-size:12px;margin-bottom:6px}
-.zip-compare strong{display:block;font-size:clamp(18px,4.8vw,29px);letter-spacing:-.03em;font-weight:800}
-.zip-compare p{grid-column:1/-1;margin:2px 0 0;color:var(--ink2);font-size:13px}
-.zip-timeline{width:100%;max-height:280px;display:block;margin:8px 0;overflow:visible}
+/* ZIP results: restore the original immersive dark chart as the hero. */
+.zip-visual{background:linear-gradient(157deg,#0E1E38 0%,#152D50 67%,#102340 100%);overflow:hidden}
+.zip-visual .zip-headline{font-size:clamp(23px,4.5vw,38px);letter-spacing:-.035em;margin:10px 0 8px;color:#fff}
+.zip-visual .zip-kicker{font-size:11px;font-weight:750;letter-spacing:.15em;text-transform:uppercase;color:#A8C8F0;margin:0}
+.zip-visual .zip-brief{font-size:13px;color:rgba(255,255,255,.65);margin:4px 0 0}
+.zip-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 6px}
+.zip-compare>div{border:0;border-left:2px solid rgba(143,185,242,.48);padding:4px 0 4px 14px;min-width:0}
+.zip-compare>div:last-of-type{border-left-color:#8FB9F2}
+.zip-compare small{display:block;color:rgba(255,255,255,.60);font-size:12px;margin-bottom:7px;font-weight:650}
+.zip-compare strong{display:block;color:#fff;font-size:clamp(23px,5.9vw,40px);letter-spacing:-.04em;font-weight:800}
+.zip-compare p{grid-column:1/-1;margin:8px 0 0;color:#B2D3FF;font-size:14px;font-weight:600}
+.zip-graph{margin:8px -6px 0;min-height:300px;position:relative}
+.zip-graph .zip-graph-label{position:absolute;top:6px;left:18px;font-size:10px;letter-spacing:.13em;font-weight:700;color:rgba(255,255,255,.52);text-transform:uppercase;pointer-events:none}
+.zip-timeline{width:100%;height:310px;display:block;margin:0;overflow:visible}
 .zip-timeline[hidden]{display:none}
 .zip-timeline[role=slider]{cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
-.zip-timeline[role=slider]:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
-.zip-scrub{margin:6px 0 14px;padding:14px 16px;background:var(--acT);border-radius:var(--radius)}
+.zip-timeline[role=slider]:focus-visible{outline:3px solid #8FB9F2;outline-offset:3px;border-radius:6px}
+.zip-scrub{margin:0;padding:0;background:transparent}
 .zip-scrub[hidden]{display:none}
-.zip-scrub-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 15px}
-.zip-scrub-head span{color:var(--ink2);font-size:13px;font-weight:600}
-.zip-scrub-head strong{font-size:clamp(21px,4.5vw,30px);letter-spacing:-.025em}
-.zip-scrub p{font-size:13px;color:var(--ink2);margin:5px 0 0}
-.zip-scrub-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.zip-scrub-buttons button{border:1.5px solid #cad9ea;background:#fff;color:var(--ink);border-radius:99px;padding:8px 15px;font-size:13px;font-weight:700}
-.zip-scrub-buttons button[aria-pressed=true]{background:var(--ac);color:#fff;border-color:var(--ac)}
-.zip-scrub-buttons button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-.zip-chart-note{font-size:12px;color:var(--ink2);margin:6px 0 18px}
+.zip-scrub-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 15px}
+.zip-scrub-head span{color:rgba(255,255,255,.66);font-size:13px;font-weight:600}
+.zip-scrub-head strong{font-size:clamp(20px,4.7vw,27px);color:#fff;letter-spacing:-.02em}
+.zip-scrub p{font-size:12px;color:rgba(255,255,255,.68);margin:6px 0 0}
+.zip-scrub-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.zip-scrub-buttons button{border:1px solid rgba(143,185,242,.27);background:rgba(255,255,255,.08);color:#fff;border-radius:99px;padding:9px 15px;font-size:13px;font-weight:700;transition:background .2s}
+.zip-scrub-buttons button:hover{background:rgba(143,185,242,.24)}
+.zip-scrub-buttons button[aria-pressed=true]{background:#8FB9F2;color:#0E1E38;border-color:#8FB9F2}
+.zip-scrub-buttons button:focus-visible{outline:2px solid #8FB9F2;outline-offset:2px}
+.zip-chart-note{font-size:12px;color:rgba(255,255,255,.52);margin:14px 0 0;line-height:1.5}
+.zip-method{margin:14px 0 0;background:#fff;border-radius:var(--radius);border:1px solid #e5e9f1;padding:0 20px}
+.zip-method summary{padding:17px 0;cursor:pointer;font-weight:700;color:var(--ink);font-size:14px}
+.zip-method[open] summary{border-bottom:1px solid #edf0f5}
+.zip-method-body{padding:12px 0 22px;font-size:13px;color:var(--ink2);line-height:1.65}
+.zip-method-body .fine{margin-top:12px}
+@media(max-width:540px){.zip-visual{padding:24px 18px}.zip-compare{gap:9px}.zip-compare>div{padding-left:11px}.zip-graph{margin-left:-10px;margin-right:-10px}.zip-method{padding:0 16px}}
+
 .market-observation{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #e6e8ed}
 .market-observation:last-child{border-bottom:none}
 .market-observation strong{display:block;text-align:right}
@@ -202,6 +218,7 @@ footer{padding:40px 0 64px;color:var(--ink3);font-size:12.5px;line-height:1.6}
 footer p{margin:0 0 10px;max-width:56em}
 #dbg{position:fixed;left:8px;bottom:8px;max-width:min(360px,92vw);max-height:30vh;overflow:auto;background:#000c;color:#9f9;font:11px/1.4 ui-monospace,monospace;padding:8px 10px;border-radius:8px;z-index:50}
 .err{padding:60px 0;text-align:center;color:var(--ink2)}
+ .mini-details{margin-top:12px}.mini-details summary{cursor:pointer;color:var(--ink2);font-size:12px;font-weight:650}.mini-details[open] summary{margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -258,36 +275,48 @@ footer p{margin:0 0 10px;max-width:56em}
   </div>
 </section>
 
-<section class="sec" id="marketState" hidden>
+<section class="sec" id="marketState" hidden style="padding-top:20px">
   <div class="wrap">
-    <div class="card">
-      <p class="eyebrow">Your ZIP opportunity estimator</p>
-      <h2 id="marketTitle"></h2>
-      <p class="sub" id="marketMeta"></p>
-      <p class="fine" id="marketLimitations"></p>
+    <div class="panel zip-visual" id="zipVisualPanel">
+      <div class="top">
+        <p class="zip-kicker">Your home opportunity · interactive</p>
+        <span class="chip-il">Estimated · not listed</span>
+      </div>
+      <h2 id="marketTitle" class="zip-headline"></h2>
+      <p class="zip-brief" id="marketMeta"></p>
       <div id="zipCompare" class="zip-compare" hidden>
         <div><small id="zipThenDate">Then</small><strong id="zipThenValue"></strong></div>
-        <div><small id="zipNowDate">Now</small><strong id="zipNowValue"></strong></div>
+        <div><small id="zipNowDate">Latest</small><strong id="zipNowValue"></strong></div>
         <p id="zipComparisonNote"></p>
       </div>
-      <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 244" role="img" tabindex="-1" aria-label="Calculated ZIP home-value observations across time" hidden></svg>
+      <div class="zip-graph">
+        <span class="zip-graph-label">Modeled home value · USD</span>
+        <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 310"
+             role="img" tabindex="-1" aria-label="ZIP estimated home values by survey date" hidden></svg>
+      </div>
       <div id="zipScrub" class="zip-scrub" hidden>
         <div class="zip-scrub-head" aria-live="polite" aria-atomic="true">
           <span id="zipScrubDate">Selected survey date</span>
           <strong id="zipScrubValue">—</strong>
         </div>
         <p id="zipScrubContext"></p>
-        <div class="zip-scrub-buttons" role="group" aria-label="Explore dated ZIP estimates">
+        <div class="zip-scrub-buttons" role="group" aria-label="Explore real dated estimates">
           <button type="button" data-zip-go="start" aria-pressed="true">Start</button>
           <button type="button" data-zip-go="peak" aria-pressed="false">Peak</button>
           <button type="button" data-zip-go="latest" aria-pressed="false">Latest</button>
         </div>
       </div>
       <p id="zipChartNote" class="zip-chart-note" hidden></p>
-      <div id="marketRows" aria-live="polite"></div>
-      <p class="fine">Modeled value comparisons are planning illustrations, not a particular home's price, a listing, or a promise of savings.</p>
-      <p class="fine">This product uses publicly available Census Bureau statistics but is not endorsed or certified by the Census Bureau. Home-size, value, and financing calculations are independent illustrations.</p>
     </div>
+    <details class="zip-method" id="zipMethod">
+      <summary>How these estimates work · source and assumptions</summary>
+      <div class="zip-method-body">
+        <p id="marketLimitations"></p>
+        <div id="marketRows" aria-live="polite"></div>
+        <p class="fine">This is an illustrative ZIP-area model, not an appraisal, listing or actual sale price. Figures currently describe dated Census surveys, not November 2026 market values.</p>
+        <p class="fine">This product uses publicly available Census Bureau statistics but is not endorsed or certified by the Census Bureau.</p>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -334,7 +363,7 @@ footer p{margin:0 0 10px;max-width:56em}
         <p class="k" id="zipValueLabel">The price</p>
         <div class="two"><div class="dim"><small id="pThenL">Then</small><strong id="pThen">—</strong></div><div><small class="latestLabel">Today</small><strong id="pNow">—</strong></div></div>
         <p class="res" id="pDiff"></p>
-        <p class="fine"><span id="priceNote"></span></p>
+        <details class="mini-details"><summary>Calculation details</summary><p class="fine"><span id="priceNote"></span></p></details>
       </div>
 
       <div class="card rv" style="--d:1">
