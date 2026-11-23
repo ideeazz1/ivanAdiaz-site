@@ -481,7 +481,7 @@ const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database
 const SIZE_NAMES={starter:'Starter home',growing:'Typical home',moveup:'More space',larger:'Larger home'};
 let zipProfile=null,zipLookupToken=0,zipLookupController=null,currentZipMarket=null;
 let zipChartPoints=[],zipChartCoords=[],zipChartSelected=0,zipChartDragging=false;
-let zipChartBounds={left:62,top:40,bottom:252,width:700},lastZipVisualized=null;
+let zipChartBounds={left:62,top:40,bottom:252,width:700};
 const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip && observations?.size>0;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
@@ -1046,12 +1046,11 @@ async function requestZipPrices(zip,cat,token){
     if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
     if(!isValidZipMarket(data,zip,choice)){setZipUnavailable(zip);return}
     renderZipMarket(data);
-    if(lastZipVisualized!==zip){
-      lastZipVisualized=zip;
-      requestAnimationFrame(()=>$('#marketState').scrollIntoView({
-        behavior:REDUCED?'auto':'smooth',block:'start'
-      }));
-    }
+    // Every freshly selected home-size scenario should lead directly to the
+    // visual comparison, not leave the visitor at a text-only selector.
+    requestAnimationFrame(()=>$('#marketState').scrollIntoView({
+      behavior:REDUCED?'auto':'smooth',block:'start'
+    }));
   }catch(_){
     if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip&&S.cat===cat)
       setZipUnavailable(zip);
