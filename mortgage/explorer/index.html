@@ -561,22 +561,24 @@ function isValidZipSizes(d,zip){
   }
   return true;
 }
-function isValidZipMarket(d,z,band){
+function isValidZipMarket(d,z,choice){
+  const band=choice.size_band_sqft;
   if(!d||d.status!=='available'||d.zip!==z||d.geography!=='postal_code')return false;
   if(!d.size_band_sqft||d.size_band_sqft.min!==band.min||d.size_band_sqft.max!==band.max)return false;
   if(typeof d.source!=='string'||!d.source.trim()||d.source.length>180)return false;
   if(!/^\d{4}-\d{2}-\d{2}$/.test(d.as_of||''))return false;
-  if(!['verified_closing','estimated'].includes(d.price_basis))return false;
+  if(d.price_basis!=='calculated'||d.calculation_method!=='median_estimated_value_per_sqft_x_representative_sqft'||
+      d.representative_sqft!==choice.sqft)return false;
   if(!Array.isArray(d.limitations)||d.limitations.length>12||d.limitations.some(x=>typeof x!=='string'||x.length>250))return false;
-  if(d.price_basis==='estimated'&&!d.limitations.length)return false;
+  if(!d.limitations.length)return false;
   if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
   let last='';let actual=0;
   for(const p of d.periods){
     if(!p||typeof p.month!=='string'||!/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||p.month<=last)return false;
     last=p.month;
     if(!Number.isInteger(p.sample_count)||p.sample_count<0||p.sample_count>100000)return false;
-    if(p.median_sale_price_usd!==null){
-      if(!Number.isFinite(p.median_sale_price_usd)||p.median_sale_price_usd<=0||p.sample_count===0)return false;
+    if(p.calculated_home_value_usd!==null){
+      if(!Number.isFinite(p.calculated_home_value_usd)||p.calculated_home_value_usd<=0||p.sample_count===0)return false;
       actual++;
     }
   }
@@ -586,19 +588,20 @@ function renderZipMarket(data){
   $('#emptyState').hidden=true;
   $('#marketState').hidden=false;
   $('#zipmsg').textContent='Matching local observations found.';
-  $('#marketTitle').textContent='ZIP '+data.zip+' · '+(data.price_basis==='estimated'?'Estimated prices':'Reported closing prices');
-  $('#marketMeta').textContent='Source: '+data.source+' · As of '+data.as_of+
-    ' · Single-family homes, '+data.size_band_sqft.min.toLocaleString()+'–'+data.size_band_sqft.max.toLocaleString()+' sq ft';
-  $('#marketLimitations').textContent=(data.price_basis==='estimated'?'Estimates are not verified closing prices. ':'')+data.limitations.join(' ');
+  $('#marketTitle').textContent='ZIP '+data.zip+' · Calculated home values';
+  $('#marketMeta').textContent='Calculation: '+data.representative_sqft.toLocaleString()+' sq ft × median estimated value per sq ft'+
+    ' · Source: '+data.source+' · As of '+data.as_of+
+    ' · Comparison band: '+data.size_band_sqft.min.toLocaleString()+'–'+data.size_band_sqft.max.toLocaleString()+' sq ft';
+  $('#marketLimitations').textContent='Modeled estimates, not observed selling prices. '+data.limitations.join(' ');
   const target=$('#marketRows');
   for(const p of data.periods){
     const row=document.createElement('div');row.className='market-observation';
     const month=document.createElement('span');month.className='month';month.textContent=lab(p.month);
     const info=document.createElement('span');
     const amount=document.createElement('strong');
-    amount.textContent=p.median_sale_price_usd===null?'No price observation':fmt$(p.median_sale_price_usd);
+    amount.textContent=p.calculated_home_value_usd===null?'No value estimate':fmt$(p.calculated_home_value_usd);
     const count=document.createElement('small');
-    count.textContent=p.sample_count+' priced observation'+(p.sample_count===1?'':'s');
+    count.textContent=p.sample_count+' valuation observation'+(p.sample_count===1?'':'s');
     info.append(amount,count);row.append(month,info);target.append(row);
   }
 }
@@ -639,7 +642,7 @@ async function requestZipPrices(zip,cat,token){
     if(!response.ok){setZipUnavailable(zip);return}
     const data=await response.json();
     if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
-    if(!isValidZipMarket(data,zip,band)){setZipUnavailable(zip);return}
+    if(!isValidZipMarket(data,zip,choice)){setZipUnavailable(zip);return}
     renderZipMarket(data);
   }catch(_){
     if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip&&S.cat===cat)
