@@ -1017,7 +1017,7 @@ function renderZipTimeline(data){
   graph.setAttribute('aria-valuemax',String(available.length-1));
   graph.setAttribute('aria-label','Drag the ZIP estimated home value graph across months. Use keyboard arrow keys.');
   graph.removeAttribute('hidden');
-  selectZipObservation(0,false);
+  selectZipObservation(available.length-1,false);
   note.hidden=false;
   note.textContent=monthly?
     'Drag month by month · white line = FHFA regional monthly trend applied to a ZIP benchmark · dashed = scenario after '+lab(data.latest_observed_month)+'.':
@@ -1215,8 +1215,8 @@ function renderZipMarket(data){
   $('#zipMethod').open=false;
   currentZipMarket=data;
   renderZipTimeline(data);
-  renderZipStory(data,0);
-  renderNearby(data,0);
+  renderZipStory(data,data.periods.length-1);
+  renderNearby(data,data.periods.length-1);
   const target=$('#marketRows');
   target.replaceChildren();
   for(const p of data.periods){
