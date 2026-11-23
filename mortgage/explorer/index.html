@@ -305,7 +305,7 @@ footer p{margin:0 0 10px;max-width:56em}
 
     <div class="grid">
       <div class="card rv" style="--d:0">
-        <p class="k">The price</p>
+        <p class="k" id="zipValueLabel">The price</p>
         <div class="two"><div class="dim"><small id="pThenL">Then</small><strong id="pThen">—</strong></div><div><small class="latestLabel">Today</small><strong id="pNow">—</strong></div></div>
         <p class="res" id="pDiff"></p>
         <p class="fine"><span id="priceNote"></span></p>
@@ -424,7 +424,7 @@ let observations;
 const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database2/explorer/market/zip';
 const SIZE_NAMES={starter:'Starter home',growing:'Typical home',moveup:'More space',larger:'Larger home'};
 let zipProfile=null,zipLookupToken=0,zipLookupController=null,currentZipMarket=null;
-const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip;
+const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip && observations?.size>0;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
   const sqft=catO().sqft;
@@ -710,6 +710,7 @@ function renderZipStory(data){
   const payThen=pmt(then,rate,down),payNow=pmt(now,rate,down);
   const payDiff=payNow-payThen;
   document.querySelectorAll('.latestLabel').forEach(el=>el.textContent=lastLabel);
+  setText('#zipValueLabel','Calculated home values');
   setText('#rHead','What changed for a '+sqft.toLocaleString()+' sq ft home?');
   setText('#rSub','ZIP '+data.zip+' · Calculated local estimates, '+firstLabel+' versus '+lastLabel+
     '. Source: '+data.source+' (as of '+data.as_of+').');
@@ -921,6 +922,7 @@ function renderResults(){
   setText('#priceNote',pilot?`Monthly sample · ${L0}: ${samples(i)}.${i===last?'':` ${end}: ${samples(last)}.`}`:'Illustrative demonstration data for comparable homes.');
   const diff=available?now-then:null,pct=available?diff/then*100:null,abs=Math.abs(diff);
   // chart header + readout
+  setText('#zipValueLabel','The price');
   setText('#cTitle',`${h} · ${c.name}`);
   setText('#sLabel',L0);setText('#sVal',available?fmt$(then):'—');setText('#nVal',fmt$(now));
   $('#dSent').innerHTML=!available?'No estimate for this month. Comparison unavailable.':i===last?'Latest available month.':
@@ -1006,11 +1008,17 @@ function observe(){
   cio.observe($('#chartPanel'));
 }
 Promise.all(['data.json','attom-circle-c-pilot.json'].map(async file=>{
-  const response=await fetch('/mortgage/explorer/'+file);
-  if(!response.ok)throw new Error(file);
-  return response.json();
+  try {
+    const response=await fetch('/mortgage/explorer/'+file);
+    if(!response.ok)throw new Error(file);
+    return await response.json();
+  } catch (error) {
+    // A missing optional Circle C pilot must not disable arbitrary ZIP lookup.
+    if(file==='attom-circle-c-pilot.json')return {observations:[]};
+    throw error;
+  }
 })).then(([d,pilot])=>{
-  observations=new Map(pilot.observations.map(row=>[row.month,row]));
+  observations=new Map((Array.isArray(pilot?.observations)?pilot.observations:[]).map(row=>[row.month,row]));
   D=d;
   buildHero();buildSelectors();buildSk();size();clearResults();clearMarket();showResults(false);observe();T.send('page_view');
 }).catch(()=>{document.querySelector('main').innerHTML='<div class="wrap err">The preview data couldn’t load. Please refresh.</div>'});
