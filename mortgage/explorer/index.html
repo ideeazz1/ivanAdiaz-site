@@ -1096,6 +1096,7 @@ function renderZipMarket(data){
     data.limitations.join(' '):
     'Source: '+data.source+' (as of '+data.as_of+'). '+data.limitations.join(' ');
   $('#zipMethod').open=false;
+  currentZipMarket=data;
   renderZipTimeline(data);
   renderZipStory(data,0);
   const target=$('#marketRows');
@@ -1336,16 +1337,40 @@ function buildSk(){
   }));
 }
 function calc(){
-  const price=+$('#cBudget').value,dp=+$('#cDown').value,r=D.rates[N()-1];
+  const price=+$('#cBudget').value,dp=+$('#cDown').value;
+  const r=currentZipMarket&&!S.hood?+$('#mRate').value:D.rates[N()-1];
   $('#cDownV').textContent=dp+'%';
   $('#cPay').textContent=price>0?fmt$(pmt(price,r,dp)):'—';
   $('#cFine').textContent=`${D.assumptions.termYears}-year fixed at an illustrative ${r.toFixed(2)}%. Principal and interest only; taxes, insurance and HOA are extra. Not a loan offer.`;
 }
 $('#invBtn').addEventListener('click',e=>{const o=e.target.getAttribute('aria-expanded')==='true';e.target.setAttribute('aria-expanded',!o);$('#calc').hidden=o;if(!o){calc();T.send('invite_open')}});
-$('#cBudget').addEventListener('input',e=>{e.target.dataset.touched=1;calc()});
-$('#cDown').addEventListener('input',calc);
-$('#cToggle').addEventListener('change',e=>{$('#conc').hidden=!e.target.checked;T.send('concession_toggle',{on:e.target.checked});if(S.hood)renderResults();else if(currentZipMarket)renderZipStory(currentZipMarket)});
-$('#cRange').addEventListener('input',()=>{if(S.hood)renderResults();else if(currentZipMarket)renderZipStory(currentZipMarket)});
+function updateZipInputs(){
+  if(currentZipMarket&&!S.hood)renderZipStory(currentZipMarket,zipChartSelected);
+  else calc();
+}
+$('#mRate').addEventListener('input',updateZipInputs);
+$('#mDown').addEventListener('input',()=>{
+  $('#cDown').value=$('#mDown').value;
+  updateZipInputs();
+});
+$('#cBudget').addEventListener('input',e=>{
+  e.target.dataset.touched=1;
+  updateZipInputs();
+});
+$('#cDown').addEventListener('input',()=>{
+  $('#mDown').value=$('#cDown').value;
+  updateZipInputs();
+});
+$('#cToggle').addEventListener('change',e=>{
+  $('#conc').hidden=!e.target.checked;
+  T.send('concession_toggle',{on:e.target.checked});
+  if(S.hood)renderResults();
+  else if(currentZipMarket)renderZipStory(currentZipMarket,zipChartSelected);
+});
+$('#cRange').addEventListener('input',()=>{
+  if(S.hood)renderResults();
+  else if(currentZipMarket)renderZipStory(currentZipMarket,zipChartSelected);
+});
 
 /* ---------- boot ---------- */
 function observe(){
