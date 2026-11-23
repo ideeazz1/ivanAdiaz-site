@@ -78,6 +78,14 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .zipbox input:focus{outline:2px solid var(--ac);outline-offset:1px}
 .zipbox button{border:0;background:var(--ink);color:#fff;border-radius:var(--radius);padding:11px 16px;font-weight:600}
 .zipmsg{flex-basis:100%;font-size:13px;color:var(--ink2);margin:0}
+.zip-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.zip-compare>div{border:1px solid #e5e8ef;border-radius:12px;padding:14px;min-width:0}
+.zip-compare small{display:block;color:var(--ink2);font-size:12px;margin-bottom:6px}
+.zip-compare strong{display:block;font-size:clamp(18px,4.8vw,29px);letter-spacing:-.03em;font-weight:800}
+.zip-compare p{grid-column:1/-1;margin:2px 0 0;color:var(--ink2);font-size:13px}
+.zip-timeline{width:100%;max-height:280px;display:block;margin:8px 0;overflow:visible}
+.zip-timeline[hidden]{display:none}
+.zip-chart-note{font-size:12px;color:var(--ink2);margin:6px 0 18px}
 .market-observation{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #e6e8ed}
 .market-observation:last-child{border-bottom:none}
 .market-observation strong{display:block;text-align:right}
@@ -244,6 +252,13 @@ footer p{margin:0 0 10px;max-width:56em}
       <h2 id="marketTitle"></h2>
       <p class="sub" id="marketMeta"></p>
       <p class="fine" id="marketLimitations"></p>
+      <div id="zipCompare" class="zip-compare" hidden>
+        <div><small id="zipThenDate">Then</small><strong id="zipThenValue"></strong></div>
+        <div><small id="zipNowDate">Now</small><strong id="zipNowValue"></strong></div>
+        <p id="zipComparisonNote"></p>
+      </div>
+      <svg id="zipTimeline" class="zip-timeline" viewBox="0 0 700 244" role="img" aria-label="Calculated ZIP home-value observations across time" hidden></svg>
+      <p id="zipChartNote" class="zip-chart-note" hidden></p>
       <div id="marketRows" aria-live="polite"></div>
       <p class="fine">Historical groups represent different homes, not changes to a particular property. These observations are not a promise of savings or future prices.</p>
     </div>
@@ -517,6 +532,10 @@ function clearMarket(){
   $('#marketMeta').textContent='';
   $('#marketLimitations').textContent='';
   $('#marketRows').replaceChildren();
+  $('#zipCompare').hidden=true;
+  $('#zipTimeline').replaceChildren();
+  $('#zipTimeline').hidden=true;
+  $('#zipChartNote').hidden=true;$('#zipChartNote').textContent='';
 }
 function setZipPending(zip,sizesLoaded=false){
   $('#emptyState').hidden=false;
@@ -584,6 +603,65 @@ function isValidZipMarket(d,z,choice){
   }
   return actual>0;
 }
+function renderZipTimeline(data){
+  const graph=$('#zipTimeline'),note=$('#zipChartNote');
+  graph.replaceChildren();graph.hidden=true;
+  const available=data.periods.filter(p=>Number.isFinite(p.calculated_home_value_usd));
+  const comp=$('#zipCompare');
+  if(available.length<2){
+    comp.hidden=true;
+    note.hidden=false;note.textContent='More than one observation month is needed for a Then vs Now comparison.';
+    return;
+  }
+  const first=available[0],last=available.at(-1),diff=last.calculated_home_value_usd-first.calculated_home_value_usd;
+  const monthIndex=m=>Number(m.slice(0,4))*12+Number(m.slice(5,7))-1;
+  if(monthIndex(last.month)===monthIndex(first.month)){comp.hidden=true;return}
+  comp.hidden=false;
+  $('#zipThenDate').textContent=lab(first.month)+' (earliest supported)';
+  $('#zipThenValue').textContent=fmt$(first.calculated_home_value_usd);
+  $('#zipNowDate').textContent=lab(last.month)+' (latest supported)';
+  $('#zipNowValue').textContent=fmt$(last.calculated_home_value_usd);
+  $('#zipComparisonNote').textContent='The calculated home-value estimate is '+fmt$(Math.abs(diff))+
+    (diff<0?' lower':diff>0?' higher':' unchanged')+
+    ' between the selected observations. This is not an actual selling-price or guaranteed-savings comparison.';
+  const minV=Math.min(...available.map(p=>p.calculated_home_value_usd));
+  const maxV=Math.max(...available.map(p=>p.calculated_home_value_usd));
+  const spread=Math.max(10000,maxV-minV);
+  const bottom=minV-spread*.22,top=maxV+spread*.22;
+  const left=46,right=670,yTop=28,yBottom=195,month0=monthIndex(first.month),month1=monthIndex(last.month);
+  const x=m=>left+(monthIndex(m)-month0)/(month1-month0)*(right-left);
+  const y=v=>yBottom-(v-bottom)/(top-bottom)*(yBottom-yTop);
+  const NS='http://www.w3.org/2000/svg';
+  const append=(tag,attrs,parent=graph)=>{const el=document.createElementNS(NS,tag);for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));parent.append(el);return el};
+  for(const [value,label] of [[minV,fmtK(minV)],[maxV,fmtK(maxV)]]){
+    append('line',{x1:left,y1:y(value),x2:right,y2:y(value),stroke:'#DCE5EF','stroke-dasharray':'4 6'});
+    const t=append('text',{x:2,y:y(value)+4,fill:'#65758A','font-size':13});t.textContent=label;
+  }
+  let segment=[],lastValidMonth=null;
+  const flush=()=>{
+    if(!segment.length)return;
+    if(segment.length>1)append('path',{d:segment.map((p,i)=>(i?'L':'M')+p[0].toFixed(2)+' '+p[1].toFixed(2)).join(' '),
+      fill:'none',stroke:'#004288','stroke-width':3.3,'stroke-linecap':'round','stroke-linejoin':'round'});
+    segment=[];
+  };
+  for(const p of data.periods){
+    if(!Number.isFinite(p.calculated_home_value_usd)){
+      flush();lastValidMonth=null;continue;
+    }
+    if(lastValidMonth!==null&&monthIndex(p.month)-lastValidMonth!==1)flush();
+    segment.push([x(p.month),y(p.calculated_home_value_usd)]);
+    lastValidMonth=monthIndex(p.month);
+    append('circle',{cx:x(p.month),cy:y(p.calculated_home_value_usd),r:4.7,fill:'#004288'});
+  }
+  flush();
+  for(const [value,pos,align] of [[first.month,left,'start'],[last.month,right,'end']]){
+    const t=append('text',{x:pos,y:227,fill:'#52657C','font-size':13,'text-anchor':align});
+    t.textContent=lab(value);
+  }
+  graph.hidden=false;
+  graph.setAttribute('aria-label','Calculated estimated home values from '+lab(first.month)+' to '+lab(last.month)+'. Gaps are not interpolated.');
+  note.hidden=false;note.textContent='Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
+}
 function renderZipMarket(data){
   $('#emptyState').hidden=true;
   $('#marketState').hidden=false;
@@ -593,6 +671,7 @@ function renderZipMarket(data){
     ' · Source: '+data.source+' · As of '+data.as_of+
     ' · Comparison band: '+data.size_band_sqft.min.toLocaleString()+'–'+data.size_band_sqft.max.toLocaleString()+' sq ft';
   $('#marketLimitations').textContent='Modeled estimates, not observed selling prices. '+data.limitations.join(' ');
+  renderZipTimeline(data);
   const target=$('#marketRows');
   for(const p of data.periods){
     const row=document.createElement('div');row.className='market-observation';
