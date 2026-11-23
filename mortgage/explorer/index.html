@@ -78,6 +78,12 @@ h2{font-size:clamp(28px,6.4vw,44px)}
 .zipbox input:focus{outline:2px solid var(--ac);outline-offset:1px}
 .zipbox button{border:0;background:var(--ink);color:#fff;border-radius:var(--radius);padding:11px 16px;font-weight:600}
 .zipmsg{flex-basis:100%;font-size:13px;color:var(--ink2);margin:0}
+.market-observation{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #e6e8ed}
+.market-observation:last-child{border-bottom:none}
+.market-observation strong{display:block;text-align:right}
+.market-observation small{display:block;text-align:right;color:var(--ink2)}
+.market-observation .month{font-weight:600}
+@media(max-width:420px){.market-observation{gap:8px}.market-observation strong{font-size:14px}}
 .homes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(min-width:760px){.homes{grid-template-columns:repeat(4,1fr)}}
 .home{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;border:1.5px solid #E3E5EA;background:#fff;border-radius:var(--radius);padding:16px;transition:all .3s var(--ease)}
@@ -226,6 +232,19 @@ footer p{margin:0 0 10px;max-width:56em}
       <p class="eyebrow">Your location</p>
       <h2 id="emptyTitle">Start with a ZIP code</h2>
       <p class="sub" id="emptyHelp">No neighborhood is selected. We’ll show market comparisons only when reliable data is available for that location.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="marketState" hidden>
+  <div class="wrap">
+    <div class="card">
+      <p class="eyebrow">Local market observations</p>
+      <h2 id="marketTitle"></h2>
+      <p class="sub" id="marketMeta"></p>
+      <p class="fine" id="marketLimitations"></p>
+      <div id="marketRows" aria-live="polite"></div>
+      <p class="fine">Historical groups represent different homes, not changes to a particular property. These observations are not a promise of savings or future prices.</p>
     </div>
   </div>
 </section>
@@ -386,6 +405,14 @@ const N=()=>D.months.length;
 const catO=()=>D.categories.find(c=>c.id===S.cat);
 const hoodO=()=>D.neighborhoods.find(h=>h.id===S.hood);
 let observations;
+const MARKET_ZIP_API='https://database2-api-xpxhayoxhq-vp.a.run.app/api/database2/explorer/market/zip';
+const ZIP_SIZE_BANDS=Object.freeze({
+  starter:{min:1800,max:2200},
+  growing:{min:2400,max:2800},
+  moveup:{min:3000,max:3400},
+  larger:{min:3500,max:4000}
+});
+let zipLookupToken=0,zipLookupController=null;
 const isPilot=()=>S.hood==='circle-c' && S.cat==='growing' && !S.demoZip;
 const estimateLabel='ATTOM estimated market prices — not verified closing prices.';
 function prices(){
@@ -434,9 +461,12 @@ function buildSelectors(){
       <b>${c.name}</b><span>${c.label} sq ft</span></button>`}).join('');
   hm.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{S.cat=b.dataset.c;
     hm.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
-    if(S.hood)refreshAll(true);T.send('home_size_change',{cat:S.cat});}));
+    if(S.hood)refreshAll(true);
+    else if(S.demoZip){const z=S.demoZip;cancelZipLookup();clearMarket();showResults(false);setZipPending(z);requestZipMarket(z,S.cat,zipLookupToken)}
+    T.send('home_size_change',{cat:S.cat});}));
   $('#zipbox').onsubmit=e=>{
     e.preventDefault();const z=$('#zip').value.trim();
+    cancelZipLookup();clearMarket();
     S.hood=null;S.demoZip=null;clearResults();showResults(false);
     if(!/^\d{5}$/.test(z)){
       $('#zipmsg').textContent='Enter a valid five-digit ZIP code.';
@@ -444,20 +474,108 @@ function buildSelectors(){
       $('#emptyHelp').textContent='No market estimates are shown without a valid location.';
       buildSelectors();T.send('try_zip',{});return;
     }
-    S.demoZip=z;buildSelectors();
-    $('#zipmsg').textContent='No local market data is connected for this ZIP yet.';
-    $('#emptyTitle').textContent='Market data for ZIP '+z+' is not available yet';
-    $('#emptyHelp').textContent='We will not substitute numbers from a different ZIP. You can explore a labeled example neighborhood below.';
-    T.send('try_zip',{});   // the ZIP itself is never sent
+    S.demoZip=z;buildSelectors();setZipPending(z);
+    requestZipMarket(z,S.cat,zipLookupToken);
+    T.send('try_zip',{});   // the ZIP itself is never sent to analytics
   };
 }
 function setHood(id){
+  cancelZipLookup();clearMarket();
   S.hood=id;S.demoZip=null;clearResults();showResults(true);size();buildSelectors();refreshAll(false);
 }
 function showResults(ready){
   $('#chartPanel').closest('section').hidden=!ready;
   $('#results').hidden=!ready;
   $('#emptyState').hidden=ready;
+}
+function cancelZipLookup(){
+  zipLookupToken++;
+  if(zipLookupController){zipLookupController.abort();zipLookupController=null}
+}
+function clearMarket(){
+  $('#marketState').hidden=true;
+  $('#marketTitle').textContent='';
+  $('#marketMeta').textContent='';
+  $('#marketLimitations').textContent='';
+  $('#marketRows').replaceChildren();
+}
+function setZipPending(zip){
+  $('#emptyState').hidden=false;
+  $('#emptyTitle').textContent='Checking local coverage for ZIP '+zip;
+  $('#emptyHelp').textContent='Only matching, source-labeled market observations will appear.';
+  $('#zipmsg').textContent='Checking available local data…';
+}
+function setZipUnavailable(zip){
+  $('#emptyState').hidden=false;clearMarket();
+  $('#emptyTitle').textContent='Market data for ZIP '+zip+' is not available yet';
+  $('#emptyHelp').textContent='We will not substitute figures from another ZIP. You can select a labeled example neighborhood above.';
+  $('#zipmsg').textContent='No approved local market observations are available for this ZIP.';
+}
+function isValidZipMarket(d,z,band){
+  if(!d||d.status!=='available'||d.zip!==z||d.geography!=='postal_code')return false;
+  if(!d.size_band_sqft||d.size_band_sqft.min!==band.min||d.size_band_sqft.max!==band.max)return false;
+  if(typeof d.source!=='string'||!d.source.trim()||d.source.length>180)return false;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d.as_of||''))return false;
+  if(!['verified_closing','estimated'].includes(d.price_basis))return false;
+  if(!Array.isArray(d.limitations)||d.limitations.length>12||d.limitations.some(x=>typeof x!=='string'||x.length>250))return false;
+  if(d.price_basis==='estimated'&&!d.limitations.length)return false;
+  if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
+  let last='';let actual=0;
+  for(const p of d.periods){
+    if(!p||typeof p.month!=='string'||!/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||p.month<=last)return false;
+    last=p.month;
+    if(!Number.isInteger(p.sample_count)||p.sample_count<0||p.sample_count>100000)return false;
+    if(p.median_sale_price_usd!==null){
+      if(!Number.isFinite(p.median_sale_price_usd)||p.median_sale_price_usd<=0||p.sample_count===0)return false;
+      actual++;
+    }
+  }
+  return actual>0;
+}
+function renderZipMarket(data){
+  $('#emptyState').hidden=true;
+  $('#marketState').hidden=false;
+  $('#zipmsg').textContent='Matching local observations found.';
+  $('#marketTitle').textContent='ZIP '+data.zip+' · '+(data.price_basis==='estimated'?'Estimated prices':'Reported closing prices');
+  $('#marketMeta').textContent='Source: '+data.source+' · As of '+data.as_of+
+    ' · Single-family homes, '+data.size_band_sqft.min.toLocaleString()+'–'+data.size_band_sqft.max.toLocaleString()+' sq ft';
+  $('#marketLimitations').textContent=(data.price_basis==='estimated'?'Estimates are not verified closing prices. ':'')+data.limitations.join(' ');
+  const target=$('#marketRows');
+  for(const p of data.periods){
+    const row=document.createElement('div');row.className='market-observation';
+    const month=document.createElement('span');month.className='month';month.textContent=lab(p.month);
+    const info=document.createElement('span');
+    const amount=document.createElement('strong');
+    amount.textContent=p.median_sale_price_usd===null?'No price observation':fmt$(p.median_sale_price_usd);
+    const count=document.createElement('small');
+    count.textContent=p.sample_count+' priced observation'+(p.sample_count===1?'':'s');
+    info.append(amount,count);row.append(month,info);target.append(row);
+  }
+}
+async function requestZipMarket(zip,cat,token){
+  const band=ZIP_SIZE_BANDS[cat];
+  if(!band){setZipUnavailable(zip);return}
+  const controller=new AbortController();zipLookupController=controller;
+  try{
+    const response=await fetch(MARKET_ZIP_API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({zip,size_band_sqft:band}),
+      signal:controller.signal,
+      cache:'no-store',
+      credentials:'omit'
+    });
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
+    if(!response.ok){setZipUnavailable(zip);return}
+    const result=await response.json();
+    if(token!==zipLookupToken||S.hood!==null||S.demoZip!==zip||S.cat!==cat)return;
+    if(!isValidZipMarket(result,zip,band)){setZipUnavailable(zip);return}
+    renderZipMarket(result);
+  }catch(_){
+    if(token===zipLookupToken&&S.hood===null&&S.demoZip===zip&&S.cat===cat)setZipUnavailable(zip);
+  }finally{
+    if(zipLookupController===controller)zipLookupController=null;
+  }
 }
 function clearResults(){
   cancelAnimationFrame(S.raf);S.disp=[];S.sel=0;S.drag=false;S.followPeak=true;
@@ -654,7 +772,7 @@ Promise.all(['data.json','attom-circle-c-pilot.json'].map(async file=>{
 })).then(([d,pilot])=>{
   observations=new Map(pilot.observations.map(row=>[row.month,row]));
   D=d;
-  buildHero();buildSelectors();buildSk();size();clearResults();showResults(false);observe();T.send('page_view');
+  buildHero();buildSelectors();buildSk();size();clearResults();clearMarket();showResults(false);observe();T.send('page_view');
 }).catch(()=>{document.querySelector('main').innerHTML='<div class="wrap err">The preview data couldn’t load. Please refresh.</div>'});
 </script>
 </body>
