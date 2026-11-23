@@ -597,11 +597,13 @@ function isValidZipMarket(d,z,choice){
   for(const p of d.periods){
     if(!p||typeof p.month!=='string'||!/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||p.month<=last||p.month>d.as_of.slice(0,7))return false;
     last=p.month;
-    if(!Number.isInteger(p.sample_count)||p.sample_count<0||p.sample_count>100000)return false;
+    if(!Number.isInteger(p.sample_count)||p.sample_count<0||
+        p.sample_count>100000||p.sample_count>choice.sample_count)return false;
     if(p.calculated_home_value_usd!==null){
-      if(!Number.isFinite(p.calculated_home_value_usd)||p.calculated_home_value_usd<=0||p.sample_count===0)return false;
+      if(!Number.isFinite(p.calculated_home_value_usd)||p.calculated_home_value_usd<=0||
+          p.sample_count<3)return false;
       actual++;
-    }
+    }else if(p.sample_count!==0)return false;
   }
   return actual>0;
 }
