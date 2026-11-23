@@ -452,7 +452,7 @@ function buildSelectors(){
   };
 }
 function setHood(id){
-  S.hood=id;S.demoZip=null;clearResults();showResults(true);buildSelectors();refreshAll(false);
+  S.hood=id;S.demoZip=null;clearResults();showResults(true);size();buildSelectors();refreshAll(false);
 }
 function showResults(ready){
   $('#chartPanel').closest('section').hidden=!ready;
@@ -462,7 +462,7 @@ function showResults(ready){
 function clearResults(){
   cancelAnimationFrame(S.raf);S.disp=[];S.sel=0;S.drag=false;S.followPeak=true;
   ['#cTitle','#sourceLabel','#sVal','#nVal','#dSent','#rHead','#rSub','#pThen','#pNow','#pDiff','#hRes','#hThen','#hNow','#mThen','#mNow','#mDiff','#mFine','#cRes','#cPay','#cFine'].forEach(id=>{const el=$(id);if(el)el.textContent='';});
-  $('#gMain').replaceChildren();$('#gScrub').replaceChildren();
+  $('#gMain').replaceChildren();$('#gScrub').replaceChildren();$('#houseSvg').replaceChildren();
   $('#conc').hidden=true;$('#cToggle').checked=false;
   $('#calc').hidden=true;$('#invBtn').setAttribute('aria-expanded','false');
 }
