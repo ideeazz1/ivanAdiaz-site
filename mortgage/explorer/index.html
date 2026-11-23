@@ -646,7 +646,8 @@ function isValidZipMarket(d,z,choice){
   if(!Array.isArray(d.limitations)||d.limitations.length>12||
       d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250)||
       !d.limitations.length)return false;
-  if(modeled && (!Number.isInteger(d.estimated_housing_units)||
+  if(modeled && (!Number.isInteger(d.benchmark_sqft)||d.benchmark_sqft<=0||
+      !Number.isInteger(d.estimated_housing_units)||
       d.estimated_housing_units<=0||!Number.isFinite(d.modeled_sqft_per_room)||
       d.modeled_sqft_per_room<150||d.modeled_sqft_per_room>500))return false;
   if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
@@ -726,7 +727,7 @@ function renderZipTimeline(data){
   }
   graph.removeAttribute('hidden');
   graph.setAttribute('aria-label','Calculated estimated home values from '+lab(first.month)+' to '+lab(last.month)+'. Gaps are not interpolated.');
-  note.hidden=false;note.textContent='Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
+  note.hidden=false;note.textContent=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size'?'Points represent the latest year of each Census five-year survey period, not actual market sales. Do not interpret as a current market quote.':'Points are supported valuation months only; lines connect consecutive months, not missing periods. Chart scale does not begin at $0.';
 }
 
 /* ---------- ZIP Then vs Now: never reuse illustrative neighborhood data ---------- */
@@ -763,7 +764,14 @@ function renderZipStory(data){
   setText('#pThenL',firstLabel);setText('#pThen',fmt$(then));setText('#pNow',fmt$(now));
   setText('#pDiff',fmt$(abs)+(diff<0?' lower':diff>0?' higher':' unchanged')+
     ' ('+(pct>0?'+':'')+pct.toFixed(1)+'%) · modeled difference, not savings');
-  setText('#priceNote','Estimated value = '+sqft.toLocaleString()+
+  const isModeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+  setText('#priceNote',isModeled?
+    'Illustrative value = ACS owner-reported median home value × ('+sqft.toLocaleString()+
+    ' modeled sq ft ÷ '+data.benchmark_sqft.toLocaleString()+
+    ' modeled typical sq ft). '+data.estimated_housing_units.toLocaleString()+
+    ' survey-estimated owner-occupied housing units; NOT individual property samples. '+
+    data.limitations.join(' '):
+    'Estimated value = '+sqft.toLocaleString()+
     ' sq ft × local median estimated value per sq ft. Samples: '+earlier.sample_count+
     ' / '+later.sample_count+'. '+data.limitations.join(' '));
   $('#houseSvg').parentElement.hidden=false;
@@ -798,14 +806,21 @@ function renderZipStory(data){
 }
 
 function renderZipMarket(data){
+  const modeled=data.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
   $('#emptyState').hidden=true;
   $('#marketState').hidden=false;
   $('#zipmsg').textContent='Illustrative ZIP estimates calculated.';
   $('#marketTitle').textContent='ZIP '+data.zip+' · Calculated home values';
-  $('#marketMeta').textContent='Calculation: '+data.representative_sqft.toLocaleString()+' sq ft × median estimated value per sq ft'+
+  $('#marketMeta').textContent=modeled?
+    'Formula: area median owner-reported value × (modeled home size ÷ modeled typical size)'+
+    ' · '+data.representative_sqft.toLocaleString()+' sq ft scenario'+
+    ' · '+data.estimated_housing_units.toLocaleString()+' Census-estimated owner-occupied housing units'+
+    ' (not a sample of measured home sizes) · Source: '+data.source+' · As of '+data.as_of:
+    'Calculation: '+data.representative_sqft.toLocaleString()+' sq ft × median estimated value per sq ft'+
     ' · Source: '+data.source+' · As of '+data.as_of+
-    ' · Comparison band: '+data.size_band_sqft.min.toLocaleString()+'–'+data.size_band_sqft.max.toLocaleString()+' sq ft';
-  $('#marketLimitations').textContent='Modeled estimates, not observed selling prices. '+data.limitations.join(' ');
+    ' · Comparison band: '+data.size_band_sqft.min.toLocaleString()+'–'+
+    data.size_band_sqft.max.toLocaleString()+' sq ft';
+  $('#marketLimitations').textContent='Planning estimates, NOT actual selling prices. '+data.limitations.join(' ');
   renderZipTimeline(data);
   renderZipStory(data);
   const target=$('#marketRows');
@@ -816,7 +831,8 @@ function renderZipMarket(data){
     const amount=document.createElement('strong');
     amount.textContent=p.calculated_home_value_usd===null?'No value estimate':fmt$(p.calculated_home_value_usd);
     const count=document.createElement('small');
-    count.textContent=p.sample_count+' valuation observation'+(p.sample_count===1?'':'s');
+    count.textContent=modeled?'ACS five-year period estimate · no individual-property sample':
+      p.sample_count+' valuation observation'+(p.sample_count===1?'':'s');
     info.append(amount,count);row.append(month,info);target.append(row);
   }
 }
