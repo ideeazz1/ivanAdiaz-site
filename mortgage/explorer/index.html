@@ -477,14 +477,23 @@ function buildSelectors(){
   source.hidden=!(isZip&&zipProfile);
   if(!source.hidden){
     const p=zipProfile.size_profile;
-    source.textContent='Sizes based on '+(p.population==='single_family_stock'?'single-family housing stock':'active for-sale listings')+
-      ' · '+p.sample_count.toLocaleString()+' observations · '+p.source+' · '+p.as_of+'.';
+    if(p.population==='modeled_owner_occupied_housing'){
+      source.textContent='Illustrative sizes derived from ZIP-area owner-occupied room counts · '+
+        p.estimated_housing_units.toLocaleString()+' survey-estimated housing units (not individual property samples) · '+
+        p.source+' · '+p.as_of+' · '+p.modeled_sqft_per_room+' assumed sq ft per room.';
+    }else{
+      source.textContent='Sizes based on '+(p.population==='single_family_stock'?'single-family housing stock':'active for-sale listings')+
+        ' · '+p.sample_count.toLocaleString()+' observations · '+p.source+' · '+p.as_of+'.';
+    }
   }else source.textContent='';
   const hm=$('#homes');
   hm.innerHTML=options.map(o=>{
     const w=Math.max(27,Math.min(55,Math.round(30+(Math.sqrt(o.sqft)-Math.sqrt(900))/
       (Math.sqrt(4000)-Math.sqrt(900))*24)));
-    const evidence=isZip&&zipProfile?
+    const modeled=isZip&&zipProfile?.size_profile?.population==='modeled_owner_occupied_housing';
+    const evidence=modeled?
+      '<small class="sizeEvidence">Modeled size scenario · not an actual listing</small>':
+      isZip&&zipProfile?
       '<small class="sizeEvidence">'+o.sample_count.toLocaleString()+' sampled '+
       (zipProfile.size_profile.population==='active_listings'?'listings':'homes')+
       ' · '+o.size_band_sqft.min.toLocaleString()+'–'+o.size_band_sqft.max.toLocaleString()+' sq ft band</small>':'';
@@ -579,52 +588,84 @@ function isValidObservedDay(day){
     day<=new Date().toISOString().slice(0,10);
 }
 function isValidZipSizes(d,zip){
-  if(!d||d.status!=='sizes_available'||d.zip!==zip||d.geography!=='postal_code')return false;
+  if(!d||d.status!=='sizes_available'||d.zip!==zip)return false;
   const p=d.size_profile;
-  if(!p||typeof p.source!=='string'||!p.source.trim()||p.source.length>180||
-      !isValidObservedDay(p.as_of)||
-      !['single_family_stock','active_listings'].includes(p.population)||
-      !Number.isInteger(p.sample_count)||p.sample_count<1||p.sample_count>10000000||
-      !Array.isArray(p.options)||p.options.length<1||p.options.length>4)return false;
-  let lastMax=0,lastId=-1;
+  const modeled=d.geography==='zcta_approximation'&&
+    p?.population==='modeled_owner_occupied_housing';
+  const observed=d.geography==='postal_code'&&
+    ['single_family_stock','active_listings'].includes(p?.population);
+  if(!modeled&&!observed)return false;
+  if(typeof p.source!=='string'||!p.source.trim()||p.source.length>180||
+      !isValidObservedDay(p.as_of)||!Array.isArray(p.options)||
+      p.options.length<1||p.options.length>4)return false;
+  if(modeled){
+    if(p.options.length!==4||!Number.isInteger(p.estimated_housing_units)||
+       p.estimated_housing_units<=0||
+       !Number.isFinite(p.modeled_sqft_per_room)||
+       p.modeled_sqft_per_room<150||p.modeled_sqft_per_room>500||
+       typeof p.method!=='string'||!p.method.trim())return false;
+  }else{
+    if(!Number.isInteger(p.sample_count)||p.sample_count<1||
+       p.sample_count>10000000)return false;
+  }
+  let lastMax=0,lastId=-1,total=0;
   const order=['starter','growing','moveup','larger'];
   for(const o of p.options){
     if(!o||!order.includes(o.id)||order.indexOf(o.id)<=lastId||
         !Number.isInteger(o.sqft)||!o.size_band_sqft||
-        !Number.isInteger(o.size_band_sqft.min)||!Number.isInteger(o.size_band_sqft.max)||
+        !Number.isInteger(o.size_band_sqft.min)||
+        !Number.isInteger(o.size_band_sqft.max)||
         o.size_band_sqft.min<500||o.size_band_sqft.max>8000||
         o.sqft<o.size_band_sqft.min||o.sqft>o.size_band_sqft.max||
         o.size_band_sqft.max-o.size_band_sqft.min<150||
         o.size_band_sqft.max-o.size_band_sqft.min>1400||
-        o.size_band_sqft.min<=lastMax||
-        !Number.isInteger(o.sample_count)||o.sample_count<1||
+        o.size_band_sqft.min<=lastMax)return false;
+    if(!modeled){
+      if(!Number.isInteger(o.sample_count)||o.sample_count<1||
         o.sample_count>p.sample_count)return false;
-    lastMax=o.size_band_sqft.max;lastId=order.indexOf(o.id);
+      total+=o.sample_count;
+    }
+    lastMax=o.size_band_sqft.max;
+    lastId=order.indexOf(o.id);
   }
-  return p.options.reduce((sum,o)=>sum+o.sample_count,0)<=p.sample_count;
+  return modeled?true:total<=p.sample_count;
 }
 function isValidZipMarket(d,z,choice){
   const band=choice.size_band_sqft;
-  if(!d||d.status!=='available'||d.zip!==z||d.geography!=='postal_code')return false;
-  if(!d.size_band_sqft||d.size_band_sqft.min!==band.min||d.size_band_sqft.max!==band.max)return false;
-  if(typeof d.source!=='string'||!d.source.trim()||d.source.length>180)return false;
-  if(!isValidObservedDay(d.as_of))return false;
-  if(d.price_basis!=='calculated'||d.calculation_method!=='median_estimated_value_per_sqft_x_representative_sqft'||
+  if(!d||d.status!=='available'||d.zip!==z)return false;
+  const modeled=d.geography==='zcta_approximation'&&
+    d.calculation_method==='acs_median_value_scaled_by_modeled_room_size';
+  const observed=d.geography==='postal_code'&&
+    d.calculation_method==='median_estimated_value_per_sqft_x_representative_sqft';
+  if(!modeled&&!observed)return false;
+  if(!d.size_band_sqft||d.size_band_sqft.min!==band.min||
+      d.size_band_sqft.max!==band.max)return false;
+  if(typeof d.source!=='string'||!d.source.trim()||d.source.length>300||
+      !isValidObservedDay(d.as_of)||d.price_basis!=='calculated'||
       d.representative_sqft!==choice.sqft)return false;
-  if(!Array.isArray(d.limitations)||d.limitations.length>12||d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250))return false;
-  if(!d.limitations.length)return false;
+  if(!Array.isArray(d.limitations)||d.limitations.length>12||
+      d.limitations.some(x=>typeof x!=='string'||!x.trim()||x.length>250)||
+      !d.limitations.length)return false;
+  if(modeled && (!Number.isInteger(d.estimated_housing_units)||
+      d.estimated_housing_units<=0||!Number.isFinite(d.modeled_sqft_per_room)||
+      d.modeled_sqft_per_room<150||d.modeled_sqft_per_room>500))return false;
   if(!Array.isArray(d.periods)||!d.periods.length||d.periods.length>60)return false;
-  let last='';let actual=0;
+  let last='',actual=0;
   for(const p of d.periods){
-    if(!p||typeof p.month!=='string'||!/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||p.month<=last||p.month>d.as_of.slice(0,7))return false;
+    if(!p||typeof p.month!=='string'||
+        !/^\d{4}-(0[1-9]|1[0-2])$/.test(p.month)||
+        p.month<=last||p.month>d.as_of.slice(0,7))return false;
     last=p.month;
-    if(!Number.isInteger(p.sample_count)||p.sample_count<0||
-        p.sample_count>100000||p.sample_count>choice.sample_count)return false;
+    if(!modeled && (!Number.isInteger(p.sample_count)||
+        p.sample_count<0||p.sample_count>100000||
+        p.sample_count>choice.sample_count))return false;
+    if(modeled && p.sample_count!==null)return false;
     if(p.calculated_home_value_usd!==null){
-      if(!Number.isFinite(p.calculated_home_value_usd)||p.calculated_home_value_usd<=0||
-          p.sample_count<3)return false;
+      if(!Number.isFinite(p.calculated_home_value_usd)||
+          p.calculated_home_value_usd<=0||
+          (!modeled&&p.sample_count<3))return false;
       actual++;
-    }else if(p.sample_count!==0)return false;
+    }else if(p.sample_count!==0&&p.sample_count!==null)return false;
   }
   return actual>0;
 }
