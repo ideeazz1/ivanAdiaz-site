@@ -1,19 +1,13 @@
 {
   "source": "Authenticated GitHub GraphQL API: user.contributionsCollection.contributionCalendar",
   "account": "ideeazz1",
-  "retrievedAt": "2026-11-26T11:20:55Z",
-  "windowStart": "2026-08-29",
-  "windowEnd": "2026-11-26",
+  "retrievedAt": "2026-11-27T11:21:32Z",
+  "windowStart": "2026-08-30",
+  "windowEnd": "2026-11-27",
   "windowDays": 90,
   "levelBasis": "Quartiles of non-zero days within this window",
-  "totalContributions": 35010,
+  "totalContributions": 34985,
   "days": [
-    {
-      "date": "2026-08-29",
-      "contributionCount": 68,
-      "level": 2,
-      "weekday": 6
-    },
     {
       "date": "2026-08-30",
       "contributionCount": 16,
@@ -83,7 +77,7 @@
     {
       "date": "2026-09-10",
       "contributionCount": 43,
-      "level": 1,
+      "level": 2,
       "weekday": 4
     },
     {
@@ -209,7 +203,7 @@
     {
       "date": "2026-10-01",
       "contributionCount": 71,
-      "level": 3,
+      "level": 2,
       "weekday": 4
     },
     {
@@ -395,7 +389,7 @@
     {
       "date": "2026-11-01",
       "contributionCount": 43,
-      "level": 1,
+      "level": 2,
       "weekday": 0
     },
     {
@@ -544,9 +538,15 @@
     },
     {
       "date": "2026-11-26",
-      "contributionCount": 43,
-      "level": 1,
+      "contributionCount": 76,
+      "level": 3,
       "weekday": 4
+    },
+    {
+      "date": "2026-11-27",
+      "contributionCount": 10,
+      "level": 1,
+      "weekday": 5
     }
   ]
 }
